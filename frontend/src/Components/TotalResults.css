@@ -1,0 +1,280 @@
+
+.TotalResults_TotalResults {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	margin: auto;
+	width: 100%;
+	height: 100vh;
+	overflow: auto;
+	background: rgba(177,177,177,1.00);
+}
+.TotalResults_TotalResults .background {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 105%;
+	object-fit: cover;
+	overflow: hidden;
+}
+.TotalResults_TotalResults .Overlay {
+	position: absolute;
+	left: 64px;
+	top: -103px;
+	width: 1280.203369140625px;
+	height: 1066.503173828125px;
+}
+.TotalResults_TotalResults .Overlay .Buttons {
+	position: absolute;
+	left: 0px;
+	top: 360px;
+	width: 148px;
+	height: 426px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Abnormal {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Abnormal .Rectangle1 {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Abnormal .Abnormal_1 {
+	position: absolute;
+	left: 24px;
+	top: 17px;
+	width: 100px;
+	height: 34px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 27.600000381469727px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .ACL {
+	position: absolute;
+	left: 0px;
+	top: 122px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .ACL .Rectangle1_1 {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .ACL .ACL_1 {
+	position: absolute;
+	left: 24px;
+	top: 17px;
+	width: 100px;
+	height: 34px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 27.600000381469727px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Meniscus {
+	position: absolute;
+	left: 0px;
+	top: 244px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Meniscus .Rectangle1_2 {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Meniscus .Meniscus_1 {
+	position: absolute;
+	left: 24px;
+	top: 17px;
+	width: 100px;
+	height: 34px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 27.600000381469727px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Total {
+	position: absolute;
+	left: 0px;
+	top: 366px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Total .Rectangle1_3 {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 148px;
+	height: 60px;
+	border-radius: 50px;
+}
+.TotalResults_TotalResults .Overlay .Buttons .Total .Total_1 {
+	position: absolute;
+	left: 24px;
+	top: 17px;
+	width: 100px;
+	height: 34px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(255,255,255,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 27.600000381469727px;
+}
+.TotalResults_TotalResults .Overlay .BubbleA {
+	position: absolute;
+	left: 170.50006103515625px;
+	top: 313.4715576171875px;
+	width: 1109.703369140625px;
+	height: 753.0316772460938px;
+}
+.TotalResults_TotalResults .Overlay .logo {
+	position: absolute;
+	left: 55%;
+	top: 0px;
+	/* transform: translate(-50%, 0); */
+	width: 376px;
+	height: 428px;
+	object-fit: cover;
+	overflow: hidden;
+}
+.TotalResults_TotalResults .Overlay .Text2explain {
+	position: absolute;
+	left: 252px;
+	top: 351px;
+	width: 356px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(147,147,147,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 27.600000381469727px;
+}
+.TotalResults_TotalResults .Contents {
+	position: absolute;
+	left: 348px;
+	top: 390px;
+	width: 932px;
+	height: 515px;
+}
+.TotalResults_TotalResults .Contents .PercentText {
+	position: absolute;
+	left: 540px;
+	top: 6px;
+	width: 392px;
+	height: 509px;
+}
+.TotalResults_TotalResults .Contents .PercentText .AbnormalPercent {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 392px;
+	height: 79px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 50px;
+	font-weight: 400;
+	line-height: 69px;
+}
+.TotalResults_TotalResults .Contents .PercentText .ACLPercent {
+	position: absolute;
+	left: 0px;
+	top: 227px;
+	width: 392px;
+	height: 79px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 50px;
+	font-weight: 400;
+	line-height: 69px;
+}
+.TotalResults_TotalResults .Contents .PercentText .MeniscusPercent {
+	position: absolute;
+	left: 0px;
+	top: 430px;
+	width: 392px;
+	height: 79px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 50px;
+	font-weight: 400;
+	line-height: 69px;
+}
+.TotalResults_TotalResults .Contents .Graph {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 521px;
+	height: 515px;
+}
+.TotalResults_TotalResults .Contents .Graph .Graphbox {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 521px;
+	height: 515px;
+	background: rgba(217,217,217,1.00);
+}
+.TotalResults_TotalResults .Contents .Graph .GraphText {
+	position: absolute;
+	left: 71px;
+	top: 229px;
+	width: 380px;
+	height: 157px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 50px;
+	font-weight: 400;
+	line-height: 69px;
+}
