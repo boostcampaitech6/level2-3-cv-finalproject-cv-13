@@ -1,16 +1,120 @@
-import React from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import './AbnormalResultsAxial.css'
 import ImgAsset from '../public'
+import jsonData from './sampledata.json'
 import {Link} from 'react-router-dom'
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend,
+  } from 'chart.js';
+  import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend
+);
+
 export default function AbnormalResultsAxial () {
+
+	// Image Slider & Buttons
+	// We use the useRef hook to get a reference to the slider container
+	const sliderRef = useRef(null);
+	const scrollAmount = 420; // The amount to scroll when clicking the navigation buttons
+	const [images, setImages] = useState([
+		// Here, you can add your own image objects with their respective URLs
+		// For this example, we'll use some cool images from Unsplash
+		{
+			id: 1,
+			url: "https://source.unsplash.com/300x300/?perth,australia"
+		  },
+		  {
+			id: 2,
+			url: "https://source.unsplash.com/300x300/?west-australia"
+		  },
+		  {
+			id: 3,
+			url: "https://source.unsplash.com/300x300/?perth"
+		  },
+		  {
+			id: 4,
+			url: "https://source.unsplash.com/300x300/?quokka,perth"
+		  },
+		  {
+			id: 5,
+			url: "https://source.unsplash.com/300x300/?margaretriver,australia"
+		  },
+	]);
+
+	// Graph
+	const options = {
+		aspectRatio: 5,
+		responsive: true,
+		plugins: {
+		  legend: {
+			position: 'top',
+		  },
+		  title: {
+			display: true,
+			text: 'Axial Scores',
+		  },
+		},
+	  };
+	
+	const [Data, setData] = useState([]);
+	
+	useEffect(() => {
+		function fetchData() {
+			let copy = jsonData.axialscore;
+			console.log('copy : ', copy);
+			setData(copy);
+		};
+		fetchData();
+		console.log('data : ', Data);
+	}, []);
+
+	let labels = [];
+    if (Data.labels) {
+        labels = Data.labels;
+    }
+
+	console.log('labels : ', labels);
+	console.log('datasets : ', Data.datasets);
+
+    const dataset = {
+        labels,
+        datasets: [
+            {
+                label: "Importance of Slides",
+                data: Data.datasets,
+                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+        ],
+    };
+
+	console.log('dataset[0] : ', dataset.datasets[0]);
+
 	return (
 		<div className='AbnormalResultsAxial_AbnormalResultsAxial'>
 			<img className='background' src = {ImgAsset.InputScreen_background} />
 			<img className='logo' src = {ImgAsset.LoadingScreen_logo} />
-			<div className='Coronal'>
+			{/* <div className='Coronal'>
 				<img className='Rectangle1' src = {ImgAsset.AbnormalResultsAxial_Rectangle1} />
 				<span className='GradCAM'>Grad-CAM</span>
-			</div>
+			</div> */}
 			<div className='OuterButtons'>
 				<div className='Axial'>
 					<img className='Rectangle1_1' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_1} />
@@ -31,7 +135,7 @@ export default function AbnormalResultsAxial () {
 				<Link to='/totalresults'>
 					<div className='TotalButton'>
 						<img className='Rectangle1_4' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_4} />
-						<span className='Total'>Total</span>
+						<span className='Total'>Result</span>
 					</div>
 				</Link>
 			</div>
@@ -43,7 +147,7 @@ export default function AbnormalResultsAxial () {
 			</div>
 			<div className='GradCamButton'>
 				<img className='Rectangle1_5' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_5} />
-				<span className='GradCAM_1'>Grad-CAM</span>
+				<span className='GradCAM_1'>Inspect</span>
 			</div>
 			<div className='InnerButtons'>
 				<Link to='/abnormalresultscoronal'>
@@ -64,16 +168,45 @@ export default function AbnormalResultsAxial () {
 				</Link>
 			</div>
 			<div className='Slider'>
-				<div className='SliderBox'/>
-				<span className='Slidergoeshere'>Slider goes here</span>
+				<button
+					className="nav-btn"
+					onClick={() => {
+					const container = sliderRef.current;
+					container.scrollLeft -= scrollAmount; // Scroll left by the specified amount
+					}}
+				>
+					<ChevronLeftIcon />
+				</button>
+				<button
+					className="nav-btn"
+					onClick={() => {
+					const container = sliderRef.current;
+					container.scrollLeft += scrollAmount;
+					}}
+				>
+					<ChevronRightIcon />
+				</button>
+				{/* <div className='SliderBox'/>
+				<span className='Slidergoeshere'>Slider goes here</span> */}
 			</div>
 			<div className='Graph'>
-				<div className='GraphBox'/>
-				<span className='Graphgoeshere'>Graph goes here</span>
+				<Line options={options} data={dataset} />
+				{/* <div className='GraphBox'/>
+				<span className='Graphgoeshere'>Graph goes here</span> */}
 			</div>
-			<div className='Image'>
-				<div className='Imagebox'/>
-				<span className='ImageText'>Image goes here</span>
+			<div className='Image' ref={sliderRef}>
+				{images.map((image) => {
+				return (
+					<img
+					className="image"
+					alt="sliderImage"
+					key={image?.id}
+					src={image?.url}
+					/>
+				);
+				})}
+				{/* <div className='Imagebox'/>
+				<span className='ImageText'>Image goes here</span> */}
 			</div>
 		</div>
 	)
