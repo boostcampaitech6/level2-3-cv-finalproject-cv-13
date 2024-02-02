@@ -9,11 +9,9 @@ Install libraries and dependencies.
 
 ### 4. `npm install --force chart.js react-chartjs-2`
 
-### 5. (not needed) `npm install --force axios`
+### 5. `npm install --force axios`
 
-### 6. (not needed) `npm install --force http-proxy-middleware`
+### 6. `npm install --force chartjs-plugin-annotation`
 
-### 7. `npm install --force chartjs-plugin-annotation`
-
-### 8. `npm run start`
+### 7. `npm run start`
 Start the project.

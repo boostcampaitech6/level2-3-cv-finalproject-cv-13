@@ -35,7 +35,6 @@ export default function InputScreen () {
 		type: fileType,
 			});
 		formData.append('file', files[i]);
-		formData.append('id', i);
 		}
 
 		// fileList.forEach(file=>{
@@ -64,7 +63,7 @@ export default function InputScreen () {
 	
 	return (
 		<div className='InputScreen_InputScreen'>
-			<img className='background' src = {ImgAsset.InputScreen_background} alt="background"/>
+			<img className='background' src = {ImgAsset.background} alt="background"/>
 			<div className='ImageHolderGroup'>
 					<input
 					type="file" multiple={true} accept="image/*"
@@ -73,7 +72,7 @@ export default function InputScreen () {
 					style={{display: "none"}}
 					/>
 				<div className='imageholder'/>
-				<img className='Imagelogo' src = {ImgAsset.InputScreen_Imagelogo} alt="imagelogo"/>
+				<img className='Imagelogo' src = {ImgAsset.imageicon} alt="imagelogo"/>
 				<span className='Text'>Place images here<br/>or<br/>Upload from your computer</span>
 				<div className='UploadButton'>
 					<Button variant="contained" onClick={() => inputRef.click()}>
@@ -81,7 +80,7 @@ export default function InputScreen () {
 					</Button>
 				</div>
 			</div>
-			<img className='logo' src = {ImgAsset.LoadingScreen_logo} alt="logo"/>
+			<img className='logo' src = {ImgAsset.logo} alt="logo"/>
 		</div>
 	)
 }

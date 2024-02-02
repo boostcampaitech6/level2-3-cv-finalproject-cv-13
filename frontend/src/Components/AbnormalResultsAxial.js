@@ -41,7 +41,6 @@ export default function AbnormalResultsAxial () {
 
 	const [images, setImages] = useState(
 		// Here, you can add your own image objects with their respective URLs
-		// For this example, we'll use some cool images from Unsplash
 		[
 			{
 			id: 1,
@@ -209,16 +208,12 @@ export default function AbnormalResultsAxial () {
 			setData(copy);
 		};
 		fetchData();
-		// console.log('data : ', Data);
 	}, []);
 
 	let labels = [];
     if (Data.labels) {
         labels = Data.labels;
     }
-
-	// console.log('labels : ', labels);
-	// console.log('datasets : ', Data.datasets);
 
     const dataset = {
         labels,
@@ -232,7 +227,8 @@ export default function AbnormalResultsAxial () {
         ],
     };
 
-	// console.log('dataset[0] : ', dataset.datasets[0]);
+	// set Grad-CAM Images and Normal Images
+
 	let [currentidx, setCurrentIdx] = useState(jsonData.abnormalaxialscore.highest);
 	let [gradstate, setGradState] = useState(false);
 	let [page, setPage] = useState(images);
@@ -283,38 +279,34 @@ export default function AbnormalResultsAxial () {
 
 	return (
 		<div className='AbnormalResultsAxial_AbnormalResultsAxial'>
-			<img className='background' src = {ImgAsset.InputScreen_background} />
-			<img className='logo' src = {ImgAsset.LoadingScreen_logo} />
-			{/* <div className='Coronal'>
-				<img className='Rectangle1' src = {ImgAsset.AbnormalResultsAxial_Rectangle1} />
-				<span className='GradCAM'>Grad-CAM</span>
-			</div> */}
+			<img className='background' src = {ImgAsset.background} />
+			<img className='logo' src = {ImgAsset.logo} />
 			<div className='OuterButtons'>
 				<div className='Axial'>
-					<img className='Rectangle1_1' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_1} />
+					<img className='Rectangle1_1' src = {ImgAsset.blackrectangle} />
 					<span className='Abnormal'>Abnormal</span>
 				</div>
 				<Link to='/aclresultscoronal'>
 					<div className='ACLButton'>
-						<img className='Rectangle1_2' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_2} />
+						<img className='Rectangle1_2' src = {ImgAsset.whiterectangle} />
 						<span className='ACL'>ACL</span>
 					</div>
 				</Link>
 				<Link to='/meniscusresultscoronal'>
 					<div className='MeniscusButton'>
-						<img className='Rectangle1_3' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_3} />
+						<img className='Rectangle1_3' src = {ImgAsset.whiterectangle} />
 						<span className='Meniscus'>Meniscus</span>
 					</div>
 				</Link>
 				<Link to='/totalresults'>
 					<div className='TotalButton'>
-						<img className='Rectangle1_4' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_4} />
+						<img className='Rectangle1_4' src = {ImgAsset.whiterectangle} />
 						<span className='Total'>Result</span>
 					</div>
 				</Link>
 			</div>
-			<img className='Overlay' src = {ImgAsset.AbnormalResultsAxial_Overlay} />
-			<img className='PlayButton' src = {ImgAsset.AbnormalResultsAxial_PlayButton} />
+			<img className='Overlay' src = {ImgAsset.overlay1} />
+			<img className='PlayButton' src = {ImgAsset.playbutton} />
 			<div className='PauseButton'>
 				<div className='Rectangle6'/>
 				<div className='Rectangle7'/>
@@ -329,17 +321,17 @@ export default function AbnormalResultsAxial () {
 			<div className='InnerButtons'>
 				<Link to='/abnormalresultscoronal'>
 					<div className='CoronalButton'>
-						<img className='Rectangle1_6' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_6} />
+						<img className='Rectangle1_6' src = {ImgAsset.whiterectangle} />
 						<span className='Coronal_1'>Coronal</span>
 					</div>
 				</Link>
 				<div className='AxialButton'>
-					<img className='Rectangle1_7' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_7} />
+					<img className='Rectangle1_7' src = {ImgAsset.blackrectangle} />
 					<span className='Axial_1'>Axial</span>
 				</div>
 				<Link to='/abnormalresultssagittal'>
 					<div className='SagittalButton'>
-						<img className='Rectangle1_8' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_8} />
+						<img className='Rectangle1_8' src = {ImgAsset.whiterectangle} />
 						<span className='Sagittal'>Sagittal</span>
 					</div>
 				</Link>

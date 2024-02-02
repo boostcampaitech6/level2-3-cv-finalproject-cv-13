@@ -102,34 +102,34 @@ export default function TotalResults () {
 
 	return (
 		<div className='TotalResults_TotalResults'>
-			<img className='background' src = {ImgAsset.InputScreen_background} />
+			<img className='background' src = {ImgAsset.background} />
 			<div className='Overlay'>
 				<div className='Buttons'>
 					<Link to='/abnormalresultscoronal'>
 						<div className='Abnormal'>
-							<img className='Rectangle1' src = {ImgAsset.TotalResults_Rectangle1} />
+							<img className='Rectangle1' src = {ImgAsset.whiterectangle} />
 							<span className='Abnormal_1'>Abnormal</span>
 						</div>
 					</Link>
 					<Link to='/aclresultscoronal'>
 						<div className='ACL'>
-							<img className='Rectangle1_1' src = {ImgAsset.TotalResults_Rectangle1_1} />
+							<img className='Rectangle1_1' src = {ImgAsset.whiterectangle} />
 							<span className='ACL_1'>ACL</span>
 						</div>
 					</Link>
 					<Link to='/meniscusresultscoronal'>
 						<div className='Meniscus'>
-							<img className='Rectangle1_2' src = {ImgAsset.TotalResults_Rectangle1_2} />
+							<img className='Rectangle1_2' src = {ImgAsset.whiterectangle} />
 							<span className='Meniscus_1'>Meniscus</span>
 						</div>
 					</Link>
 					<div className='Total'>
-						<img className='Rectangle1_3' src = {ImgAsset.TotalResults_Rectangle1_3} />
+						<img className='Rectangle1_3' src = {ImgAsset.blackrectangle} />
 						<span className='Total_1'>Total</span>
 					</div>
 				</div>
-				<img className='BubbleA' src = {ImgAsset.TotalResults_BubbleA} />
-				<img className='logo' src = {ImgAsset.LoadingScreen_logo} />
+				<img className='BubbleA' src = {ImgAsset.overlay4} />
+				<img className='logo' src = {ImgAsset.logo} />
 				<span className='Text2explain'>The Model thinks that the patient is...</span>
 			</div>
 			<div className='Contents'>

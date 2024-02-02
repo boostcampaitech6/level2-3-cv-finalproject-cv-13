@@ -22,13 +22,11 @@ async def root():
     return {"message": "Hello"}
 
 @app.post("/input")
-async def receiveFile(file: list[UploadFile], id: int = Form(...)):
+async def receiveFile(file: list[UploadFile]):
 
     for f in file:
         print(f.filename)
         image = Image.open(f.file)
         image.show()
-        print(id)
 
-    return {"uploadStatus": "Complete",
-            "id": id}
+    return {"uploadStatus": "Complete"}
