@@ -1,4 +1,5 @@
-{"percent": {
+{
+    "percent": {
     "labels": ["Abnormal", "ACL", "Meniscus"],
     "datasets": [
         {

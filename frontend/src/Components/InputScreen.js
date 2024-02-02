@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import './InputScreen.css'
 import ImgAsset from '../public'
 // import {Link} from 'react-router-dom'
@@ -23,6 +24,7 @@ export default function InputScreen () {
 	// state update전 임시로 사용할 array
 	const tmpFileList = [];
 	const files = e.target.files;
+	const formData = new FormData();
 	if (files) {
 		for (let i = 0; i < files.length; i++) {
 		const preview_URL = URL.createObjectURL(files[i]);
@@ -32,7 +34,27 @@ export default function InputScreen () {
 		preview_URL: preview_URL,
 		type: fileType,
 			});
+		formData.append('file', files[i]);
+		formData.append('id', i);
 		}
+
+		// fileList.forEach(file=>{
+		// 	formData.append("arrayOfFilesName", file);
+		//   });
+		const postOptions = {
+			method: "POST",
+			url: "http://127.0.0.1:8000/input",
+			body: formData,
+		}
+
+		try {
+            // fetch를 이용한 post 요청.
+            const response = await fetch("http://127.0.0.1:8000/input", postOptions)
+            alert('POST 완료');
+			console.log(response);
+        } catch (err) {
+            alert(err || 'POST 실패');
+        }
 	}
 	// 마지막에 state update
 	setFileList([...tmpFileList, ...fileList]);
