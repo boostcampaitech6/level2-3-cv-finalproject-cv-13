@@ -39,154 +39,109 @@ export default function AbnormalResultsAxial () {
 	// const sliderRef = useRef(null);
 	// const scrollAmount = 422; // The amount to scroll when clicking the navigation buttons
 
+	let [imageExists, setImageExists] = useState(false)
 	const [images, setImages] = useState(
 		// Here, you can add your own image objects with their respective URLs
 		[
 			{
-			id: 1,
-			urls: {
-				small:ImgAsset.sample0
-			}
-		  },
-		  {
-			id: 2,
-			urls: {
-				small:ImgAsset.sample1
-			}
-		  },
-		  {
-			id: 3,
-			urls: {
-				small:ImgAsset.sample2
-			}
-		  },
-		  {
-			id: 4,
-			urls: {
-				small:ImgAsset.sample3
-			}
-		  },
-		  {
-			id: 5,
-			urls: {
-				small:ImgAsset.sample4
-			}
-		  },
-		  {
-			id: 6,
-			urls: {
-				small:ImgAsset.sample5
-			}
-		  },
-		  {
-			id: 7,
-			urls: {
-				small:ImgAsset.sample6
-			}
-		  },
-		  {
-			id: 8,
-			urls: {
-				small:ImgAsset.sample7
-			}
-		  },
-		  {
-			id: 9,
-			urls: {
-				small:ImgAsset.sample8
-			}
-		  },
-		  {
-			id: 10,
-			urls: {
-				small:ImgAsset.sample9
-			}
-		  },]
+				id: 1,
+				urls: {
+					small:ImgAsset.sample0
+				}
+			  },
+			  {
+				id: 2,
+				urls: {
+					small:ImgAsset.sample1
+				}
+			  },
+			  {
+				id: 3,
+				urls: {
+					small:ImgAsset.sample2
+				}
+			  },
+			  {
+				id: 4,
+				urls: {
+					small:ImgAsset.sample3
+				}
+			  },
+			  {
+				id: 5,
+				urls: {
+					small:ImgAsset.sample4
+				}
+			  },
+			  {
+				id: 6,
+				urls: {
+					small:ImgAsset.sample5
+				}
+			  },
+			  {
+				id: 7,
+				urls: {
+					small:ImgAsset.sample6
+				}
+			  },
+			  {
+				id: 8,
+				urls: {
+					small:ImgAsset.sample7
+				}
+			  },
+			  {
+				id: 9,
+				urls: {
+					small:ImgAsset.sample8
+				}
+			  },
+			  {
+				id: 10,
+				urls: {
+					small:ImgAsset.sample9
+				}
+			  },
+		]
 	);
 
 	const [gradimages, setGradImages] = useState([
-		{
-		id: 1,
-		urls: {
-			small:ImgAsset.sample0
-		}
-	  },
-	  {
-		id: 2,
-		urls: {
-			small:ImgAsset.sample1
-		}
-	  },
-	  {
-		id: 3,
-		urls: {
-			small:ImgAsset.sample2
-		}
-	  },
-	  {
-		id: 4,
-		urls: {
-			small:ImgAsset.sample3
-		}
-	  },
-	  {
-		id: 5,
-		urls: {
-			small:ImgAsset.sample4
-		}
-	  },
-	  {
-		id: 6,
-		urls: {
-			small:ImgAsset.sample5
-		}
-	  },
-	  {
-		id: 7,
-		urls: {
-			small:ImgAsset.sample6
-		}
-	  },
-	  {
-		id: 8,
-		urls: {
-			small:ImgAsset.sample7
-		}
-	  },
-	  {
-		id: 9,
-		urls: {
-			small:ImgAsset.sample8
-		}
-	  },
-	  {
-		id: 10,
-		urls: {
-			small:ImgAsset.sample9
-		}
-	  },]);
+		]);
  
+	// const fetchAPI = async () => {
+	// 	try {
+	// 	const response = await axios.get("https://api.unsplash.com/photos/?client_id=gcS9fLgtOae1sQ0BN4bqyYzK5RhGPL-sRK9lvAt3Ctg");
+	// 	console.log('response.data : ', response.data);
+	// 	const data = response.data;
+	// 	// const imageBlob = await data.blob();
+	// 	// const imageObjectURL = URL.createObjectURL(imageBlob);
+	// 	setImages(data);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// }
+
 	const fetchAPI = async () => {
 		try {
-		const response = await axios.get("https://api.unsplash.com/photos/?client_id=gcS9fLgtOae1sQ0BN4bqyYzK5RhGPL-sRK9lvAt3Ctg");
+		const response = await axios.get("http://127.0.0.1:8000/outputoriginal");
 		console.log('response.data : ', response.data);
 		const data = response.data;
-		// const imageBlob = await data.blob();
-		// const imageObjectURL = URL.createObjectURL(imageBlob);
 		setImages(data);
+		setImageExists(true);
 		} catch (error) {
 			console.log(error);
+			setImageExists(false);
 		}
 	}
 
 	const fetchGradAPI = async () => {
 		try {
-		const response = await axios.get("https://api.unsplash.com/photos/?client_id=uZdiMEqthBYlzav1IxOkaAiBhU3iK4kNVpduuZU8s48");
+		const response = await axios.get("http://127.0.0.1:8000/outputgradcam");
 		console.log('response.data : ', response.data);
 		const data = response.data;
-		// const imageBlob = await data.blob();
-		// const imageObjectURL = URL.createObjectURL(imageBlob);
 		setGradImages(data);
+		setImageExists(true);
 		} catch (error) {
 			console.log(error);
 		}
@@ -196,6 +151,10 @@ export default function AbnormalResultsAxial () {
 		fetchAPI();
 		fetchGradAPI();
 	}, []);
+
+	const handleImageError = () => {
+		setImageExists(false); // Set imageExists to false if the image fails to load
+	  };
 
 	// Graph
 	
@@ -246,8 +205,46 @@ export default function AbnormalResultsAxial () {
 		}
 		}
 
-	console.log('gradstate : ', gradstate);
-	console.log('page : ', page)
+	// console.log('gradstate : ', gradstate);
+	// console.log('page : ', page)
+
+	let [pauseState, setPauseState] = useState(false);
+
+	useEffect(() => {
+		let intervalId;
+	
+		if (pauseState) {
+		  intervalId = setInterval(() => {
+			if (currentidx < Data.datasets.length - 1) {
+			  setCurrentIdx(prevIdx => prevIdx + 1);
+			} else {
+			  clearInterval(intervalId);
+			}
+		  }, 300);
+		}
+	
+		return () => clearInterval(intervalId);
+	  }, [currentidx, pauseState]);
+	
+	function playButton (e) {
+		e.preventDefault();
+		setPauseState(true);
+		// let idx = currentidx; // Capture the initial value of currentidx
+		// let intervalId = setInterval(() => {
+		// 	if ((idx < Data.datasets.length - 1) && (pauseState === false)) {
+		// 		// console.log("One second has passed");
+		// 		setCurrentIdx(prevIdx => prevIdx + 1); // Use functional update
+		// 		idx++; // Increment the captured index
+		// 	} else {
+		// 		clearInterval(intervalId); // Stop the interval when condition is met
+		// 	}
+		// }, 300); // 1000 milliseconds = 1 second
+	}
+
+	function pauseButton (e) {
+		e.preventDefault();
+		setPauseState(false);
+	}
 
 	const options = {
 		aspectRatio: 5,
@@ -275,6 +272,10 @@ export default function AbnormalResultsAxial () {
 			}
 		  }
 	  };
+	
+	// console.log('currentidx : ', currentidx)
+	// console.log('pausestate : ', pauseState)
+	console.log('imageexists : ', imageExists)
 
 
 	return (
@@ -306,13 +307,16 @@ export default function AbnormalResultsAxial () {
 				</Link>
 			</div>
 			<img className='Overlay' src = {ImgAsset.overlay1} />
-			<img className='PlayButton' src = {ImgAsset.playbutton} />
+			<div className='PlayButton'>
+				<Button  variant="text" onClick={playButton} sx = {{backgroundImage:`url(${ImgAsset.playbutton})`, backgroundRepeat: "no-repeat", 
+				width: "35px", height: "49px",backgroundSize: '40px', backgroundPosition: 'center',}}></Button>
+			</div>
 			<div className='PauseButton'>
-				<div className='Rectangle6'/>
-				<div className='Rectangle7'/>
+				<Button  variant="text" onClick={pauseButton} sx = {{backgroundImage:`url(${ImgAsset.pausebutton})`, backgroundRepeat: "no-repeat", 
+				width: "35px", height: "49px",backgroundSize: '28px', backgroundPosition: 'center',}}></Button>
 			</div>
 			<div className='GradCamButton'>
-				<Button variant="contained" onClick={showGrad}>
+				<Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black' }}>
 					Inspect
 				</Button>
 				{/* <img className='Rectangle1_5' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_5} />
@@ -374,12 +378,21 @@ export default function AbnormalResultsAxial () {
 				<span className='Graphgoeshere'>Graph goes here</span> */}
 			</div>
 			<div className='Image'> {/*ref={sliderRef} */}
-				<img 
-				className="image"
-				alt="mriimage"
-				key={page[currentidx].id}
-				src={page[currentidx].urls.small}
-				/>
+				{imageExists ? (
+					<img 
+					className="image"
+					alt="Press Inspect to Start!"
+					// key={page[currentidx].id}
+					// src={page[currentidx].urls.small}
+					key={currentidx}
+					src={`data:image/png;base64,${page[currentidx].body}`}
+					// onError={handleImageError}
+					/>
+				) : (
+					<span>
+						If this message remains, then there was an error while loading images.
+					</span>
+				)}
 				{/* {images.map((image) => {
 				return (
 					<img

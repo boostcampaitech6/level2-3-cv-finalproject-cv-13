@@ -15,3 +15,10 @@ Install libraries and dependencies.
 
 ### 7. `npm run start`
 Start the project.
+
+
+**
+If problem occurs during building, delete
+"@material-ui/styles": "^4.11.5",
+"@mui/styles": "^5.15.10",  
+from package.json and package-lock.json

@@ -22,6 +22,7 @@
 	overlay3: tryRequire('./Overlay3.png') || require('./questionMark.png'),
 	overlay4: tryRequire('./Overlay4.png') || require('./questionMark.png'),
 	playbutton: tryRequire('./Playbutton.png') || require('./questionMark.png'),
+	pausebutton: tryRequire('./PauseButton.png') || require('./questionMark.png'),
 
 	sample0: tryRequire('./axial_0000.png') || require('./questionMark.png'),
 	sample1: tryRequire('./axial_0001.png') || require('./questionMark.png'),
