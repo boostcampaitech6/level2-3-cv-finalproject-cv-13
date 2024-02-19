@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import './InputScreen.css'
 import ImgAsset from '../public'
-// import {Link} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import {useEffect, useState} from 'react';
 import {Button} from "@mui/material";
 
@@ -18,6 +18,7 @@ export default function InputScreen () {
 
 	const [fileList, setFileList] = useState([]);
   	let inputRef;
+	const history = useHistory();
 
 	const saveImage = async (e) => {
 	e.preventDefault();
@@ -49,10 +50,11 @@ export default function InputScreen () {
 		try {
             // fetch를 이용한 post 요청.
             const response = await fetch("http://127.0.0.1:8000/input", postOptions)
-            alert('POST 완료');
+            alert('이미지 업로드 완료');
 			console.log(response);
+			history.push("/loadingscreen");
         } catch (err) {
-            alert(err || 'POST 실패');
+            alert('이미지 업로드에 실패하였습니다');
         }
 	}
 	// 마지막에 state update

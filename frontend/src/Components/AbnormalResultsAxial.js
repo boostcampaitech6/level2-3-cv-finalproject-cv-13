@@ -17,8 +17,9 @@ import {
 	Tooltip,
 	Legend,
   } from 'chart.js';
-  import { Line } from 'react-chartjs-2';
+  import { Line, getElementAtEvent } from 'react-chartjs-2';
   import annotationPlugin from 'chartjs-plugin-annotation';
+
 
 ChartJS.register(
 	CategoryScale,
@@ -158,6 +159,7 @@ export default function AbnormalResultsAxial () {
 
 	// Graph
 	
+	const chartRef = useRef();
 	const [Data, setData] = useState([]);
 	
 	useEffect(() => {
@@ -185,6 +187,13 @@ export default function AbnormalResultsAxial () {
             },
         ],
     };
+
+	function handleChartClick (event) {
+		// Handle click event here
+		const element = getElementAtEvent(chartRef.current, event);
+		const index = element[0].index;
+		setCurrentIdx(index);
+	  };
 
 	// set Grad-CAM Images and Normal Images
 
@@ -373,7 +382,7 @@ export default function AbnormalResultsAxial () {
 				<span className='Slidergoeshere'>Slider goes here</span> */}
 			</div>
 			<div className='Graph'>
-				<Line options={options} data={dataset} />
+				<Line options={options} data={dataset} ref={chartRef} onClick={handleChartClick} />
 				{/* <div className='GraphBox'/>
 				<span className='Graphgoeshere'>Graph goes here</span> */}
 			</div>
