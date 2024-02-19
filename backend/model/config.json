@@ -1,0 +1,29 @@
+{
+    "seed": 42,
+    "epochs": 120,
+    "dataset": "MaskBaseDataset",
+    "augmentation": "ImgaugAugmentation",
+    "resize": [
+        260,
+        260
+    ],
+    "batch_size": 64,
+    "valid_batch_size": 1000,
+    "model": "EfficientNet_b2",
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "val_ratio": 0.2,
+    "criterion": "f1",
+    "lr_decay_step": 20,
+    "log_interval": 10,
+    "name": "2312211041_sehee_trainQA_EfficientNet_b2_Adam_f1_64_ImgaugAugmentation_120",
+    "data_dir": "/data/ephemeral/home/datasets/trainQA/images",
+    "model_dir": "./model",
+    "k_fold": -1,
+    "category_train": false,
+    "ip": "10.28.224.12",
+    "port": 30002,
+    "mode": [
+        "sehee"
+    ]
+}
