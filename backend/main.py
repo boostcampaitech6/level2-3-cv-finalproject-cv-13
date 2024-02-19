@@ -6,6 +6,8 @@ import os
 import numpy as np
 import base64
 
+from utils import *
+from model import *
 
 origins = [
     "http://localhost:3000",
@@ -27,17 +29,39 @@ async def root():
 
 @app.post("/input")
 async def receiveFile(file: list[UploadFile]):
+    IMAGE_ROOT = 'input_img'
+    img_json = {}
 
+    #1.이미지 저장
+    img_list = []
     for f in file:
         print(f.filename)
         image = Image.open(f.file)
-        image.show()
+        if not os.path.exists(IMAGE_ROOT):
+            os.makedirs(IMAGE_ROOT)
+        image.save(os.path.join(IMAGE_ROOT, f.filename), 'PNG')
+        img_list.append(image)
+    
+    # plane = ['axial', 'coronal', 'sagittal'] -> 형식 바꿔야함
+    img_json['img'] = img_list
 
-    return {"uploadStatus": "Complete"}
+    #2. 전처리
+    img_json['numpy'] = img_processing(img_json['img'])
+    print(img_json['numpy'].shape)
+
+    #3. 모델 추론
+    img_json['result'] = predict_image(img_json['numpy'])
+    print(img_json['result'])
+    
+    """
+    4. img_json['grad_cam']에 gradcam 결과값 입력
+    or result_img에 gradcam 이미지 저장...
+    """
+    return img_json
 
 @app.get("/outputoriginal")
 async def outputFile():
-    IMAGE_ROOT = 'sampleimages'
+    IMAGE_ROOT = 'input_img' 
     output_bytes = []
     image_paths = os.listdir(IMAGE_ROOT)
     for path in image_paths:
