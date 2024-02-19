@@ -187,6 +187,7 @@ def run(config):
 
 
 if __name__ == "__main__":
-    with open('config.yaml', 'r') as file:
-        config = yaml.safe_load(file)
-    run(config)
+    for config_file in os.listdir('./configs'):
+        with open(f'./configs/{config_file}', 'r') as file:
+            config = yaml.safe_load(file)
+        run(config)
