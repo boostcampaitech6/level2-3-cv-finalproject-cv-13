@@ -1,0 +1,14 @@
+# Data directory
+DATA_ROOT: './data/'
+
+# Experimental Name & Camper ID
+EXP_NAME: temp
+CAMPER_ID: T0000
+
+# Task & Plane
+## Task: 'abnormal', 'acl', 'meniscus'
+## Plane: 'axial', 'coronal', 'sagittal'
+TASK: abnormal
+PLANE: axial
+
+epochs: 50
