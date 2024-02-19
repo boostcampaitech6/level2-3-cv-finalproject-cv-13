@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import HomePage from '../Components/index';
+// import HomePage from '../Components/index';
 import InputScreen from '../Components/InputScreen';
 import LoadingScreen from '../Components/LoadingScreen';
 import AbnormalResultsCoronal from '../Components/AbnormalResultsCoronal';
@@ -17,8 +17,8 @@ const RouterDOM = () => {
 	return (
 		<Router>
 			<Switch>
-				<Route exact path="/"><HomePage /></Route>
-				<Route exact path="/inputscreen"><InputScreen /></Route>
+				<Route exact path="/"><InputScreen /></Route>
+				{/* <Route exact path="/inputscreen"><InputScreen /></Route> */}
 				<Route exact path="/loadingscreen"><LoadingScreen /></Route>
 				<Route exact path="/abnormalresultscoronal"><AbnormalResultsCoronal /></Route>
 				<Route exact path="/abnormalresultsaxial"><AbnormalResultsAxial /></Route>

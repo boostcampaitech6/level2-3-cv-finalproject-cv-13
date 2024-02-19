@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.encoders import jsonable_encoder
 from PIL import Image
 import os
 import numpy as np
@@ -52,12 +53,15 @@ async def receiveFile(file: list[UploadFile]):
     #3. 모델 추론
     img_json['result'] = predict_image(img_json['numpy'])
     print(img_json['result'])
-    
+    print(img_json)
     """
     4. img_json['grad_cam']에 gradcam 결과값 입력
     or result_img에 gradcam 이미지 저장...
     """
-    return img_json
+    img_json.pop('img')
+    img_json.pop('numpy')
+
+    return JSONResponse(img_json)
 
 @app.get("/outputoriginal")
 async def outputFile():
