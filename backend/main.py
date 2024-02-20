@@ -28,7 +28,7 @@ app.add_middleware(
 async def root():
     return {"message": "Hello"}
 
-@app.post("/input")
+@app.post("/inputaxial")
 async def receiveFile(file: list[UploadFile]):
     IMAGE_ROOT = 'input_img'
     img_json = {}
@@ -62,6 +62,84 @@ async def receiveFile(file: list[UploadFile]):
     img_json.pop('numpy')
 
     return JSONResponse(img_json)
+
+@app.post("/inputcoronal")
+async def receiveFile(file: list[UploadFile]):
+    IMAGE_ROOT = 'input_img'
+    img_json = {}
+
+    #1.이미지 저장
+    img_list = []
+    for f in file:
+        print(f.filename)
+        image = Image.open(f.file)
+        if not os.path.exists(IMAGE_ROOT):
+            os.makedirs(IMAGE_ROOT)
+        image.save(os.path.join(IMAGE_ROOT, f.filename), 'PNG')
+        img_list.append(image)
+    
+    # plane = ['axial', 'coronal', 'sagittal'] -> 형식 바꿔야함
+    img_json['img'] = img_list
+
+    #2. 전처리
+    img_json['numpy'] = img_processing(img_json['img'])
+    print(img_json['numpy'].shape)
+
+    #3. 모델 추론
+    img_json['result'] = predict_image(img_json['numpy'])
+    print(img_json['result'])
+    print(img_json)
+    """
+    4. img_json['grad_cam']에 gradcam 결과값 입력
+    or result_img에 gradcam 이미지 저장...
+    """
+    img_json.pop('img')
+    img_json.pop('numpy')
+
+    return JSONResponse(img_json)
+
+@app.post("/inputsagittal")
+async def receiveFile(file: list[UploadFile]):
+    IMAGE_ROOT = 'input_img'
+    img_json = {}
+
+    #1.이미지 저장
+    img_list = []
+    for f in file:
+        print(f.filename)
+        image = Image.open(f.file)
+        if not os.path.exists(IMAGE_ROOT):
+            os.makedirs(IMAGE_ROOT)
+        image.save(os.path.join(IMAGE_ROOT, f.filename), 'PNG')
+        img_list.append(image)
+    
+    # plane = ['axial', 'coronal', 'sagittal'] -> 형식 바꿔야함
+    img_json['img'] = img_list
+
+    #2. 전처리
+    img_json['numpy'] = img_processing(img_json['img'])
+    print(img_json['numpy'].shape)
+
+    #3. 모델 추론
+    img_json['result'] = predict_image(img_json['numpy'])
+    print(img_json['result'])
+    print(img_json)
+    """
+    4. img_json['grad_cam']에 gradcam 결과값 입력
+    or result_img에 gradcam 이미지 저장...
+    """
+    img_json.pop('img')
+    img_json.pop('numpy')
+
+    return JSONResponse(img_json)
+
+@app.get("/totalresult")
+async def outputJSON():
+    pass
+
+@app.get("/inference")
+async def inference():
+    pass
 
 @app.get("/outputoriginal")
 async def outputFile():
