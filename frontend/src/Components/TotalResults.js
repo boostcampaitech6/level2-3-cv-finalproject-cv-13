@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import axios from 'axios'
 import './TotalResults.css'
 import ImgAsset from '../public'
 import {Link} from 'react-router-dom'
@@ -56,13 +57,19 @@ export default function TotalResults () {
 	// Component가 처음 마운트 될 때 1번만 데이터를 가져옵니다
 
 	useEffect(() => {
-		function fetchData() {
-			let copy = jsonData.percent;
-			console.log('copy : ', copy);
-			setData(copy);
+		const fetchData = async () => {
+			try {
+				const response = await axios.get("http://127.0.0.1:8000/totalresult");
+				console.log('response.data : ', response.data);
+				const data = response.data;
+				setData(data);
+				setonLoad(false);
+				} catch (error) {
+					console.log(error);
+					setonLoad(true);
+				}
 		};
 		fetchData();
-		setonLoad(false);
 		console.log('data : ', Data);
 	}, []);
 

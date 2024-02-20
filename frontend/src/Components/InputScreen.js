@@ -19,6 +19,9 @@ export default function InputScreen () {
 	const [fileList, setFileList] = useState([]);
   	let inputRef;
 	const history = useHistory();
+	let [counter, setCounter] = useState(0);
+	const counter2plane = ["axial", "coronal", "sagittal"];
+	const [loading, setLoading] = useState(false);
 
 	const saveImage = async (e) => {
 	e.preventDefault();
@@ -41,27 +44,32 @@ export default function InputScreen () {
 		// fileList.forEach(file=>{
 		// 	formData.append("arrayOfFilesName", file);
 		//   });
+
+		const currenturl = `http://127.0.0.1:8000/input${counter2plane[counter]}`
 		const postOptions = {
 			method: "POST",
-			url: "http://127.0.0.1:8000/input",
+			url: currenturl,
 			body: formData,
 		}
 
 		try {
             // fetch를 이용한 post 요청.
-            const response = await fetch("http://127.0.0.1:8000/input", postOptions)
+			setLoading(true);
+            const response = await fetch(currenturl, postOptions)
             alert('이미지 업로드 완료');
 			console.log(response);
-			history.push("/loadingscreen");
+			if (counter === counter2plane.length - 1) {history.push("/loadingscreen");}
+			setCounter(counter + 1);
         } catch (err) {
             alert('이미지 업로드에 실패하였습니다');
-        }
+        } finally {
+			setLoading(false);
+			setFileList([...tmpFileList, ...fileList]);
+		}
 	}
-	// 마지막에 state update
-	setFileList([...tmpFileList, ...fileList]);
 	};
 
-	console.log(fileList);
+	console.log('fileList : ', fileList);
 	
 	return (
 		<div className='InputScreen_InputScreen'>
@@ -75,10 +83,10 @@ export default function InputScreen () {
 					/>
 				<div className='imageholder'/>
 				<img className='Imagelogo' src = {ImgAsset.imageicon} alt="imagelogo"/>
-				<span className='Text'>Place images here<br/>or<br/>Upload from your computer</span>
+				<span className='Text'>Place {counter2plane[counter]} images here<br/>or<br/>Upload from your computer</span>
 				<div className='UploadButton'>
 					<Button variant="contained" onClick={() => inputRef.click()}>
-						Upload
+						{loading ? 'Loading...' : 'Upload'}
 					</Button>
 				</div>
 			</div>
