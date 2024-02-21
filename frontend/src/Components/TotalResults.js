@@ -3,7 +3,6 @@ import axios from 'axios'
 import './TotalResults.css'
 import ImgAsset from '../public'
 import {Link} from 'react-router-dom'
-import jsonData from './sampledata.json'
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -51,12 +50,11 @@ export default function TotalResults () {
 	  };
 	
 	// Component가 처음 마운트 될 때 1번만 데이터를 가져옵니다
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get("http://127.0.0.1:8000/totalresult");
-				console.log('response.data : ', response.data);
+				// console.log('response.data : ', response.data);
 				const data = response.data;
 				setData(data);
 				setonLoad(false);
@@ -66,7 +64,7 @@ export default function TotalResults () {
 				}
 		};
 		fetchData();
-		console.log('data : ', Data);
+		// console.log('data : ', Data);
 	}, []);
 
 	let labels = [];
@@ -74,8 +72,8 @@ export default function TotalResults () {
         labels = Data.labels;
     }
 
-	console.log('labels : ', labels);
-	console.log('datasets : ', Data.datasets);
+	// console.log('labels : ', labels);
+	// console.log('datasets : ', Data.datasets);
 
     const dataset = {
         labels,
@@ -89,8 +87,8 @@ export default function TotalResults () {
         ],
     };
 
-	console.log('dataset[0] : ', dataset.datasets[0]);
-	console.log('onLoad : ', onLoad);
+	// console.log('dataset[0] : ', dataset.datasets[0]);
+	// console.log('onLoad : ', onLoad);
 	let abnormalp, aclp, meniscusp = null;
 
 	if (onLoad === true) {
@@ -149,8 +147,6 @@ export default function TotalResults () {
 				</div>
 				<div className='Graph'>
 					{<Bar options={options} data={dataset} />}
-					{/* <div className='Graphbox'/>
-					<span className='GraphText'>Graph goes here</span> */}
 				</div>
 			</div>
 		</div>

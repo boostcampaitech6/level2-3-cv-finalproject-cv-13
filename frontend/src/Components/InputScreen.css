@@ -32,24 +32,41 @@
 	transform: translate(-50%, -50%);
 	width: 669px;
 	height: 433px;
-	background: rgba(255,255,255,1.00);
+	background: rgba(255, 255, 255, 0.493);
 	border: 5px solid rgba(0,0,0,1);
 	box-sizing: border-box;
 }
-.InputScreen_InputScreen .ImageHolderGroup .Imagelogo {
+.InputScreen_InputScreen .ImageHolderGroup .ImagelogoAxial {
 	position: absolute;
-	left: 50.074738415545596%;
-	top: 40.531177829099306%;
+	left: 10%;
+	top: 20.00692840646651%;
 	transform: translate(-50%, -50%);
-	width: 122px;
-	height: 121px;
+	width: 100px;
+	height: 100px;
 	object-fit: cover;
 	overflow: hidden;
 }
-.InputScreen_InputScreen .ImageHolderGroup .Text {
+.InputScreen_InputScreen .ImageHolderGroup .TextAxial {
 	position: absolute;
-	left: 50%;
-	top: 59.00692840646651%;
+	left: 40%;
+	top: 22.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: left;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+
+.InputScreen_InputScreen .ImageHolderGroup .UploadButtonAxial {
+	position: absolute;
+	left: 70%;
+	top: 20.00692840646651%;
 	transform: translate(-50%, -50%);
 	width: 171px;
 	height: 39px;
@@ -62,11 +79,147 @@
 	font-weight: 400;
 	line-height: 16.559999465942383px;
 }
-
-.InputScreen_InputScreen .ImageHolderGroup .UploadButton {
+.InputScreen_InputScreen .ImageHolderGroup .CompleteTextAxial {
 	position: absolute;
-	left: 50%;
-	top: 75.00692840646651%;
+	left: 88%;
+	top: 22.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: left;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+
+.InputScreen_InputScreen .ImageHolderGroup .ImagelogoCoronal {
+	position: absolute;
+	left: 10%;
+	top: 45.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	overflow: hidden;
+}
+.InputScreen_InputScreen .ImageHolderGroup .TextCoronal {
+	position: absolute;
+	left: 40%;
+	top: 47.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: left;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+
+.InputScreen_InputScreen .ImageHolderGroup .UploadButtonCoronal {
+	position: absolute;
+	left: 70%;
+	top: 45.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 171px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+.InputScreen_InputScreen .ImageHolderGroup .CompleteTextCoronal {
+	position: absolute;
+	left: 88%;
+	top: 47.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: left;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+
+.InputScreen_InputScreen .ImageHolderGroup .ImagelogoSagittal {
+	position: absolute;
+	left: 10%;
+	top: 70.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	overflow: hidden;
+}
+.InputScreen_InputScreen .ImageHolderGroup .TextSagittal {
+	position: absolute;
+	left: 40%;
+	top: 73.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: left;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+
+.InputScreen_InputScreen .ImageHolderGroup .UploadButtonSagittal {
+	position: absolute;
+	left: 70%;
+	top: 70.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 171px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+.InputScreen_InputScreen .ImageHolderGroup .CompleteTextSagittal {
+	position: absolute;
+	left: 88%;
+	top: 72.00692840646651%;
+	transform: translate(-50%, -50%);
+	width: 100px;
+	height: 39px;
+	display: flex;
+	justify-content: center;
+	text-align: left;
+	color: rgba(0,0,0,1.00);
+	font-family: Alata;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 16.559999465942383px;
+}
+
+.InputScreen_InputScreen .ImageHolderGroup .InferenceButton {
+	position: absolute;
+	left: 87%;
+	top: 88.00692840646651%;
 	transform: translate(-50%, -50%);
 	width: 171px;
 	height: 39px;

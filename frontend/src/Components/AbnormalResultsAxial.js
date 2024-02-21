@@ -101,7 +101,6 @@ export default function AbnormalResultsAxial () {
     };
 
 	function handleChartClick (event) {
-		// Handle click event here
 		const element = getElementAtEvent(chartRef.current, event);
 		const index = element[0].index;
 		setCurrentIdx(index);
