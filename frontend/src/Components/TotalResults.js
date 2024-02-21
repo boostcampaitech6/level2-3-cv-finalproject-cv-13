@@ -14,8 +14,6 @@ import {
 	Legend,
   } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-// import { useRecoilState } from "recoil";
-// import { urlState } from "../../src/recoilState";
 
 ChartJS.register(
 	CategoryScale,
@@ -29,8 +27,6 @@ ChartJS.register(
 
 export default function TotalResults () {
 
-	// const [rootUrl, setRootUrl] = useRecoilState(urlState);
-	const rootUrl = '';
 	const [Data, setData] = useState([]);
 	const [onLoad, setonLoad] = useState(true);
 

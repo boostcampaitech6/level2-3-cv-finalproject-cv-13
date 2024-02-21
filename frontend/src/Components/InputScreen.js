@@ -45,7 +45,7 @@ export default function InputScreen () {
 		// 	formData.append("arrayOfFilesName", file);
 		//   });
 
-		const currenturl = `http://127.0.0.1:8000/input${counter2plane[counter]}`
+		const currenturl = `http://127.0.0.1:8000/input/${counter2plane[counter]}`
 		const postOptions = {
 			method: "POST",
 			url: currenturl,
