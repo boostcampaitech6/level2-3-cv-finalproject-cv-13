@@ -10,12 +10,17 @@ import torch.optim as optim
 from dataloader import MRDataset
 from metric import Metric
 import model
+from loss import create_criterion
 
 from sklearn import metrics
 
 
-def train_model(model, train_loader, epoch, num_epochs, optimizer, current_lr):
+def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current_lr):
     _ = model.train()
+
+    # loss 정의
+    loss_name = LOSS['name']
+    loss_params = LOSS['params'] or {}
 
     if torch.cuda.is_available():
         model.cuda()
@@ -37,7 +42,9 @@ def train_model(model, train_loader, epoch, num_epochs, optimizer, current_lr):
 
         prediction = model.forward(image.float())
 
-        loss = torch.nn.BCEWithLogitsLoss(weight=weight)(prediction, label)
+        criterion = create_criterion(loss_name, weight, **loss_params)
+        loss = criterion(prediction, label)
+
         loss.backward()
         optimizer.step()
 
@@ -67,8 +74,13 @@ def train_model(model, train_loader, epoch, num_epochs, optimizer, current_lr):
     return metric_result
 
 
-def evaluate_model(model, val_loader, epoch, num_epochs, current_lr):
+def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
     _ = model.eval()
+
+    # loss 정의
+    loss_name = LOSS['name']
+    loss_params = LOSS['params'] or {}
+    
 
     if torch.cuda.is_available():
         model.cuda()
@@ -88,7 +100,8 @@ def evaluate_model(model, val_loader, epoch, num_epochs, current_lr):
 
         prediction = model.forward(image.float())
 
-        loss = torch.nn.BCEWithLogitsLoss(weight=weight)(prediction, label)
+        criterion = create_criterion(loss_name, weight, **loss_params)
+        loss = criterion(prediction, label)
 
         loss_value = loss.item()
         losses.append(loss_value)
@@ -131,6 +144,8 @@ def run(config):
     PLANE = config['PLANE']
     
     NUM_EPOCHS = config['epochs']
+
+    LOSS = config['LOSS']
     
     wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}", config=config)
 
@@ -163,9 +178,9 @@ def run(config):
         t_start = time.time()
         
         train_metric = train_model(
-            mrnet, train_loader, epoch, NUM_EPOCHS, optimizer, current_lr)
+            mrnet, train_loader, epoch, NUM_EPOCHS, LOSS, optimizer, current_lr)
         val_metric = evaluate_model(
-            mrnet, validation_loader, epoch, NUM_EPOCHS, current_lr)
+            mrnet, validation_loader, epoch, NUM_EPOCHS, LOSS, current_lr)
         
         scheduler.step(val_metric['loss'])
 
@@ -187,6 +202,10 @@ def run(config):
         if val_metric['auc'] > best_val_auc:
             best_val_auc = val_metric['auc']
             file_name = f'model_{EXP_NAME}_{TASK}_{PLANE}_epoch_{epoch}.pth'
+
+            if not os.path.exists('models'):                                                           
+                os.makedirs('models')
+    
             for f in os.listdir('./models/'):
                 if (EXP_NAME in f) and (TASK in f) and (PLANE in f):
                     os.remove(f'./models/{f}')
