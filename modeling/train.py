@@ -11,6 +11,7 @@ from dataloader import MRDataset
 from metric import Metric
 import model
 from loss import create_criterion
+from optimizer import create_optim
 
 from sklearn import metrics
 
@@ -144,7 +145,9 @@ def run(config):
     PLANE = config['PLANE']
     
     NUM_EPOCHS = config['epochs']
+    LR = config['LR']
 
+    OPTIMIZER = config['OPTIMIZER']
     LOSS = config['LOSS']
     
     wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}", config=config)
@@ -162,7 +165,11 @@ def run(config):
     if torch.cuda.is_available():
         mrnet = mrnet.cuda()
 
-    optimizer = optim.Adam(mrnet.parameters(), lr=0.00001, weight_decay=0.1)
+    # optimizer 정의
+    optimizer_name = OPTIMIZER['name']
+    optimizer_params = OPTIMIZER['params'] or {}
+    optimizer = create_optim(optimizer_name, mrnet, LR, **optimizer_params)
+
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, patience=3, factor=.3, threshold=1e-4, verbose=True)
 
