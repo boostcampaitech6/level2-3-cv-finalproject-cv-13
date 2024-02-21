@@ -12,6 +12,7 @@ from metric import Metric
 import model
 from loss import create_criterion
 from optimizer import create_optim
+from scheduler import create_sched
 
 from sklearn import metrics
 
@@ -149,6 +150,7 @@ def run(config):
 
     OPTIMIZER = config['OPTIMIZER']
     LOSS = config['LOSS']
+    SCHEDULER = config['SCHEDULER']
     
     wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}", config=config)
 
@@ -170,8 +172,14 @@ def run(config):
     optimizer_params = OPTIMIZER['params'] or {}
     optimizer = create_optim(optimizer_name, mrnet, LR, **optimizer_params)
 
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, patience=3, factor=.3, threshold=1e-4, verbose=True)
+    # scheduler 정의
+    scheduler_name = SCHEDULER['name']
+    scheduler_params = SCHEDULER['params'] or {}
+
+    scheduler = None
+    is_plateau = False
+    if scheduler_name != "":
+        scheduler, is_plateau = create_sched(scheduler_name, optimizer, NUM_EPOCHS, **scheduler_params)
 
     best_val_loss = float('inf')
     best_val_auc = float(0)
@@ -189,7 +197,11 @@ def run(config):
         val_metric = evaluate_model(
             mrnet, validation_loader, epoch, NUM_EPOCHS, LOSS, current_lr)
         
-        scheduler.step(val_metric['loss'])
+        if scheduler:
+            if is_plateau:
+                scheduler.step(val_metric['loss'])
+            else:
+                scheduler.step()
 
         t_end = time.time()
         delta = t_end - t_start
