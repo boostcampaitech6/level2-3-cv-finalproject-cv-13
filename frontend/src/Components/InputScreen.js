@@ -1,51 +1,28 @@
 import React from 'react'
-import axios from 'axios'
 import './InputScreen.css'
 import ImgAsset from '../public'
 import { useHistory } from 'react-router-dom'
-import {useEffect, useState} from 'react';
+import {useState, useRef} from 'react';
 import {Button} from "@mui/material";
 
 export default function InputScreen () {
-	/*
-    fileList는 아래와 같은 object의 array로 구성
-    {
-      fileObject: files[i],
-      preview_URL: preview_URL,
-      type: fileType,
-    }
-  	*/
 
-	const [fileList, setFileList] = useState([]);
-  	let inputRef;
+	const inputRefs = useRef({ axial: null, coronal: null, sagittal: null })
 	const history = useHistory();
-	let [counter, setCounter] = useState(0);
-	const counter2plane = ["axial", "coronal", "sagittal"];
 	const [loading, setLoading] = useState(false);
+	let [ready, setReady] = useState([false, false, false]);
 
-	const saveImage = async (e) => {
+	const saveImage = async (e, plane, idx) => {
 	e.preventDefault();
-	// state update전 임시로 사용할 array
-	const tmpFileList = [];
 	const files = e.target.files;
 	const formData = new FormData();
+
 	if (files) {
 		for (let i = 0; i < files.length; i++) {
-		const preview_URL = URL.createObjectURL(files[i]);
-		const fileType = files[i].type.split("/")[0];
-		fileList.push({
-		fileObject: files[i],
-		preview_URL: preview_URL,
-		type: fileType,
-			});
 		formData.append('file', files[i]);
 		}
 
-		// fileList.forEach(file=>{
-		// 	formData.append("arrayOfFilesName", file);
-		//   });
-
-		const currenturl = `http://127.0.0.1:8000/input${counter2plane[counter]}`
+		const currenturl = `http://127.0.0.1:8000/input/${plane}`
 		const postOptions = {
 			method: "POST",
 			url: currenturl,
@@ -58,36 +35,80 @@ export default function InputScreen () {
             const response = await fetch(currenturl, postOptions)
             alert('이미지 업로드 완료');
 			console.log(response);
-			if (counter === counter2plane.length - 1) {history.push("/loadingscreen");}
-			setCounter(counter + 1);
+			ready[idx] = true;
+			setReady(ready);
         } catch (err) {
             alert('이미지 업로드에 실패하였습니다');
         } finally {
 			setLoading(false);
-			setFileList([...tmpFileList, ...fileList]);
 		}
 	}
 	};
 
-	console.log('fileList : ', fileList);
+	function changeScreen(e) {
+		e.preventDefault();
+		history.push("/loadingscreen")
+	}
 	
 	return (
 		<div className='InputScreen_InputScreen'>
 			<img className='background' src = {ImgAsset.background} alt="background"/>
 			<div className='ImageHolderGroup'>
-					<input
-					type="file" multiple={true} accept="image/*"
-					onChange={saveImage}
-					ref={refParam => inputRef = refParam}
-					style={{display: "none"}}
-					/>
 				<div className='imageholder'/>
-				<img className='Imagelogo' src = {ImgAsset.imageicon} alt="imagelogo"/>
-				<span className='Text'>Place {counter2plane[counter]} images here<br/>or<br/>Upload from your computer</span>
-				<div className='UploadButton'>
-					<Button variant="contained" onClick={() => inputRef.click()}>
+				<img className='ImagelogoAxial' src = {ImgAsset.imageicon} alt="imagelogo"/>
+				<span className='TextAxial'>Upload axial images here</span>
+				<div className='UploadButtonAxial'>
+					<input
+						type="file"
+						multiple={true}
+						accept="image/*"
+						onChange={(e) => saveImage(e, 'axial', 0)}
+						ref={refParam => inputRefs.current.axial = refParam}
+						style={{ display: "none" }}
+					/>
+					<Button variant="contained" onClick={() => inputRefs.current.axial.click()} sx={{ color: 'white', backgroundColor: 'black' }}>
 						{loading ? 'Loading...' : 'Upload'}
 					</Button>
+				</div>
+				<span className='CompleteTextAxial'>{ready[0] ? 'Complete!' : ''}</span>
+				<img className='ImagelogoCoronal' src = {ImgAsset.imageicon} alt="imagelogo"/>
+				<span className='TextCoronal'>Upload coronal images here</span>
+				<div className='UploadButtonCoronal'>
+					<input
+						type="file"
+						multiple={true}
+						accept="image/*"
+						onChange={(e) => saveImage(e, 'coronal', 1)}
+						ref={refParam => inputRefs.current.coronal = refParam}
+						style={{ display: "none" }}
+					/>
+					<Button variant="contained" onClick={() => inputRefs.current.coronal.click()} sx={{ color: 'white', backgroundColor: 'black' }}>
+						{loading ? 'Loading...' : 'Upload'}
+					</Button>
+				</div>
+				<span className='CompleteTextCoronal'>{ready[1] ? 'Complete!' : ''}</span>
+				<img className='ImagelogoSagittal' src = {ImgAsset.imageicon} alt="imagelogo"/>
+				<span className='TextSagittal'>Upload sagittal images here</span>
+				<div className='UploadButtonSagittal'>
+					<input
+						type="file"
+						multiple={true}
+						accept="image/*"
+						onChange={(e) => saveImage(e, 'sagittal', 2)}
+						ref={refParam => inputRefs.current.sagittal = refParam}
+						style={{ display: "none" }}
+					/>
+					<Button variant="contained" onClick={() => inputRefs.current.sagittal.click()} sx={{ color: 'white', backgroundColor: 'black' }}>
+						{loading ? 'Loading...' : 'Upload'}
+					</Button>
+				</div>
+				<span className='CompleteTextSagittal'>{ready[2] ? 'Complete!' : ''}</span>
+				<div className='InferenceButton'>
+					{ready.every((x) => x === true) ? 
+					<Button variant="contained"  onClick={changeScreen}  sx={{ color: 'white', backgroundColor: 'black' }}>
+						Inference
+					</Button>
+					:''}
 				</div>
 			</div>
 			<img className='logo' src = {ImgAsset.logo} alt="logo"/>

@@ -2,3 +2,4 @@ modeling/__pycache__
 modeling/data
 modeling/models
 modeling/wandb
+models

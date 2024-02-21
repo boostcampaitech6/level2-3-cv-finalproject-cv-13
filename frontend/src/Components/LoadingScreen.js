@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import axios from 'axios'
 import './LoadingScreen.css'
 import ImgAsset from '../public'
 import { useHistory } from 'react-router-dom';
@@ -7,12 +8,19 @@ export default function LoadingScreen () {
 
 	const history = useHistory();
 
-	setTimeout(() => {
-		// Code to execute after one second
-		console.log("Three seconds have passed");
-		history.push("/totalresults")
-	  }, 3000); // 1000 milliseconds = 1 second
-	
+	useEffect(() => {
+		const awaitInference = async () => {
+			try {
+				const response = await axios.get("http://127.0.0.1:8000/inference");
+				alert("Inference Done");
+				history.push("/totalresults")
+				} catch (error) {
+					console.log(error);
+					alert("Error occured during inference");
+				}
+		};
+		awaitInference();
+	}, []);
 
 	return (
 		<div className='LoadingScreen_LoadingScreen'>

@@ -34,143 +34,55 @@ ChartJS.register(
 
 export default function AbnormalResultsAxial () {
 
-	// Image Slider & Buttons
-	// We use the useRef hook to get a reference to the slider container
-
-	// const sliderRef = useRef(null);
-	// const scrollAmount = 422; // The amount to scroll when clicking the navigation buttons
-
 	let [imageExists, setImageExists] = useState(false)
-	const [images, setImages] = useState(
-		// Here, you can add your own image objects with their respective URLs
-		[
-			{
-				id: 1,
-				urls: {
-					small:ImgAsset.sample0
-				}
-			  },
-			  {
-				id: 2,
-				urls: {
-					small:ImgAsset.sample1
-				}
-			  },
-			  {
-				id: 3,
-				urls: {
-					small:ImgAsset.sample2
-				}
-			  },
-			  {
-				id: 4,
-				urls: {
-					small:ImgAsset.sample3
-				}
-			  },
-			  {
-				id: 5,
-				urls: {
-					small:ImgAsset.sample4
-				}
-			  },
-			  {
-				id: 6,
-				urls: {
-					small:ImgAsset.sample5
-				}
-			  },
-			  {
-				id: 7,
-				urls: {
-					small:ImgAsset.sample6
-				}
-			  },
-			  {
-				id: 8,
-				urls: {
-					small:ImgAsset.sample7
-				}
-			  },
-			  {
-				id: 9,
-				urls: {
-					small:ImgAsset.sample8
-				}
-			  },
-			  {
-				id: 10,
-				urls: {
-					small:ImgAsset.sample9
-				}
-			  },
-		]
-	);
-
-	const [gradimages, setGradImages] = useState([
-		]);
- 
-	// const fetchAPI = async () => {
-	// 	try {
-	// 	const response = await axios.get("https://api.unsplash.com/photos/?client_id=gcS9fLgtOae1sQ0BN4bqyYzK5RhGPL-sRK9lvAt3Ctg");
-	// 	console.log('response.data : ', response.data);
-	// 	const data = response.data;
-	// 	// const imageBlob = await data.blob();
-	// 	// const imageObjectURL = URL.createObjectURL(imageBlob);
-	// 	setImages(data);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// }
-
-	const fetchAPI = async () => {
-		try {
-		const response = await axios.get("http://127.0.0.1:8000/outputoriginal");
-		console.log('response.data : ', response.data);
-		const data = response.data;
-		setImages(data);
-		setImageExists(true);
-		} catch (error) {
-			console.log(error);
-			setImageExists(false);
-		}
-	}
-
-	const fetchGradAPI = async () => {
-		try {
-		const response = await axios.get("http://127.0.0.1:8000/outputgradcam");
-		console.log('response.data : ', response.data);
-		const data = response.data;
-		setGradImages(data);
-		setImageExists(true);
-		} catch (error) {
-			console.log(error);
-		}
-	}
+	const [images, setImages] = useState([]);
+	const [gradimages, setGradImages] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const chartRef = useRef();
+	const [Data, setData] = useState([]);
+	let [gradstate, setGradState] = useState(false);
+	let [pauseState, setPauseState] = useState(false);
 
 	useEffect(() => {
-		fetchAPI();
-		fetchGradAPI();
-	}, []);
+		async function fetchData() {
+		  try {
+			const [imageResponse, gradImageResponse] = await Promise.all([
+			  axios.get('http://127.0.0.1:8000/output/abnormal/axial/original'),
+			  axios.get('http://127.0.0.1:8000/output/abnormal/axial/gradcam'),
+			]);
+			setImages(imageResponse.data.img);
+			setGradImages(gradImageResponse.data.img);
+			setData(imageResponse.data.info);
+			setImageExists(true);
+			setLoading(false);
+		  } catch (error) {
+			console.error('Error fetching images:', error);
+			setImageExists(false);
+			setLoading(false);
+		  }
+		}
+	
+		fetchData();
+	  }, []);
+
+	let [page, setPage] = useState(images);
+	let [currentidx, setCurrentIdx] = useState(loading ? 0 : Data.highest);
+	
+	useEffect(() => {
+	// Set the initial page based on gradstate
+	setPage(gradstate ? gradimages : images);
+	}, [gradstate, images, gradimages]);
+
+	useEffect(() => {
+	// Ensure currentidx is within bounds
+	if (currentidx < 0) setCurrentIdx(0);
+	if (currentidx >= page.length) setCurrentIdx(page.length - 1);
+	}, [currentidx, page]);
 
 	const handleImageError = () => {
 		setImageExists(false); // Set imageExists to false if the image fails to load
 	  };
-
-	// Graph
 	
-	const chartRef = useRef();
-	const [Data, setData] = useState([]);
-	
-	useEffect(() => {
-		function fetchData() {
-			let copy = jsonData.abnormalaxialscore;
-			// console.log('copy : ', copy);
-			setData(copy);
-		};
-		fetchData();
-	}, []);
-
 	let labels = [];
     if (Data.labels) {
         labels = Data.labels;
@@ -189,35 +101,19 @@ export default function AbnormalResultsAxial () {
     };
 
 	function handleChartClick (event) {
-		// Handle click event here
 		const element = getElementAtEvent(chartRef.current, event);
 		const index = element[0].index;
 		setCurrentIdx(index);
 	  };
 
-	// set Grad-CAM Images and Normal Images
-
-	let [currentidx, setCurrentIdx] = useState(jsonData.abnormalaxialscore.highest);
-	let [gradstate, setGradState] = useState(false);
-	let [page, setPage] = useState(images);
-
 	function showGrad (e) {
 		e.preventDefault();
 		if (gradstate === false) {
-			let temp = [...images];
-			setPage(temp);
 			setGradState(true);
 		} else {
-			let temp = [...gradimages];
-			setPage(temp);
 			setGradState(false);
 		}
 		}
-
-	// console.log('gradstate : ', gradstate);
-	// console.log('page : ', page)
-
-	let [pauseState, setPauseState] = useState(false);
 
 	useEffect(() => {
 		let intervalId;
@@ -238,16 +134,6 @@ export default function AbnormalResultsAxial () {
 	function playButton (e) {
 		e.preventDefault();
 		setPauseState(true);
-		// let idx = currentidx; // Capture the initial value of currentidx
-		// let intervalId = setInterval(() => {
-		// 	if ((idx < Data.datasets.length - 1) && (pauseState === false)) {
-		// 		// console.log("One second has passed");
-		// 		setCurrentIdx(prevIdx => prevIdx + 1); // Use functional update
-		// 		idx++; // Increment the captured index
-		// 	} else {
-		// 		clearInterval(intervalId); // Stop the interval when condition is met
-		// 	}
-		// }, 300); // 1000 milliseconds = 1 second
 	}
 
 	function pauseButton (e) {
@@ -281,10 +167,6 @@ export default function AbnormalResultsAxial () {
 			}
 		  }
 	  };
-	
-	// console.log('currentidx : ', currentidx)
-	// console.log('pausestate : ', pauseState)
-	console.log('imageexists : ', imageExists)
 
 
 	return (
@@ -328,8 +210,6 @@ export default function AbnormalResultsAxial () {
 				<Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black' }}>
 					Inspect
 				</Button>
-				{/* <img className='Rectangle1_5' src = {ImgAsset.AbnormalResultsAxial_Rectangle1_5} />
-				<span className='GradCAM_1'>Inspect</span> */}
 			</div>
 			<div className='InnerButtons'>
 				<Link to='/abnormalresultscoronal'>
@@ -357,9 +237,6 @@ export default function AbnormalResultsAxial () {
 						currentidx = currentidx + 1;
 					}
 					setCurrentIdx(currentidx - 1);
-	
-					// const container = sliderRef.current;
-					// container.scrollLeft -= scrollAmount; // Scroll left by the specified amount
 					}}
 				>
 					<ChevronLeftIcon />
@@ -371,49 +248,32 @@ export default function AbnormalResultsAxial () {
 						currentidx = currentidx - 1;
 					}
 					setCurrentIdx(currentidx + 1);
-	
-					// const container = sliderRef.current;
-					// container.scrollLeft += scrollAmount;
 					}}
 				>
 					<ChevronRightIcon />
 				</button>
-				{/* <div className='SliderBox'/>
-				<span className='Slidergoeshere'>Slider goes here</span> */}
 			</div>
 			<div className='Graph'>
 				<Line options={options} data={dataset} ref={chartRef} onClick={handleChartClick} />
-				{/* <div className='GraphBox'/>
-				<span className='Graphgoeshere'>Graph goes here</span> */}
 			</div>
-			<div className='Image'> {/*ref={sliderRef} */}
-				{imageExists ? (
-					<img 
-					className="image"
-					alt="Press Inspect to Start!"
-					// key={page[currentidx].id}
-					// src={page[currentidx].urls.small}
-					key={currentidx}
-					src={`data:image/png;base64,${page[currentidx].body}`}
-					// onError={handleImageError}
-					/>
-				) : (
-					<span>
-						If this message remains, then there was an error while loading images.
-					</span>
-				)}
-				{/* {images.map((image) => {
-				return (
-					<img
-					className="image"
-					alt="sliderImage"
-					key={image?.id}
-					src={image?.urls.small}
-					/>
-				);
-				})} */}
-				{/* <div className='Imagebox'/>
-				<span className='ImageText'>Image goes here</span> */}
+			<div className='Image'>
+			{loading ? (
+          <span>Loading...</span>
+        ) : imageExists ? (
+          page[currentidx] ? (
+            <img
+              className="image"
+              alt="Press Inspect to Start!"
+              key={currentidx}
+              src={`data:image/png;base64,${page[currentidx].body}`}
+              onError={handleImageError}
+            />
+          ) : (
+            <span>Image not found</span>
+          )
+        ) : (
+          <span>Error loading images</span>
+        )}
 			</div>
 		</div>
 	)

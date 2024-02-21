@@ -3,7 +3,6 @@ import axios from 'axios'
 import './TotalResults.css'
 import ImgAsset from '../public'
 import {Link} from 'react-router-dom'
-import jsonData from './sampledata.json'
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -14,8 +13,6 @@ import {
 	Legend,
   } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-// import { useRecoilState } from "recoil";
-// import { urlState } from "../../src/recoilState";
 
 ChartJS.register(
 	CategoryScale,
@@ -29,8 +26,6 @@ ChartJS.register(
 
 export default function TotalResults () {
 
-	// const [rootUrl, setRootUrl] = useRecoilState(urlState);
-	const rootUrl = '';
 	const [Data, setData] = useState([]);
 	const [onLoad, setonLoad] = useState(true);
 
@@ -55,12 +50,11 @@ export default function TotalResults () {
 	  };
 	
 	// Component가 처음 마운트 될 때 1번만 데이터를 가져옵니다
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get("http://127.0.0.1:8000/totalresult");
-				console.log('response.data : ', response.data);
+				// console.log('response.data : ', response.data);
 				const data = response.data;
 				setData(data);
 				setonLoad(false);
@@ -70,7 +64,7 @@ export default function TotalResults () {
 				}
 		};
 		fetchData();
-		console.log('data : ', Data);
+		// console.log('data : ', Data);
 	}, []);
 
 	let labels = [];
@@ -78,8 +72,8 @@ export default function TotalResults () {
         labels = Data.labels;
     }
 
-	console.log('labels : ', labels);
-	console.log('datasets : ', Data.datasets);
+	// console.log('labels : ', labels);
+	// console.log('datasets : ', Data.datasets);
 
     const dataset = {
         labels,
@@ -93,19 +87,8 @@ export default function TotalResults () {
         ],
     };
 
-	console.log('dataset[0] : ', dataset.datasets[0]);
-	console.log('onLoad : ', onLoad);
-	let abnormalp, aclp, meniscusp = null;
-
-	if (onLoad === true) {
-		abnormalp = <span className='AbnormalPercent'>?% Abnormal</span>
-		aclp = <span className='ACLPercent'>?% ACL</span>
-		meniscusp = <span className='MeniscusPercent'>?% Meniscus</span>
-	} else {
-		abnormalp = <span className='AbnormalPercent'>{dataset.datasets[0].data[0].x}% Abnormal</span>
-		aclp = <span className='ACLPercent'>{dataset.datasets[0].data[1].x}% ACL</span>
-		meniscusp = <span className='MeniscusPercent'>{dataset.datasets[0].data[2].x}% Meniscus</span>
-	}
+	// console.log('dataset[0] : ', dataset.datasets[0]);
+	// console.log('onLoad : ', onLoad);
 
 	return (
 		<div className='TotalResults_TotalResults'>
@@ -142,19 +125,17 @@ export default function TotalResults () {
 			<div className='Contents'>
 				<div className='PercentText'>
 					<Link to='/abnormalresultscoronal'>
-						{abnormalp}
+						<span className='AbnormalPercent'>{onLoad ? '?% Abnormal' : `${dataset.datasets[0].data[0].x}% Abnormal`}</span>
 					</Link>
 					<Link to='/aclresultscoronal'>
-						{aclp}
+						<span className='ACLPercent'>{onLoad ? '?% ACL' : `${dataset.datasets[0].data[1].x}% ACL`}</span>
 					</Link>
 					<Link to='/meniscusresultscoronal'>
-						{meniscusp}
+						<span className='MeniscusPercent'>{onLoad ? '?% Meniscus' : `${dataset.datasets[0].data[2].x}% Meniscus`}</span>
 					</Link>
 				</div>
 				<div className='Graph'>
 					{<Bar options={options} data={dataset} />}
-					{/* <div className='Graphbox'/>
-					<span className='GraphText'>Graph goes here</span> */}
 				</div>
 			</div>
 		</div>
