@@ -10,12 +10,19 @@ import torch.optim as optim
 from dataloader import MRDataset
 from metric import Metric
 import model
+from loss import create_criterion
+from optimizer import create_optim
+from scheduler import create_sched
 
 from sklearn import metrics
 
 
-def train_model(model, train_loader, epoch, num_epochs, optimizer, current_lr):
+def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current_lr):
     _ = model.train()
+
+    # loss 정의
+    loss_name = LOSS['name']
+    loss_params = LOSS['params'] or {}
 
     if torch.cuda.is_available():
         model.cuda()
@@ -37,7 +44,9 @@ def train_model(model, train_loader, epoch, num_epochs, optimizer, current_lr):
 
         prediction = model.forward(image.float())
 
-        loss = torch.nn.BCEWithLogitsLoss(weight=weight)(prediction, label)
+        criterion = create_criterion(loss_name, weight, **loss_params)
+        loss = criterion(prediction, label)
+
         loss.backward()
         optimizer.step()
 
@@ -67,8 +76,13 @@ def train_model(model, train_loader, epoch, num_epochs, optimizer, current_lr):
     return metric_result
 
 
-def evaluate_model(model, val_loader, epoch, num_epochs, current_lr):
+def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
     _ = model.eval()
+
+    # loss 정의
+    loss_name = LOSS['name']
+    loss_params = LOSS['params'] or {}
+    
 
     if torch.cuda.is_available():
         model.cuda()
@@ -88,7 +102,8 @@ def evaluate_model(model, val_loader, epoch, num_epochs, current_lr):
 
         prediction = model.forward(image.float())
 
-        loss = torch.nn.BCEWithLogitsLoss(weight=weight)(prediction, label)
+        criterion = create_criterion(loss_name, weight, **loss_params)
+        loss = criterion(prediction, label)
 
         loss_value = loss.item()
         losses.append(loss_value)
@@ -131,25 +146,41 @@ def run(config):
     PLANE = config['PLANE']
     
     NUM_EPOCHS = config['epochs']
+    LR = config['LR']
+    BATCH_SIZE = config['BATCH_SIZE']
+
+    OPTIMIZER = config['OPTIMIZER']
+    LOSS = config['LOSS']
+    SCHEDULER = config['SCHEDULER']
     
     wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}", config=config)
 
     train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, train=True)
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=1, shuffle=True, num_workers=8, drop_last=False)
+        train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=8, drop_last=False)
 
     validation_dataset = MRDataset(DATA_ROOT, TASK, PLANE, train=False)
     validation_loader = torch.utils.data.DataLoader(
-        validation_dataset, batch_size=1, shuffle=-True, num_workers=8, drop_last=False)
+        validation_dataset, batch_size=BATCH_SIZE, shuffle=-True, num_workers=8, drop_last=False)
 
     mrnet = model.MRNet()
 
     if torch.cuda.is_available():
         mrnet = mrnet.cuda()
 
-    optimizer = optim.Adam(mrnet.parameters(), lr=0.00001, weight_decay=0.1)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, patience=3, factor=.3, threshold=1e-4, verbose=True)
+    # optimizer 정의
+    optimizer_name = OPTIMIZER['name']
+    optimizer_params = OPTIMIZER['params'] or {}
+    optimizer = create_optim(optimizer_name, mrnet, LR, **optimizer_params)
+
+    # scheduler 정의
+    scheduler_name = SCHEDULER['name']
+    scheduler_params = SCHEDULER['params'] or {}
+
+    scheduler = None
+    is_plateau = False
+    if scheduler_name != "":
+        scheduler, is_plateau = create_sched(scheduler_name, optimizer, NUM_EPOCHS, **scheduler_params)
 
     best_val_loss = float('inf')
     best_val_auc = float(0)
@@ -163,11 +194,15 @@ def run(config):
         t_start = time.time()
         
         train_metric = train_model(
-            mrnet, train_loader, epoch, NUM_EPOCHS, optimizer, current_lr)
+            mrnet, train_loader, epoch, NUM_EPOCHS, LOSS, optimizer, current_lr)
         val_metric = evaluate_model(
-            mrnet, validation_loader, epoch, NUM_EPOCHS, current_lr)
+            mrnet, validation_loader, epoch, NUM_EPOCHS, LOSS, current_lr)
         
-        scheduler.step(val_metric['loss'])
+        if scheduler:
+            if is_plateau:
+                scheduler.step(val_metric['loss'])
+            else:
+                scheduler.step()
 
         t_end = time.time()
         delta = t_end - t_start
@@ -187,6 +222,10 @@ def run(config):
         if val_metric['auc'] > best_val_auc:
             best_val_auc = val_metric['auc']
             file_name = f'model_{EXP_NAME}_{TASK}_{PLANE}_epoch_{epoch}.pth'
+
+            if not os.path.exists('models'):                                                           
+                os.makedirs('models')
+    
             for f in os.listdir('./models/'):
                 if (EXP_NAME in f) and (TASK in f) and (PLANE in f):
                     os.remove(f'./models/{f}')
