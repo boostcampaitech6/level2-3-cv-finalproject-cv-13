@@ -21,12 +21,9 @@ class Metric:
             dict: dictionary containing the metric value
         """
         result = self.calculate(y_true, y_pred)
-        self.batch_update(result)
+        self.step_update(result)
         self.batch_len += 1
         return result        
-
-    def __repr__(self) -> str:
-        pass
     
     def preprocess(self, y_true: torch.Tensor, y_pred: torch.Tensor) -> Tuple[float]:
         """ This method returns the confusion matrix data(TN, FP, FN, TP).
@@ -39,7 +36,7 @@ class Metric:
         conf = metrics.functional.binary_confusion_matrix(y_true, y_pred)
         return conf[0][0], conf[0][1], conf[1][0], conf[1][1]
     
-    def calculate(self, y_true: torch.Tensor,y_pred: torch.Tensor) -> dict:
+    def calculate(self, y_true: torch.Tensor, y_pred: torch.Tensor) -> dict:
         """ This method calculates the metric value.
         Args:
             y_true: ground truth (Shape: (N,))
@@ -60,7 +57,7 @@ class Metric:
         }
         return result
     
-    def batch_update(self, result: dict):
+    def step_update(self, result: dict) -> None:
         """ This method updates the batch metrics.
         Args:
             result: dictionary containing the metric value
@@ -78,11 +75,13 @@ class Metric:
             dict: dictionary containing the average of the batch metrics
         """
         for k, v in self.__batch_metrics.items():
-            self.__batch_metrics[k] = v / self.batch_len
+            self.__batch_metrics[k] = (v / self.batch_len).numpy()
             # self.__total_metrics[k].append(self.__batch_metrics[k])
         return self.__batch_metrics
 
     def clear_batch_metrics(self):
+        """ This method clears the batch metrics.
+        """
         self.__batch_metrics.clear()
 
 
