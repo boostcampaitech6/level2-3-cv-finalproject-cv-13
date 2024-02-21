@@ -89,17 +89,6 @@ export default function TotalResults () {
 
 	// console.log('dataset[0] : ', dataset.datasets[0]);
 	// console.log('onLoad : ', onLoad);
-	let abnormalp, aclp, meniscusp = null;
-
-	if (onLoad === true) {
-		abnormalp = <span className='AbnormalPercent'>?% Abnormal</span>
-		aclp = <span className='ACLPercent'>?% ACL</span>
-		meniscusp = <span className='MeniscusPercent'>?% Meniscus</span>
-	} else {
-		abnormalp = <span className='AbnormalPercent'>{dataset.datasets[0].data[0].x}% Abnormal</span>
-		aclp = <span className='ACLPercent'>{dataset.datasets[0].data[1].x}% ACL</span>
-		meniscusp = <span className='MeniscusPercent'>{dataset.datasets[0].data[2].x}% Meniscus</span>
-	}
 
 	return (
 		<div className='TotalResults_TotalResults'>
@@ -136,13 +125,13 @@ export default function TotalResults () {
 			<div className='Contents'>
 				<div className='PercentText'>
 					<Link to='/abnormalresultscoronal'>
-						{abnormalp}
+						<span className='AbnormalPercent'>{onLoad ? '?% Abnormal' : `${dataset.datasets[0].data[0].x}% Abnormal`}</span>
 					</Link>
 					<Link to='/aclresultscoronal'>
-						{aclp}
+						<span className='ACLPercent'>{onLoad ? '?% ACL' : `${dataset.datasets[0].data[1].x}% ACL`}</span>
 					</Link>
 					<Link to='/meniscusresultscoronal'>
-						{meniscusp}
+						<span className='MeniscusPercent'>{onLoad ? '?% Meniscus' : `${dataset.datasets[0].data[2].x}% Meniscus`}</span>
 					</Link>
 				</div>
 				<div className='Graph'>
