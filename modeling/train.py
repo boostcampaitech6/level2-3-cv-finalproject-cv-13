@@ -147,6 +147,7 @@ def run(config):
     
     NUM_EPOCHS = config['epochs']
     LR = config['LR']
+    BATCH_SIZE = config['BATCH_SIZE']
 
     OPTIMIZER = config['OPTIMIZER']
     LOSS = config['LOSS']
@@ -156,11 +157,11 @@ def run(config):
 
     train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, train=True)
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=1, shuffle=True, num_workers=8, drop_last=False)
+        train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=8, drop_last=False)
 
     validation_dataset = MRDataset(DATA_ROOT, TASK, PLANE, train=False)
     validation_loader = torch.utils.data.DataLoader(
-        validation_dataset, batch_size=1, shuffle=-True, num_workers=8, drop_last=False)
+        validation_dataset, batch_size=BATCH_SIZE, shuffle=-True, num_workers=8, drop_last=False)
 
     mrnet = model.MRNet()
 
