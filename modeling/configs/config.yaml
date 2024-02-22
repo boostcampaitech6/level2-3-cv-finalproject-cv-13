@@ -5,6 +5,11 @@ DATA_ROOT: './data/'
 EXP_NAME: temp
 CAMPER_ID: T6000
 
+# Model: mrnet, resnet50
+MODEL: 
+  name: "mrnet"
+  params: null
+
 # Task & Plane
 ## Task: 'abnormal', 'acl', 'meniscus'
 ## Plane: 'axial', 'coronal', 'sagittal'
