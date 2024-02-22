@@ -52,7 +52,7 @@ def run(config):
     model.eval()
 
     image = data_processing(PLANE)
-    target_layers = [model.pretrained.layer4[-1]]
+    target_layers = [model.target]
 
     with GradCAM(model=model, target_layers=target_layers) as cam:
         targets = [BinaryClassifierOutputTarget(1)]
