@@ -13,6 +13,7 @@ import model
 from loss import create_criterion
 from optimizer import create_optim
 from scheduler import create_sched
+from model import create_model
 
 from sklearn import metrics
 
@@ -152,6 +153,7 @@ def run(config):
     OPTIMIZER = config['OPTIMIZER']
     LOSS = config['LOSS']
     SCHEDULER = config['SCHEDULER']
+    MODEL = config['MODEL']
     
     wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}", config=config)
 
@@ -163,7 +165,9 @@ def run(config):
     validation_loader = torch.utils.data.DataLoader(
         validation_dataset, batch_size=BATCH_SIZE, shuffle=-True, num_workers=8, drop_last=False)
 
-    mrnet = model.MRNet()
+    model_name = MODEL['name']
+    model_params = MODEL['params'] or {}
+    mrnet = create_model(model_name, **model_params)
 
     if torch.cuda.is_available():
         mrnet = mrnet.cuda()
