@@ -52,11 +52,12 @@ def run(config):
     model.eval()
 
     image = data_processing(PLANE)
-    target_layers = [model.target]
+    target_layers = model.target
 
     with GradCAM(model=model, target_layers=target_layers) as cam:
         targets = [BinaryClassifierOutputTarget(1)]
 
+        print('Generating Grad-CAM Images...')
         cam_result_list = cam(
                             input_tensor=image.float(), targets=targets, 
                             aug_smooth=True, eigen_smooth=True
