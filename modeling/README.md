@@ -1,22 +1,12 @@
-## Environment Settings
-
-### Install Poetry
-
-```bash
-# 아래 설치 안되면 / 폴더 수정 권한 없으면
-sudo su -
-chmod -R 777 level2-3-cv-finalproject-cv-13/
-
-apt install python3-pip
-pip install poetry
-poetry # 아무것도 안뜨면 안됨.
-```
-
 ### Install Library
 
 ```bash
+# 해당 작업은 /modeling/ 혹은 /backend/ 에서 진행해주세요
+pyenv local 3.10.0
+
 poetry init
 poetry config virtualenvs.in-project true --local
+poetry env use python3.10
 poetry run python --version
 poetry install
 ```
@@ -39,6 +29,5 @@ poetry add <library_name> #  = pip install <library_name>
 
 ```bash
 poetry run python train.py
-poetry run python inference.py
 ```
 
