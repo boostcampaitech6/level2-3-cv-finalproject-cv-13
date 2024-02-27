@@ -26,5 +26,6 @@ sudo su -
 apt install python3-pip
 exit
 pip install testresources poetry
-export PATH=$PATH:~/.local/bin # 에러 발생시 환경변수 추가
+echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
 poetry
+```
