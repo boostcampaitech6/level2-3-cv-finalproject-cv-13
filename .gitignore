@@ -4,3 +4,5 @@ modeling/models
 modeling/wandb
 modeling/pytorch_grad_cam/__pycache__
 gradcamimages
+modeling/__pycache__
+modeling/.venv
