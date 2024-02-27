@@ -25,6 +25,5 @@ chmod -R 777 level2-3-cv-finalproject-cv-13/
 sudo su -
 apt install python3-pip
 exit
-
-pip install poetry
+pip install testresources poetry
 poetry
