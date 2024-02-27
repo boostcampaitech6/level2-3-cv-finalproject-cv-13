@@ -1,13 +1,10 @@
-modeling/__pycache__
 modeling/data
 modeling/models
 modeling/wandb
-modeling/pytorch_grad_cam/__pycache__
 gradcamimages
-modeling/__pycache__
-modeling/.venv
-backend/.venv
 backend/input_img
 backend/gradcam
 backend/original
+.venv
 .python-version
+__pycache__
