@@ -51,12 +51,14 @@ def predict_task(input, path, model_class, task, plane):
     #gpu 확인
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
+    # print(device)
 
     #모델 불러오기
     model = load_model(path, model_class, task, plane, device).to(device)
     model.eval()
 
     with torch.no_grad():
+        input = input.to(device)
         predictions = model(input)
     probas = torch.sigmoid(predictions)
     proba = probas[0][1].item()

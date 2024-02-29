@@ -72,7 +72,7 @@ async def inference():
             input_tensor = img_processing(img_list)
 
             # 3. 개별 모델 추론
-            res += predict_task(input_tensor, "../modeling/models", "MRNet", task, plane)
+            res += predict_task(input_tensor, "./models", "MRNet", task, plane)
 
         # 4. fusion 모델 추론
         proba = {}
