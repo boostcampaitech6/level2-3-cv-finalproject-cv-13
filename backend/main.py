@@ -7,9 +7,9 @@ import os
 import numpy as np
 import base64
 import json
+import shutil
 
 from utils import *
-from model import *
 
 origins = [
     "http://localhost:3000",
@@ -32,50 +32,55 @@ async def root():
 @app.post("/input/{plane}") # ex) /input/axial
 async def receiveFile(plane: str, file: list[UploadFile]):
     IMAGE_ROOT = os.path.join('original', plane)
-    # img_json = {}
-    # img_list = []
+    if os.path.exists(IMAGE_ROOT): 
+        shutil.rmtree(IMAGE_ROOT) # 이미 폴더 있으면 삭제
+    os.makedirs(IMAGE_ROOT)
 
-    #1.이미지 저장
+    # 이미지 서버에 저장
     for f in file:
         print(f.filename)
         image = Image.open(f.file)
-        #이미 존재하는 폴더도 삭제하고 새로 만들어야 할 수도?
-        if not os.path.exists(IMAGE_ROOT): 
-            os.makedirs(IMAGE_ROOT)
         image.save(os.path.join(IMAGE_ROOT, f.filename), 'PNG')
-        # img_list.append(image)
-    
+
     return {plane : "success"}
 
 @app.get("/inference")
 async def inference():
-    plane = ['axial', 'coronal', 'sagittal']
+    planes = ['axial', 'coronal', 'sagittal']
+    tasks = ['abnormal', 'acl', 'meniscus']
     input_dict = {}
-    # JSON 파일 불러오기
+
+    # JSON template 불러오기
     with open('./template.json', 'r') as file:
         result_dict = json.load(file)
 
-    for p in plane:
-        IMAGE_ROOT = os.path.join('original', p)
-        image_paths = os.listdir(IMAGE_ROOT)
-        img_list = []
+    for task in tasks:
+        result_dict['percent']['labels'].append(task)
+        res = 0
 
-        #1. 이미지 불러오기
-        for path in image_paths:
-            image = Image.open(os.path.join(IMAGE_ROOT, path))
-            img_list.append(image)
+        for plane in planes:
+            IMAGE_ROOT = os.path.join('original', plane)
+            image_paths = os.listdir(IMAGE_ROOT)
+            img_list = []
 
-            #2. 전처리
-            input_dict[p] = img_processing(img_list)
-        
-        print(f"{p}: {input_dict[p].shape}")
+            # 1. 이미지 불러오기
+            for path in image_paths:
+                image = Image.open(os.path.join(IMAGE_ROOT, path))
+                img_list.append(image)
+
+            # 2. 전처리
+            input_tensor = img_processing(img_list)
+
+            # 3. 개별 모델 추론
+            res += predict_task(input_tensor, "../modeling/models", "MRNet", task, plane)
+
+        # 4. fusion 모델 추론
+        proba = {}
+        proba['y'] = task
+        proba['x'] = int((res/len(planes))*100) #추후 fusion 모델로 대체
+        result_dict['percent']['datasets'].append(proba)
 
         """
-        #3. 모델 추론
-        result_dict['result'] = predict_image(img_json['numpy'])
-        print(img_json['result'])
-        print(img_json)
-
         4. img_json['grad_cam']에 gradcam 결과값 입력
         or result_img에 gradcam 이미지 저장...
         """

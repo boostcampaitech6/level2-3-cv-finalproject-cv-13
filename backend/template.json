@@ -1,20 +1,7 @@
 {
     "percent": {
-        "labels": ["Abnormal", "ACL", "Meniscus"],
-        "datasets": [
-            {
-                "y": "Abnormal",
-                "x": 70
-            },
-            {
-                "y": "ACL",
-                "x": 90
-            },
-            {
-                "y": "Meniscus",
-                "x": 25
-            }
-        ]
+        "labels": [],
+        "datasets": []
     },
     "abnormal" : {
         "axial": {
