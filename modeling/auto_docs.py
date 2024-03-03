@@ -1,10 +1,12 @@
 import os
+import pydicom
 
 from docx import Document                       
 from docx2pdf import convert
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.style import WD_STYLE_TYPE       
 from docx.shared import Pt, Inches, RGBColor  
+
 
 
 def make_docs(
@@ -138,9 +140,16 @@ def make_docs(
     
     
 if __name__ == '__main__':
+    dicom_img = pydicom.dcmread("output_dicom.dcm", force=True)
     p_info = {
         0: ["환자 ID", "이름", "성별", "나이", "생년월일"],
-        1: ["P0001", "홍길동", "남", "25", "1996-01-01"]
+        1: [
+            dicom_img.PatientID, 
+            dicom_img.PatientName, 
+            dicom_img.PatientSex, 
+            dicom_img.PatientAge, 
+            dicom_img.PatientBirthDate
+        ]
     }
     plane_info = {
         0: ["Axial", "Coronal", "Sagittal"],
