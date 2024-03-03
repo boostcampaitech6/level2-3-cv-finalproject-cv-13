@@ -93,7 +93,7 @@ def make_docs(
     explain_paragraph.paragraph_format.space_after = Pt(10)
 
     # diseases table
-    result_table = document.add_table(rows=4, cols=3)
+    result_table = document.add_table(rows=3, cols=3)
     result_table.style = "custom_style"
     result_table.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
@@ -151,10 +151,9 @@ if __name__ == '__main__':
         "../backend/sampleimages/axial_0002.png"
     ]
     result_info = {
-        0: ["Normal (정상)", "50%", ""],
-        1: ["Abnormal (비정상)", "50%", ""],
-        2: ["ACL (전방십자인대 찢어짐)", "20%", ""],
-        3: ["Meniscus (반달연골 찢어짐)", "20%", ""]
+        0: ["Abnormal (비정상)", "50%", ""],
+        1: ["ACL tear (전방십자인대)", "20%", ""],
+        2: ["Meniscus tear (반달연골)", "60%", ""]
     }
     output_pdf_name = "modeling_output.pdf"
     make_docs(p_info, plane_info, img_paths, result_info, output_pdf_name)
