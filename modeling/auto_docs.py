@@ -2,11 +2,9 @@ import os
 import pydicom
 
 from docx import Document                       
-from docx2pdf import convert
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.style import WD_STYLE_TYPE       
 from docx.shared import Pt, Inches, RGBColor  
-
 
 
 def make_docs(
@@ -131,12 +129,10 @@ def make_docs(
             cell.paragraphs[0].paragraph_format.space_after = Pt(3)
 
     document.add_paragraph()
-
-    if os.path.exists('modeling_output.docx'):
-        os.remove('modeling_output.docx')
-    document.save('modeling_output.docx')
-    convert('modeling_output.docx', output_pdf_name)
-    os.remove('modeling_output.docx')
+    save_docs_path = f"{p_info[1][0]}_auto_report.docx"
+    if os.path.exists(save_docs_path):
+        os.remove(save_docs_path)
+    document.save(save_docs_path)
     
     
 if __name__ == '__main__':
