@@ -70,7 +70,8 @@ async def inference():
 
             # 2. 전처리
             input_tensor = img_processing(img_list)
-
+            grad_cam_inference(input_tensor, "./models", "MRNet", task, plane)
+            
             # 3. 개별 모델 추론
             res.append(predict_task(input_tensor, "./models", "MRNet", task, plane))
 
@@ -81,12 +82,11 @@ async def inference():
         proba['x'] = round((fusion_res[0] * 100),1)
         result_dict['percent']['datasets'].append(proba)
 
-        """
-        5. img_json['grad_cam']에 gradcam 결과값 입력
-        or result_img에 gradcam 이미지 저장...
-        """
+        # 5. img_json['grad_cam']에 gradcam 결과값 입력
+        # or result_img에 gradcam 이미지 저장...
+        
     
-    #4. 추론 결과 json으로 저장
+    #6. 추론 결과 json으로 저장
     with open('./result.json','w') as f:
         json.dump(result_dict, f, indent=4)
 

@@ -1,17 +1,16 @@
 from PIL import Image
 import numpy as np
 import pandas as pd
-import os,sys
+import os
 import torch
-# from torchvision import transforms
 from importlib import import_module
 import pickle
 from sklearn.linear_model import LogisticRegression
-
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from modeling.model import *
-from modeling.dataloader import *
 from model import *
+
+from pytorch_grad_cam import GradCAM
+from pytorch_grad_cam.utils.model_targets import BinaryClassifierOutputTarget
+from pytorch_grad_cam.utils.image import show_cam_on_image
 
 def img_processing(imgs):
     img_array = []
@@ -20,8 +19,7 @@ def img_processing(imgs):
         image = img.convert("L")
         image_np = np.array(image)
         img_array.append(image_np)
-    
-    img_array = np.stack(img_array)
+
     img_array = np.stack((img_array,)*3, axis=1)
     img_array = torch.FloatTensor(img_array)
     img_array = img_array.unsqueeze(0)
@@ -68,6 +66,7 @@ def predict_task(input, path, model_class, task, plane):
     with torch.no_grad():
         input = input.to(device)
         predictions = model(input)
+    
     probas = torch.sigmoid(predictions)
     proba = probas[0][1].item()
     return proba
@@ -79,3 +78,32 @@ def predict_percent(input, path, task):
     proba = lr_model.predict_proba(input)[:, 1]
 
     return proba
+
+def grad_cam_inference(input, path, model_class, task, plane):
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
+    grad_dir = os.path.join('gradcamimages', task, plane)
+
+    #모델 불러오기
+    model = load_model(path, model_class, task, plane, device).to(device)
+    model.eval()
+    # target_layers = model.target
+    target_layers = [model.pretrained_model.features[-1]]
+
+    with GradCAM(model=model, target_layers=target_layers) as cam:
+        targets = [BinaryClassifierOutputTarget(1)]
+
+        print('Generating Grad-CAM Images...')
+        cam_result_list = cam(
+                            input_tensor=input.float(), targets=targets, 
+                            aug_smooth=True, eigen_smooth=True
+                                )
+        original_image_list = torch.squeeze(input, dim=0).permute(0, 2, 3, 1).cpu().numpy() / 255.0
+
+        visualization_list = [show_cam_on_image(original_image, cam_result) for original_image, cam_result in zip(original_image_list, cam_result_list)]
+        visualization_images = [Image.fromarray(visualization) for visualization in visualization_list]
+
+        for i, vis_res in enumerate(visualization_images):
+            if not os.path.exists(grad_dir):
+                os.makedirs(grad_dir)
+            vis_res.save(os.path.join(grad_dir, str(i)+'.png'))
