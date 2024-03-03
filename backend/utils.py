@@ -3,8 +3,10 @@ import numpy as np
 import pandas as pd
 import os,sys
 import torch
-from torchvision import transforms
+# from torchvision import transforms
 from importlib import import_module
+import pickle
+from sklearn.linear_model import LogisticRegression
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from modeling.model import *
@@ -43,15 +45,21 @@ def load_model(saved_path, model_class, task, plane, device):
     return model
 
 # fusion model
-def fusion_model(saved_path, task, device):
-    pass
+def fusion_model(saved_path, task):
+    model_path = os.path.join(saved_path, f"lr_{task}.pkl")
+    if os.path.exists(model_path): 
+        with open(model_path, 'rb') as f: 
+            model = pickle.load(f)
+    else:
+        print("해당 경로에 모델 파일이 없습니다.")   
+
+    return model
 
 # 개별 모델
 def predict_task(input, path, model_class, task, plane):
     #gpu 확인
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
-    # print(device)
 
     #모델 불러오기
     model = load_model(path, model_class, task, plane, device).to(device)
@@ -64,5 +72,10 @@ def predict_task(input, path, model_class, task, plane):
     proba = probas[0][1].item()
     return proba
 
-def predict_percent(input):
-    pass
+def predict_percent(input, path, task):
+    # feature_names = ['axial','coronal','sagittal']
+    input = np.array(input).reshape(1,-1)
+    lr_model = fusion_model(path, task)
+    proba = lr_model.predict_proba(input)[:, 1]
+
+    return proba

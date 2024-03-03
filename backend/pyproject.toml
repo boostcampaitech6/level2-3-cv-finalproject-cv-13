@@ -19,6 +19,7 @@ numpy = "1.26.4"
 pandas = "2.0.0"
 opencv-python = "4.9.0.80"
 python-multipart = "^0.0.9"
+scikit-learn = "^1.4.1.post1"
 
 [[tool.poetry.source]]
 name = "pytorch"

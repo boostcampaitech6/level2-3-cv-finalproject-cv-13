@@ -56,7 +56,7 @@ async def inference():
 
     for task in tasks:
         result_dict['percent']['labels'].append(task)
-        res = 0
+        res = []
 
         for plane in planes:
             IMAGE_ROOT = os.path.join('original', plane)
@@ -72,16 +72,17 @@ async def inference():
             input_tensor = img_processing(img_list)
 
             # 3. 개별 모델 추론
-            res += predict_task(input_tensor, "./models", "MRNet", task, plane)
+            res.append(predict_task(input_tensor, "./models", "MRNet", task, plane))
 
         # 4. fusion 모델 추론
         proba = {}
         proba['y'] = task
-        proba['x'] = int((res/len(planes))*100) #추후 fusion 모델로 대체
+        fusion_res = predict_percent(res,"./models", task)
+        proba['x'] = round((fusion_res[0] * 100),1)
         result_dict['percent']['datasets'].append(proba)
 
         """
-        4. img_json['grad_cam']에 gradcam 결과값 입력
+        5. img_json['grad_cam']에 gradcam 결과값 입력
         or result_img에 gradcam 이미지 저장...
         """
     
