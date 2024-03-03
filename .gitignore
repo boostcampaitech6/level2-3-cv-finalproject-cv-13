@@ -8,3 +8,4 @@ backend/original
 .venv
 .python-version
 __pycache__
+*.dcm
