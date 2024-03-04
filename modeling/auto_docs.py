@@ -12,7 +12,6 @@ def make_docs(
     plane_info: dict, 
     img_paths: list[str], 
     result_info: dict, 
-    output_pdf_name: str = "modeling_output.pdf"
 ):
     document = Document("base_document.docx")
 
@@ -127,11 +126,14 @@ def make_docs(
             cell.vertical_alignment = WD_ALIGN_PARAGRAPH.CENTER
             cell.paragraphs[0].paragraph_format.space_before = Pt(3)
             cell.paragraphs[0].paragraph_format.space_after = Pt(3)
+            
+    caption_para = document.add_paragraph(style="Caption")
+    caption_para.add_run(" * ✔ 표시의 경우 모델이 예측한 결과 해당 질병이 있을 확률이 높다는 것을 의미합니다.")
+    caption_para.runs[0].font.color.rgb = RGBColor(0, 0, 0)
 
-    document.add_paragraph()
     save_docs_path = f"{p_info[1][0]}_auto_report.docx"
     if os.path.exists(save_docs_path):
-        os.remove(save_docs_path)
+        os.remove(save_docs_path)    
     document.save(save_docs_path)
     
     
@@ -160,5 +162,4 @@ if __name__ == '__main__':
         1: ["ACL tear (전방십자인대)", "20%", ""],
         2: ["Meniscus tear (반달연골)", "60%", ""]
     }
-    output_pdf_name = "modeling_output.pdf"
-    make_docs(p_info, plane_info, img_paths, result_info, output_pdf_name)
+    make_docs(p_info, plane_info, img_paths, result_info)
