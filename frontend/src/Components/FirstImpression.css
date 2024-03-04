@@ -1,0 +1,176 @@
+.first-impression {
+	background-color: #292929;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+  }
+  
+  .first-impression .div {
+	background-color: #292929;
+	height: 1024px;
+	position: relative;
+	width: 1440px;
+  }
+  
+  .first-impression .image-holder-group {
+	height: 261px;
+	left: 462px;
+	position: absolute;
+	top: 482px;
+	width: 711px;
+  }
+  
+  .first-impression .axial-complete {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 561px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 16px;
+	width: 137px;
+  }
+  
+  .first-impression .coronal-complete {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 561px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 112px;
+	width: 137px;
+  }
+  
+  .first-impression .sagittal-complete {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 562px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 217px;
+	width: 137px;
+  }
+  
+  .first-impression .axial-text {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 72px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 17px;
+	width: 301px;
+  }
+  
+  .first-impression .coronal-text {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 84px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 116px;
+	width: 301px;
+  }
+  
+  .first-impression .sagittal-text {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 85px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 216px;
+	width: 301px;
+  }
+  
+  .first-impression .axial-image {
+	height: 61px;
+	left: 0;
+	object-fit: cover;
+	position: absolute;
+	top: 0;
+	width: 61px;
+  }
+  
+  .first-impression .coronal-image {
+	height: 61px;
+	left: 0;
+	object-fit: cover;
+	position: absolute;
+	top: 100px;
+	width: 61px;
+  }
+  
+  .first-impression .sagittal-image {
+	height: 61px;
+	left: 0;
+	object-fit: cover;
+	position: absolute;
+	top: 200px;
+	width: 61px;
+  }
+  
+  .first-impression .axialbutton {
+	/* background-color: #d9d9d9; */
+	height: 58px;
+	left: 430px;
+	position: absolute;
+	top: 0;
+	width: 108px;
+  }
+  
+  .first-impression .coronalbutton {
+	/* background-color: #d9d9d9; */
+	height: 58px;
+	left: 430px;
+	position: absolute;
+	top: 103px;
+	width: 108px;
+  }
+  
+  .first-impression .sagittalbutton {
+	/* background-color: #d9d9d9; */
+	height: 58px;
+	left: 430px;
+	position: absolute;
+	top: 203px;
+	width: 108px;
+  }
+  
+  .first-impression .logo {
+	height: 326px;
+	left: 577px;
+	object-fit: cover;
+	position: absolute;
+	top: 93px;
+	width: 286px;
+  }
+  .first-impression .InferenceButton {
+	position: absolute;
+	left: 430px;
+	top: 303px;
+	width: 108px;
+	height: 58px;
+  }

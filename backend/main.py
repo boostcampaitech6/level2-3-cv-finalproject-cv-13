@@ -125,3 +125,22 @@ async def outputFile(task: str, plane:str, method:str ):
     result_info['img'] = output_bytes
 
     return result_info
+
+@app.get("/result/{task}/{method}")
+async def resultFile(task:str, method:str):
+    if method == "original": #original or gradcam
+        IMAGE_ROOT = os.path.join(task, method) 
+    elif method == "gradcam":
+        IMAGE_ROOT = os.path.join(task, method)
+    
+    output_bytes = []
+    image_paths = os.listdir(IMAGE_ROOT)
+    for path in image_paths:
+
+        with open(os.path.join(IMAGE_ROOT, path), 'rb') as img:
+            base64_string = base64.b64encode(img.read())
+
+        headers = {'Content-Disposition': 'inline; filename="test.png"'}
+        output_bytes.append(Response(base64_string, headers=headers, media_type='image/png'))
+
+    return output_bytes
