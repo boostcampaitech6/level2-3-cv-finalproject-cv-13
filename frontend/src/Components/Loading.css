@@ -1,0 +1,55 @@
+.loading {
+	background-color: #292929;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+  }
+  
+  .loading .div {
+	background-color: #292929;
+	height: 1024px;
+	position: relative;
+	width: 1440px;
+  }
+  
+  .loading .loading-group {
+	height: 194px;
+	left: 635px;
+	position: absolute;
+	top: 482px;
+	width: 173px;
+  }
+  
+  .loading .text {
+	color: #ffffff;
+	font-family: "Alata-Regular", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 155px;
+	width: 171px;
+  }
+  
+  .loading .img {
+	height: 139px;
+	left: 16px;
+	object-fit: cover;
+	position: absolute;
+	top: 0;
+	width: 128px;
+  }
+  
+  .loading .logo {
+	height: 326px;
+	left: 577px;
+	object-fit: cover;
+	position: absolute;
+	top: 93px;
+	width: 286px;
+  }
+  
