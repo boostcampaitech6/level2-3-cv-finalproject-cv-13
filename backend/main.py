@@ -10,6 +10,9 @@ import json
 import shutil
 
 from utils import *
+from schemas import DICOMRequest
+from dcm_convert import convert_dcm_to_numpy
+from config import config
 
 origins = [
     "http://localhost:3000",
@@ -30,25 +33,27 @@ async def root():
     return {"message": "Hello"}
 
 @app.post("/input/{plane}") # ex) /input/axial
-async def receiveFile(plane: str, file: list[UploadFile]):
-    IMAGE_ROOT = os.path.join('original', plane)
-    if os.path.exists(IMAGE_ROOT): 
-        shutil.rmtree(IMAGE_ROOT) # 이미 폴더 있으면 삭제
-    os.makedirs(IMAGE_ROOT)
+async def receiveFile(plane:str, file: list[UploadFile]):
+    UPLOAD_FOLDER = os.path.join(config.orign_path, plane)
 
-    # 이미지 서버에 저장
+    if os.path.exists(UPLOAD_FOLDER): 
+        shutil.rmtree(UPLOAD_FOLDER) # 이미 폴더 있으면 삭제
+    os.makedirs(UPLOAD_FOLDER)
+
+    # DICOM 서버에 저장
     for f in file:
-        print(f.filename)
-        image = Image.open(f.file)
-        image.save(os.path.join(IMAGE_ROOT, f.filename), 'PNG')
-
-    return {plane : "success"}
+        try:
+            file_path = os.path.join(UPLOAD_FOLDER, f.filename)
+            with open(file_path, "wb") as file_object:
+                file_object.write(f.file.read())
+            return JSONResponse(status_code=200, content={ plane: "success"})
+        except Exception as e:
+            return JSONResponse(status_code=500, content={ plane: "파일 업로드에 실패했습니다.", "error": str(e)})
 
 @app.get("/inference")
 async def inference():
-    planes = ['axial', 'coronal', 'sagittal']
-    tasks = ['abnormal', 'acl', 'meniscus']
-    input_dict = {}
+    planes = config.planes
+    tasks = config.tasks
 
     # JSON template 불러오기
     with open('./template.json', 'r') as file:
@@ -70,10 +75,10 @@ async def inference():
 
             # 2. 전처리
             input_tensor = img_processing(img_list)
-            grad_cam_inference(input_tensor, "./models", "MRNet", task, plane)
             
             # 3. 개별 모델 추론
             res.append(predict_task(input_tensor, "./models", "MRNet", task, plane))
+            grad_cam_inference(input_tensor, "./models", "MRNet", task, plane)
 
         # 4. fusion 모델 추론
         proba = {}
