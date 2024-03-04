@@ -39,7 +39,7 @@
   
   .results-abnormal .text-wrapper {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 0;
@@ -53,7 +53,7 @@
   
   .results-abnormal .text-wrapper-2 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 150px;
@@ -67,7 +67,7 @@
   
   .results-abnormal .text-wrapper-3 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 282px;
@@ -112,7 +112,7 @@
   
   .results-abnormal .text-wrapper-4 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 0;
@@ -135,7 +135,7 @@
   
   .results-abnormal .text-wrapper-5 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 35px;
 	font-weight: 400;
 	left: 548px;
@@ -149,7 +149,7 @@
   
   .results-abnormal .text-wrapper-6 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 20px;
 	font-weight: 400;
 	left: 597px;
@@ -172,7 +172,7 @@
   
   .results-abnormal .text-wrapper-7 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 0;
@@ -195,7 +195,7 @@
   
   .results-abnormal .text-wrapper-8 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 576px;
@@ -233,7 +233,7 @@
   
   .results-abnormal .text-wrapper-9 {
 	color: #000000;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 0;
@@ -265,7 +265,7 @@
   
   .results-abnormal .text-wrapper-10 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 0;
@@ -295,7 +295,7 @@
   
   .results-abnormal .text-wrapper-11 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 17px;
@@ -323,7 +323,7 @@
   
   .results-abnormal .text-wrapper-12 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 0;
@@ -362,7 +362,7 @@
   
   .results-abnormal .text-wrapper-13 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 35px;
 	font-weight: 400;
 	left: 200px;
@@ -376,7 +376,7 @@
   
   .results-abnormal .text-wrapper-14 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 20px;
 	font-weight: 400;
 	left: 262px;
@@ -405,7 +405,7 @@
   
   .results-abnormal .text-wrapper-15 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 0;
@@ -435,7 +435,7 @@
   
   .results-abnormal .text-wrapper-16 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 0;
@@ -459,7 +459,7 @@
   
   .results-abnormal .text-wrapper-17 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 38px;
@@ -493,7 +493,7 @@
   
   .results-abnormal .text-wrapper-18 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 32px;
@@ -517,7 +517,7 @@
   
   .results-abnormal .text-wrapper-19 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 38px;
@@ -551,18 +551,26 @@
 	width: 655px;
   }
   
-  .results-abnormal .overlap-group-3 {
+  .results-abnormal .overlap-group-3-image {
 	/* background-color: #404040; */
 	height: 411px;
-	/* left: 60px; */
+	left: 120px;
 	position: relative;
-	width: 653px;
-	/* width: 411px; */
+	/* width: 653px; */
+	width: 411px;
+  }
+  .results-abnormal .overlap-group-3 {
+	background-color: #121212;
+	height: 411px;
+	left: 0px;
+	position: relative;
+	/* width: 653px; */
+	width: 665px;
   }
   
   .results-abnormal .graph-text {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 50px;
 	font-weight: 400;
 	left: 81px;
@@ -584,16 +592,16 @@
   
   .results-abnormal .rectangle-3 {
 	background: linear-gradient(90deg, rgb(0, 40.8, 255) 0%, rgb(255, 0, 0) 100%);
-	height: 30px;
+	height: 20px;
 	left: 0;
 	position: absolute;
 	top: 20px;
-	width: 290px;
+	width: 150px;
   }
   
   .results-abnormal .text-wrapper-20 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
 	left: 0;
@@ -608,15 +616,15 @@
   
   .results-abnormal .text-wrapper-21 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
-	left: 255px;
+	left: 125px;
 	letter-spacing: 0;
 	line-height: normal;
 	position: absolute;
 	text-align: center;
-	top: 2px;
+	top: 0px;
 	white-space: nowrap;
 	width: 39px;
   }

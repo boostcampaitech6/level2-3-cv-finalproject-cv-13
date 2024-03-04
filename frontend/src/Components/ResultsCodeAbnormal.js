@@ -279,8 +279,8 @@ export default function ResultsCodeAbnormal () {
               <div className="rectangle">
                 <Bar options={aboptions} data={abnormaldataset} />
               </div>
-              <div className="text-wrapper-5">{onLoad ? '?' : `${abnormaldataset.datasets[0].data[0].x}`}</div>
-              <div className="text-wrapper-6">%</div>
+              <div className="text-wrapper-5">{onLoad ? '?' : `${abnormaldataset.datasets[0].data[0].x}%`}</div>
+              <div className="text-wrapper-6"></div>
             </div>
           </div>
           <div className="category">
@@ -298,17 +298,21 @@ export default function ResultsCodeAbnormal () {
                 <div className="text-wrapper-9">Abnormal</div>
               </div>
             </div>
+            <Link to="/resultscodemeniscus">
             <div className="meniscus-button">
               <div className="overlap-group-2">
                 <div className="meniscus-cat" />
                 <div className="text-wrapper-10">Meniscus</div>
               </div>
             </div>
+            </Link>
+            <Link to="/resultscodeacl">
             <div className="ACL-button">
               <div className="div-wrapper">
                 <div className="text-wrapper-11">ACL</div>
               </div>
             </div>
+            </Link>
           </div>
         </div>
         <div className="ACL-score">
@@ -318,8 +322,8 @@ export default function ResultsCodeAbnormal () {
               <div className="rectangle-2">
                 <Bar options={acloptions} data={acldataset} />
               </div>
-              <div className="text-wrapper-13">{onLoad ? '?' : `${acldataset.datasets[0].data[0].x}`}</div>
-              <div className="text-wrapper-14">%</div>
+              <div className="text-wrapper-13">{onLoad ? '?' : `${acldataset.datasets[0].data[0].x}%`}</div>
+              <div className="text-wrapper-14"></div>
             </div>
           </div>
         </div>
@@ -330,8 +334,8 @@ export default function ResultsCodeAbnormal () {
               <div className="rectangle-0">
                 <Bar options={acloptions} data={meniscusdataset} />
               </div>
-              <div className="text-wrapper-13">{onLoad ? '?' : `${meniscusdataset.datasets[0].data[0].x}`}</div>
-              <div className="text-wrapper-14">%</div>
+              <div className="text-wrapper-13">{onLoad ? '?' : `${meniscusdataset.datasets[0].data[0].x}%`}</div>
+              <div className="text-wrapper-14"></div>
             </div>
           </div>
         </div>
@@ -360,7 +364,7 @@ export default function ResultsCodeAbnormal () {
                   ) : imageExists ? (
                     page[0] ? (
                       <img
-                        className="overlap-group-3"
+                        className="overlap-group-3-image"
                         alt="Press Inspect to Start!"
                         key='0'
                         src={`data:image/png;base64,${page[0].body}`}
@@ -408,7 +412,7 @@ export default function ResultsCodeAbnormal () {
                   ) : imageExists ? (
                     page[1] ? (
                       <img
-                        className="overlap-group-3"
+                        className="overlap-group-3-image"
                         alt="Press Inspect to Start!"
                         key='1'
                         src={`data:image/png;base64,${page[1].body}`}
@@ -428,12 +432,14 @@ export default function ResultsCodeAbnormal () {
                 </div>
               {/* </div> */}
             </div>
+            <Link to="/coronalresults">
             <div className="inspect-co">
               <div className="overlap-13">
                 <div className="ellipse" />
                 <div className="rectangle-4" />
               </div>
             </div>
+            </Link>
             <div className="plus-co">
               <div className="overlap-14">
                 <div className="rectangle-5" />
@@ -453,7 +459,7 @@ export default function ResultsCodeAbnormal () {
                   ) : imageExists ? (
                     page[2] ? (
                       <img
-                        className="overlap-group-3"
+                        className="overlap-group-3-image"
                         alt="Press Inspect to Start!"
                         key='2'
                         src={`data:image/png;base64,${page[2].body}`}
@@ -473,12 +479,14 @@ export default function ResultsCodeAbnormal () {
                 </div>
               {/* </div> */}
             </div>
+            <Link to="/sagittalresults">
             <div className="inspect-sag">
               <div className="overlap-13">
                 <div className="ellipse" />
                 <div className="rectangle-4" />
               </div>
             </div>
+            </Link>
             <div className="plus-sag">
               <div className="overlap-14">
                 <div className="rectangle-5" />

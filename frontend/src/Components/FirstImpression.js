@@ -55,6 +55,11 @@ export default function FirstImpression () {
 		history.push("/DCM")
 	}
 
+	function alertUpload(e) {
+		e.preventDefault();
+		alert('이미지를 먼저 업로드해 주세요')
+	}
+
 	return (
 		<div className="first-impression">
       <div className="div">
@@ -112,7 +117,10 @@ export default function FirstImpression () {
 				<Button variant="contained"  onClick={changeScreen}  sx={{ color: 'white', backgroundColor: 'black' }}>
 					Inference
 				</Button>
-				 :''}
+				 :
+				 <Button variant="contained"  onClick={alertUpload}  sx={{ color: 'white', backgroundColor: 'black' }}>
+					Inference
+				</Button>}
 			</div>
 			<div className='ToDCM'>
 				<Button variant="text"  onClick={toDCM}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>

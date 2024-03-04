@@ -54,6 +54,10 @@ export default function FirstImpression () {
 		e.preventDefault();
 		history.push("/")
 	}
+	function alertUpload(e) {
+		e.preventDefault();
+		alert('DICOM 파일을 먼저 업로드해 주세요')
+	}
 
 	return (
 		<div className="first-impression">
@@ -112,7 +116,10 @@ export default function FirstImpression () {
 				<Button variant="contained"  onClick={changeScreen}  sx={{ color: 'white', backgroundColor: 'black' }}>
 					Inference
 				</Button>
-				 :''}
+				 :
+				 <Button variant="contained" onClick={alertUpload}  sx={{ color: 'white', backgroundColor: 'black' }}>
+					Inference
+				</Button>}
 			</div>
 			<div className='ToPNG'>
 				<Button variant="text"  onClick={toPNG}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>

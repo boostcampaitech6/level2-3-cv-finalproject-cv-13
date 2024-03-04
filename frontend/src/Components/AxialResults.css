@@ -67,14 +67,22 @@
 	left: 147px;
 	position: absolute;
 	top: 168px;
-	width: 800px;
+	width: 630px;
   }
   
-  .axial-results .overlap {
-	background-color: #484848;
+  .axial-results .overlapimage {
+	/* background-color: #484848; */
 	height: 630px;
 	position: relative;
-	width: 800px;
+	width: 630px;
+	left: 150px;
+  }
+  .axial-results .overlap {
+	background-color: #101010;
+	height: 630px;
+	position: relative;
+	width: 1000px;
+	align-items: center;
   }
   
   .axial-results .image-text {

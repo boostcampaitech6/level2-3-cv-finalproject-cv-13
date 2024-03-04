@@ -157,27 +157,19 @@ export default function AxialResults () {
 	return (
 	<div className="axial-results">
       <div className="div">
-        <div className="play-button">
-          <Button  variant="text" onClick={playButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PlayButton})`, backgroundRepeat: "no-repeat", 
-          width: "35px", height: "49px",backgroundSize: '35px', backgroundPosition: 'center',}}></Button>
-        </div>
-        <div className="pause-button-white">
-          <Button  variant="text" onClick={pauseButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PauseButtonWhite})`, backgroundRepeat: "no-repeat", 
-          width: "35px", height: "49px",backgroundSize: '28px', backgroundPosition: 'center',}}></Button>
-        </div>
         <div className="graph">
           {/* <div className="overlap-group"> */}
             <Line options={options} data={dataset} ref={chartRef} onClick={handleChartClick} />
           {/* </div> */}
         </div>
         <div className="image">
-          {/* <div className="overlap"> */}
+		<div className="overlap">
               {loading ? (
               <span>Loading...</span>
             ) : imageExists ? (
               page[currentidx] ? (
                 <img
-                  className="overlap"
+                  className="overlapimage"
                   alt="Press Inspect to Start!"
                   key={currentidx}
                   src={`data:image/png;base64,${page[currentidx].body}`}
@@ -189,7 +181,7 @@ export default function AxialResults () {
             ) : (
               <span>Error loading images</span>
             )}
-          {/* </div> */}
+        </div>
         </div>
         <div className="top-overlay">
           <div className="overlap-2">
@@ -203,6 +195,14 @@ export default function AxialResults () {
 			</Link>
           </div>
         </div>
+		<div className="play-button">
+			<Button  variant="text" onClick={playButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PlayButton})`, backgroundRepeat: "no-repeat", 
+			width: "35px", height: "49px",backgroundSize: '35px', backgroundPosition: 'center',}}></Button>
+			</div>
+			<div className="pause-button-white">
+			<Button  variant="text" onClick={pauseButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PauseButtonWhite})`, backgroundRepeat: "no-repeat", 
+			width: "35px", height: "49px",backgroundSize: '28px', backgroundPosition: 'center',}}></Button>
+		</div>
         <div className="slider">
           {/* <div className="div-wrapper"> */}
               <button
@@ -214,7 +214,7 @@ export default function AxialResults () {
               setCurrentIdx(currentidx - 1);
               }}
             >
-              <ChevronLeftIcon />
+              <ChevronLeftIcon style={{ color: 'black' }}/>
             </button>
             <button
               className="nav-btn2"
@@ -225,7 +225,7 @@ export default function AxialResults () {
               setCurrentIdx(currentidx + 1);
               }}
             >
-              <ChevronRightIcon />
+              <ChevronRightIcon sx={{ color: 'black' }}/>
             </button>
           {/* </div> */}
         </div>
