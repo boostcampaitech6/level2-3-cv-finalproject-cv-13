@@ -8,7 +8,6 @@ class MRNet(nn.Module):
         super().__init__()
         self.pretrained_model = models.alexnet(weights=AlexNet_Weights.IMAGENET1K_V1)
         self.target = [self.pretrained_model.features[-1]]
-        print(self.target)
         self.pooling_layer = nn.AdaptiveAvgPool2d(1)
         self.classifer = nn.Linear(256, 2)
 
