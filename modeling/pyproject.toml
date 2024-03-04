@@ -21,6 +21,7 @@ opencv-python = "4.8.0.76"
 tqdm = "4.62.3"
 ttach = "0.0.3"
 pydicom = "^2.4.4"
+ipykernel = "^6.29.3"
 
 [[tool.poetry.source]]
 name = "pytorch"
