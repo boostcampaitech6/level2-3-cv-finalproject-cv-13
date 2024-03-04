@@ -9,11 +9,14 @@ import CoronalResults from '../Components/CoronalResults';
 import SagittalResults from '../Components/SagittalResults';
 import FirstImpression from '../Components/FirstImpression';
 import Loading from '../Components/Loading';
+import FirstImpressionDCM from '../Components/FirstImpressionDCM';
+
 const RouterDOM = () => {
 	return (
 		<Router>
 			<Switch>
 				<Route exact path="/"><FirstImpression /></Route>
+				<Route exact path="/DCM"><FirstImpressionDCM /></Route>
 				<Route exact path="/resultscodeacl"><ResultsCodeACL /></Route>
 				<Route exact path="/resultscodeabnormal"><ResultsCodeAbnormal /></Route>
 				<Route exact path="/resultscodemeniscus"><ResultsCodeMeniscus /></Route>

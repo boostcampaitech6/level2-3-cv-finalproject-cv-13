@@ -45,11 +45,11 @@
   }
   
   .loading .logo {
-	height: 326px;
+	height: 350px;
 	left: 577px;
-	object-fit: cover;
+	object-fit: none;
 	position: absolute;
 	top: 93px;
-	width: 286px;
+	width: 300px;
   }
   

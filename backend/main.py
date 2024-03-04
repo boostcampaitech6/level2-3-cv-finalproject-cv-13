@@ -29,6 +29,10 @@ app.add_middleware(
 async def root():
     return {"message": "Hello"}
 
+@app.post("/input/dicom/{plane}")
+async def receiveDICOM(plane: str, file: UploadFile):
+    pass
+
 @app.post("/input/{plane}") # ex) /input/axial
 async def receiveFile(plane: str, file: list[UploadFile]):
     IMAGE_ROOT = os.path.join('original', plane)

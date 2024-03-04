@@ -1,5 +1,5 @@
 import React from 'react'
-import './FirstImpression.css'
+import './FirstImpressionDCM.css'
 import ImgAsset from '../public'
 import { useHistory } from 'react-router-dom'
 import {useState, useRef} from 'react';
@@ -22,7 +22,7 @@ export default function FirstImpression () {
 		formData.append('file', files[i]);
 		}
 
-		const currenturl = `http://127.0.0.1:8000/input/${plane}`
+		const currenturl = `http://127.0.0.1:8000/input/dicom/${plane}`
 		const postOptions = {
 			method: "POST",
 			url: currenturl,
@@ -50,9 +50,9 @@ export default function FirstImpression () {
 		history.push("/loading")
 	}
 
-	function toDCM(e) {
+	function toPNG(e) {
 		e.preventDefault();
-		history.push("/DCM")
+		history.push("/")
 	}
 
 	return (
@@ -62,17 +62,17 @@ export default function FirstImpression () {
           <div className="axial-complete">{ready[0] ? 'Complete!' : ''}</div>
           <div className="coronal-complete">{ready[1] ? 'Complete!' : ''}</div>
           <div className="sagittal-complete">{ready[2] ? 'Complete!' : ''}</div>
-          <div className="axial-text">Upload Axial images here...</div>
-          <div className="coronal-text">Upload Coronal images here...</div>
-          <div className="sagittal-text">Upload Sagittal images here...</div>
+          <div className="axial-text">Upload Axial DICOM here...</div>
+          <div className="coronal-text">Upload Coronal DICOM here...</div>
+          <div className="sagittal-text">Upload Sagittal DICOM here...</div>
           <img className="axial-image" alt="Axial image" src= {ImgAsset.FirstImpression_AxialImage} />
           <img className="coronal-image" alt="Coronal image" src={ImgAsset.FirstImpression_AxialImage} />
           <img className="sagittal-image" alt="Sagittal image" src={ImgAsset.FirstImpression_AxialImage} />
           <div className="axialbutton">
 				<input
 					type="file"
-					multiple={true}
-					accept="image/*"
+					multiple={false}
+					accept=".dcm"
 					onChange={(e) => saveImage(e, 'axial', 0)}
 					ref={refParam => inputRefs.current.axial = refParam}
 					style={{ display: "none" }}
@@ -84,8 +84,8 @@ export default function FirstImpression () {
           <div className="coronalbutton">
 		  		<input
 					type="file"
-					multiple={true}
-					accept="image/*"
+					multiple={false}
+					accept=".dcm"
 					onChange={(e) => saveImage(e, 'coronal', 1)}
 					ref={refParam => inputRefs.current.coronal = refParam}
 					style={{ display: "none" }}
@@ -97,8 +97,8 @@ export default function FirstImpression () {
           <div className="sagittalbutton">
 		  		<input
 					type="file"
-					multiple={true}
-					accept="image/*"
+					multiple={false}
+					accept=".dcm"
 					onChange={(e) => saveImage(e, 'sagittal', 2)}
 					ref={refParam => inputRefs.current.sagittal = refParam}
 					style={{ display: "none" }}
@@ -114,9 +114,9 @@ export default function FirstImpression () {
 				</Button>
 				 :''}
 			</div>
-			<div className='ToDCM'>
-				<Button variant="text"  onClick={toDCM}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>
-					Upload DICOM file instead
+			<div className='ToPNG'>
+				<Button variant="text"  onClick={toPNG}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>
+					Upload PNG file instead
 				</Button>
 			</div>
         </div>
