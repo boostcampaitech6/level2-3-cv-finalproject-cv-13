@@ -128,7 +128,7 @@ export default function AxialResults () {
 	}
 
 	const options = {
-		aspectRatio: 5,
+		aspectRatio: 6.3,
 		responsive: true,
 		plugins: {
 		  legend: {
