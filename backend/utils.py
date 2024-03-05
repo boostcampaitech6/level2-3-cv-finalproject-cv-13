@@ -54,7 +54,7 @@ def fusion_model(saved_path, task):
     return model
 
 # 개별 모델
-def predict_task(input, path, model_class, task, plane):
+def predict_disease(input, path, model_class, task, plane):
     #gpu 확인
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
