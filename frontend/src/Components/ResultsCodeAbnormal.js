@@ -96,8 +96,8 @@ export default function ResultsCodeAbnormal () {
 			borderWidth: 0.5,
 		  },
 		},
-		aspectRatio: 12,
-    // maintainAspectRatio: false,
+		aspectRatio: 10,
+    maintainAspectRatio: false,
 		responsive: true,
 		plugins: {
 		  legend: {
@@ -110,7 +110,6 @@ export default function ResultsCodeAbnormal () {
 		  },
 		},
     scales: {
-      // to remove the labels
       x: {
         min:0,
         max:100,
@@ -160,7 +159,6 @@ export default function ResultsCodeAbnormal () {
         },
       },
       scales: {
-        // to remove the labels
         x: {
           min: 0,
           max: 100,
@@ -227,7 +225,9 @@ export default function ResultsCodeAbnormal () {
               label: "%",
               data: [abnormaldata],
               borderColor: "rgb(255, 99, 132)",
+              // borderColor:'rgb(255, 255, 255)',
               backgroundColor: "rgba(255, 99, 132, 0.5)",
+              // backgroundColor:'rgba(255, 255, 255, 0.5)',
               barThickness: 40
           },
       ],
@@ -279,14 +279,16 @@ export default function ResultsCodeAbnormal () {
               <div className="rectangle">
                 <Bar options={aboptions} data={abnormaldataset} />
               </div>
-              <div className="text-wrapper-5">{onLoad ? '?' : `${abnormaldataset.datasets[0].data[0].x}`}</div>
-              <div className="text-wrapper-6">%</div>
+              <div className="text-wrapper-5">{onLoad ? '?' : `${abnormaldataset.datasets[0].data[0].x}%`}</div>
+              <div className="text-wrapper-6"></div>
             </div>
           </div>
           <div className="category">
             <div className="text-wrapper-7">Category</div>
             <div className='switch'>
-              <Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black' }}>
+              <Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              } }}>
                 Inspect
               </Button>
             </div>
@@ -298,17 +300,21 @@ export default function ResultsCodeAbnormal () {
                 <div className="text-wrapper-9">Abnormal</div>
               </div>
             </div>
+            <Link to="/resultscodemeniscus">
             <div className="meniscus-button">
               <div className="overlap-group-2">
                 <div className="meniscus-cat" />
                 <div className="text-wrapper-10">Meniscus</div>
               </div>
             </div>
+            </Link>
+            <Link to="/resultscodeacl">
             <div className="ACL-button">
               <div className="div-wrapper">
                 <div className="text-wrapper-11">ACL</div>
               </div>
             </div>
+            </Link>
           </div>
         </div>
         <div className="ACL-score">
@@ -318,8 +324,8 @@ export default function ResultsCodeAbnormal () {
               <div className="rectangle-2">
                 <Bar options={acloptions} data={acldataset} />
               </div>
-              <div className="text-wrapper-13">{onLoad ? '?' : `${acldataset.datasets[0].data[0].x}`}</div>
-              <div className="text-wrapper-14">%</div>
+              <div className="text-wrapper-13">{onLoad ? '?' : `${acldataset.datasets[0].data[0].x}%`}</div>
+              <div className="text-wrapper-14"></div>
             </div>
           </div>
         </div>
@@ -330,8 +336,8 @@ export default function ResultsCodeAbnormal () {
               <div className="rectangle-0">
                 <Bar options={acloptions} data={meniscusdataset} />
               </div>
-              <div className="text-wrapper-13">{onLoad ? '?' : `${meniscusdataset.datasets[0].data[0].x}`}</div>
-              <div className="text-wrapper-14">%</div>
+              <div className="text-wrapper-13">{onLoad ? '?' : `${meniscusdataset.datasets[0].data[0].x}%`}</div>
+              <div className="text-wrapper-14"></div>
             </div>
           </div>
         </div>
@@ -360,7 +366,7 @@ export default function ResultsCodeAbnormal () {
                   ) : imageExists ? (
                     page[0] ? (
                       <img
-                        className="overlap-group-3"
+                        className="overlap-group-3-image"
                         alt="Press Inspect to Start!"
                         key='0'
                         src={`data:image/png;base64,${page[0].body}`}
@@ -389,12 +395,12 @@ export default function ResultsCodeAbnormal () {
               </div>
             </div>
             </Link>
-            <div className="plus-ax">
+            {/* <div className="plus-ax">
               <div className="overlap-14">
                 <div className="rectangle-5" />
                 <div className="rectangle-6" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="coronal-group">
@@ -408,7 +414,7 @@ export default function ResultsCodeAbnormal () {
                   ) : imageExists ? (
                     page[1] ? (
                       <img
-                        className="overlap-group-3"
+                        className="overlap-group-3-image"
                         alt="Press Inspect to Start!"
                         key='1'
                         src={`data:image/png;base64,${page[1].body}`}
@@ -428,18 +434,20 @@ export default function ResultsCodeAbnormal () {
                 </div>
               {/* </div> */}
             </div>
+            <Link to="/coronalresults">
             <div className="inspect-co">
               <div className="overlap-13">
                 <div className="ellipse" />
                 <div className="rectangle-4" />
               </div>
             </div>
-            <div className="plus-co">
+            </Link>
+            {/* <div className="plus-co">
               <div className="overlap-14">
                 <div className="rectangle-5" />
                 <div className="rectangle-6" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="sagittal-group">
@@ -453,7 +461,7 @@ export default function ResultsCodeAbnormal () {
                   ) : imageExists ? (
                     page[2] ? (
                       <img
-                        className="overlap-group-3"
+                        className="overlap-group-3-image"
                         alt="Press Inspect to Start!"
                         key='2'
                         src={`data:image/png;base64,${page[2].body}`}
@@ -473,18 +481,20 @@ export default function ResultsCodeAbnormal () {
                 </div>
               {/* </div> */}
             </div>
+            <Link to="/sagittalresults">
             <div className="inspect-sag">
               <div className="overlap-13">
                 <div className="ellipse" />
                 <div className="rectangle-4" />
               </div>
             </div>
-            <div className="plus-sag">
+            </Link>
+            {/* <div className="plus-sag">
               <div className="overlap-14">
                 <div className="rectangle-5" />
                 <div className="rectangle-6" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

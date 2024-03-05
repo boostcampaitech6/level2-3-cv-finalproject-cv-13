@@ -3,8 +3,8 @@ import axios from 'axios'
 import './AxialResults.css'
 import ImgAsset from '../public'
 import {Link} from 'react-router-dom'
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {Button} from "@mui/material";
 import {
 	Chart as ChartJS,
@@ -64,7 +64,6 @@ export default function AxialResults () {
 	let [currentidx, setCurrentIdx] = useState(loading ? 0 : Data.highest);
 	
 	useEffect(() => {
-	// Set the initial page based on gradstate
 	setPage(images);
 	}, [images]);
 
@@ -89,8 +88,10 @@ export default function AxialResults () {
 			{
 				label: "Importance of Slides",
 				data: Data.datasets,
-				borderColor: "rgb(255, 99, 132)",
-				backgroundColor: "rgba(255, 99, 132, 0.5)",
+				// borderColor: "rgb(255, 99, 132)",
+				borderColor: "rgb(255, 255, 255",
+				// backgroundColor: "rgba(255, 99, 132, 0.5)",
+				backgroundColor: "rgba(255, 255, 255, 0.8)",
 			},
 		],
 	};
@@ -146,7 +147,8 @@ export default function AxialResults () {
 				  type: 'line',
 				  xMin: currentidx,
 				  xMax: currentidx,
-				  borderColor: 'rgb(255, 99, 132)',
+				//   borderColor: 'rgb(255, 99, 132)',
+				  borderColor:'rgb(255, 255, 255)',
 				  borderWidth: 2,
 				}
 			  }
@@ -157,27 +159,19 @@ export default function AxialResults () {
 	return (
 	<div className="axial-results">
       <div className="div">
-        <div className="play-button">
-          <Button  variant="text" onClick={playButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PlayButton})`, backgroundRepeat: "no-repeat", 
-          width: "35px", height: "49px",backgroundSize: '35px', backgroundPosition: 'center',}}></Button>
-        </div>
-        <div className="pause-button-white">
-          <Button  variant="text" onClick={pauseButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PauseButtonWhite})`, backgroundRepeat: "no-repeat", 
-          width: "35px", height: "49px",backgroundSize: '28px', backgroundPosition: 'center',}}></Button>
-        </div>
         <div className="graph">
           {/* <div className="overlap-group"> */}
             <Line options={options} data={dataset} ref={chartRef} onClick={handleChartClick} />
           {/* </div> */}
         </div>
         <div className="image">
-          {/* <div className="overlap"> */}
+		<div className="overlap">
               {loading ? (
               <span>Loading...</span>
             ) : imageExists ? (
               page[currentidx] ? (
                 <img
-                  className="overlap"
+                  className="overlapimage"
                   alt="Press Inspect to Start!"
                   key={currentidx}
                   src={`data:image/png;base64,${page[currentidx].body}`}
@@ -189,7 +183,7 @@ export default function AxialResults () {
             ) : (
               <span>Error loading images</span>
             )}
-          {/* </div> */}
+        </div>
         </div>
         <div className="top-overlay">
           <div className="overlap-2">
@@ -203,9 +197,17 @@ export default function AxialResults () {
 			</Link>
           </div>
         </div>
+		<div className="play-button">
+			<Button  variant="text" onClick={playButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PlayButton})`, backgroundRepeat: "no-repeat", 
+			width: "35px", height: "49px",backgroundSize: '35px', backgroundPosition: 'center',}}></Button>
+			</div>
+		<div className="pause-button-white">
+			<Button  variant="text" onClick={pauseButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PauseButtonWhite})`, backgroundRepeat: "no-repeat", 
+			width: "35px", height: "49px",backgroundSize: '28px', backgroundPosition: 'center',}}></Button>
+		</div>
         <div className="slider">
           {/* <div className="div-wrapper"> */}
-              <button
+              <button style={{backgroundColor: 'black', color: 'white'}}
               className="nav-btn1"
               onClick={() => {
               if (currentidx === 0) {
@@ -214,9 +216,9 @@ export default function AxialResults () {
               setCurrentIdx(currentidx - 1);
               }}
             >
-              <ChevronLeftIcon />
+              <NavigateBeforeIcon />
             </button>
-            <button
+            <button style={{backgroundColor: 'black', color: 'white'}}
               className="nav-btn2"
               onClick={() => {
               if (currentidx === Data.datasets.length - 1) {
@@ -225,7 +227,7 @@ export default function AxialResults () {
               setCurrentIdx(currentidx + 1);
               }}
             >
-              <ChevronRightIcon />
+              <NavigateNextIcon />
             </button>
           {/* </div> */}
         </div>

@@ -23,6 +23,9 @@
 	top: 691px;
 	width: 36px;
   }
+  .axial-results .play-button:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
+  }
   
   .axial-results .pause-button-white {
 	height: 49px;
@@ -31,6 +34,9 @@
 	position: absolute;
 	top: 689px;
 	width: 35px;
+  }
+  .axial-results .pause-button-white:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
   }
   
   .axial-results .graph {
@@ -67,14 +73,22 @@
 	left: 147px;
 	position: absolute;
 	top: 168px;
-	width: 800px;
+	width: 630px;
   }
   
-  .axial-results .overlap {
-	background-color: #484848;
+  .axial-results .overlapimage {
+	/* background-color: #484848; */
 	height: 630px;
 	position: relative;
-	width: 800px;
+	width: 630px;
+	left: 150px;
+  }
+  .axial-results .overlap {
+	background-color: #101010;
+	height: 630px;
+	position: relative;
+	width: 1000px;
+	align-items: center;
   }
   
   .axial-results .image-text {
@@ -168,9 +182,9 @@
   .axial-results .slider {
 	height: 30px;
 	/* left: 1300px; */
-	left: 1000px;
+	left: 1005px;
 	position: absolute;
-	top: 761px;
+	top: 755px;
 	width: 183px;
   }
   .axial-results .slider .nav-btn1 {
@@ -180,6 +194,9 @@
 	top: 0px;
 	width: 50px;
   }
+  .axial-results .slider .nav-btn1:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
+  }
   .axial-results .slider .nav-btn2 {
 	height: 30px;
 	left: 50px;
@@ -187,7 +204,9 @@
 	top: 0px;
 	width: 50px;
   }
-  
+  .axial-results .slider .nav-btn2:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
+  }
   .axial-results .div-wrapper {
 	background-color: #484848;
 	height: 37px;
@@ -215,6 +234,9 @@
 	position: absolute;
 	top: 158px;
 	width: 86px;
+  }
+  .axial-results .back:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
   }
   
   .axial-results .overlap-3 {
