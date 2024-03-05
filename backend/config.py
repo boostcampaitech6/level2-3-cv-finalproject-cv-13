@@ -1,6 +1,6 @@
+import torch
 from pydantic import Field
 from pydantic_settings import BaseSettings
-import os
 
 class Config(BaseSettings):
     ext: list = [".dcm"]  # , ".png"
@@ -10,5 +10,6 @@ class Config(BaseSettings):
     result_path: str = "results"
     model_path: str = "models"
     model_class: str = "MRNet"
+    device: str = "cuda" if torch.cuda.is_available() else "cpu"
 
 config = Config()
