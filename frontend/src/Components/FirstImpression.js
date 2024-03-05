@@ -137,6 +137,11 @@ export default function FirstImpression () {
 					Upload DICOM file instead
 				</Button>
 			</div>
+			<div className='ToDCM'>
+				<Button variant="text"  onClick={toDCM}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>
+					Upload DICOM file instead
+				</Button>
+			</div>
         </div>
         <img className="logo" alt="Logo" src={ImgAsset.ResultsCodeACL_logo} />
       </div>

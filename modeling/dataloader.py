@@ -26,6 +26,7 @@ class MRDataset(data.Dataset):
             lambda i: '0' * (4 - len(str(i))) + str(i))
         self.paths = [self.folder_path + filename +
                       '.npy' for filename in self.records['id'].tolist()]
+        self.ids = self.records['id'].tolist()
         self.labels = self.records['label'].tolist()
 
         self.transform = transform

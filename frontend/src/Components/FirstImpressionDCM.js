@@ -54,6 +54,7 @@ export default function FirstImpression () {
 		e.preventDefault();
 		history.push("/")
 	}
+
 	function alertUpload(e) {
 		e.preventDefault();
 		alert('DICOM 파일을 먼저 업로드해 주세요')
