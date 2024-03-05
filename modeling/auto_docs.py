@@ -129,7 +129,7 @@ class SummaryReport:
         first_col.width = Inches(8)
 
         # find idxs that have score over 50
-        idxs = [[i, int(k[1][:-1])] for i, k in self.result_info.items()]
+        idxs = [[i, float(k[1][:-1])] for i, k in self.result_info.items()]
         idxs = [i[0] for i in list(filter(lambda x: x[1] >= 50, idxs))]
         
         for i, row in enumerate(table.rows):
