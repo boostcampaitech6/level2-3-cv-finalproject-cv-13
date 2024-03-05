@@ -6,19 +6,19 @@ import torch
 from importlib import import_module
 import pickle
 from sklearn.linear_model import LogisticRegression
-from model import *
+
+from model import MRNet
+from config import config
+
 
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.model_targets import BinaryClassifierOutputTarget
 from pytorch_grad_cam.utils.image import show_cam_on_image
 
-def img_processing(imgs):
-    img_array = []
 
-    for img in imgs:
-        image = img.convert("L")
-        image_np = np.array(image)
-        img_array.append(image_np)
+def data_processing(path):
+    
+    img_array = np.load(path)
 
     img_array = np.stack((img_array,)*3, axis=1)
     img_array = torch.FloatTensor(img_array)
@@ -82,28 +82,42 @@ def predict_percent(input, path, task):
 def grad_cam_inference(input, path, model_class, task, plane):
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
-    grad_dir = os.path.join('gradcamimages', task, plane)
+    grad_dir = os.path.join('gradcam', task)
 
     #모델 불러오기
     model = load_model(path, model_class, task, plane, device).to(device)
     model.eval()
+
     # target_layers = model.target
     target_layers = [model.pretrained_model.features[-1]]
+    score_li = []
 
     with GradCAM(model=model, target_layers=target_layers) as cam:
         targets = [BinaryClassifierOutputTarget(1)]
-
-        print('Generating Grad-CAM Images...')
+        
         cam_result_list = cam(
                             input_tensor=input.float(), targets=targets, 
                             aug_smooth=True, eigen_smooth=True
                                 )
-        original_image_list = torch.squeeze(input, dim=0).permute(0, 2, 3, 1).cpu().numpy() / 255.0
+        
+        #camscore처리
+        for array in cam_result_list:
+            score_li.append(array.sum())
+        max_idx = score_li.index(max(score_li))
 
-        visualization_list = [show_cam_on_image(original_image, cam_result) for original_image, cam_result in zip(original_image_list, cam_result_list)]
-        visualization_images = [Image.fromarray(visualization) for visualization in visualization_list]
+        print(f'Generating Grad-CAM Images about {task}-{plane}')
+        original_image = torch.squeeze(input, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
+        cam_result = cam_result_list[max_idx]
+        visualization = show_cam_on_image(original_image, cam_result) 
+        visualization_image = Image.fromarray(visualization)
 
-        for i, vis_res in enumerate(visualization_images):
-            if not os.path.exists(grad_dir):
-                os.makedirs(grad_dir)
-            vis_res.save(os.path.join(grad_dir, str(i)+'.png'))
+        if not os.path.exists(grad_dir):
+            os.makedirs(grad_dir)
+        
+        grad_path = os.path.join(grad_dir, plane +'.png')
+        if os.path.exists(grad_path):
+            os.remove(grad_path)
+        
+        visualization_image.save(grad_path)
+
+    return max_idx, score_li

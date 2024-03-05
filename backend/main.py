@@ -52,11 +52,8 @@ async def receiveFile(plane:str, file: list[UploadFile]):
                 file_object.write(f.file.read())
 
                 _, npy_array = convert_dcm_to_numpy(file_path)
-                np.save(file_path.replace(ext,'.npy'), npy_array)
-                
-                #test
-                check = np.load(file_path.replace(ext,'.npy'))
-                print(check.shape)
+                np.save(os.path.join(UPLOAD_FOLDER, "input.npy"), npy_array)
+
             return JSONResponse(status_code=200, content={ plane: "success"})
         except Exception as e:
             raise HTTPException(status_code=500, content={ plane: "파일 업로드에 실패했습니다.", "error": str(e)})
@@ -70,32 +67,34 @@ async def inference():
     # JSON template 불러오기
     with open('./template.json', 'r') as file:
         result_dict = json.load(file)
+    result_dict['percent']['labels'] = config.diseases
 
     for disease in diseases:
-        result_dict['percent']['labels'].append(disease)
         res = []
 
         for plane in planes:
-            IMAGE_ROOT = os.path.join('original', plane)
-            image_paths = os.listdir(IMAGE_ROOT)
-            img_list = []
-
-            # 1. 이미지 불러오기
-            for path in image_paths:
-                image = Image.open(os.path.join(IMAGE_ROOT, path))
-                img_list.append(image)
-
+            input_path = os.path.join(config.orign_path, plane, 'input.npy')
             # 2. 전처리
-            input_tensor = img_processing(img_list)
-            
+            input_tensor = data_processing(input_path)
+        
             # 3. 개별 모델 추론
-            res.append(predict_disease(input_tensor, "./models", "MRNet", disease, plane))
-            grad_cam_inference(input_tensor, "./models", "MRNet", disease, plane)
+            res.append(predict_disease(input_tensor, "./models", config.model_class, disease, plane))
+            
+            # 4. gradcam 이미지 추출 & camscore저장
+            max_idx, camscores = grad_cam_inference(input_tensor, "./models", config.model_class, disease, plane)
 
-            # 5. img_json['grad_cam']에 gradcam 결과값 입력
-            # or result_img에 gradcam 이미지 저장...
+            # 4-1. result_dict에 score 결과값 입력
+            datasets = [] 
+            labels = []
+            for i, score in enumerate(camscores):
+                labels.append(i)
+                datasets.append({"x": i, "y": int(score)})
 
-        # 4. fusion 모델 추론
+            result_dict[disease][plane]['labels'] = labels
+            result_dict[disease][plane]['datasets'] = datasets
+            result_dict[disease][plane]['highest'] = max_idx
+
+        # 5. fusion 모델 추론
         proba = {}
         proba['y'] = disease
         fusion_res = predict_percent(res,"./models", disease)
@@ -117,33 +116,6 @@ async def outputJSON() -> resultResponse:
     result = result_dict['percent']
     return resultResponse(labels=result["labels"], datasets=result["datasets"])
 
-# 원본이미지 + 질병에 따른 사진 별 score 그래프
-@app.get("/output/{disease}/{plane}") # ex) ouput/abnormal/axial
-async def outputFile(disease: str, plane:str, method:str) -> DiseaseResult:
-    IMAGE_ROOT = os.path.join("original", plane)
-    #이미지 정보
-    output_bytes = []
-    image_paths = os.listdir(IMAGE_ROOT)
-    for path in image_paths:
-
-        with open(os.path.join(IMAGE_ROOT, path), 'rb') as img:
-            base64_string = base64.b64encode(img.read())
-
-        headers = {'Content-Disposition': 'inline; filename="test.png"'}
-        output_bytes.append(Response(base64_string, headers=headers, media_type='image/png'))
-    
-    #disease-plane importance 정보
-    with open('./result.json', 'r') as file:
-        result_dict = json.load(file)
-    info = result_dict[disease][plane]
-
-    result_info = {}
-    #info + 이미지
-    result_info['info'] = info
-    result_info['img'] = output_bytes
-
-    return result_info
-
 # 질병 별 각 축의 가장 중요 슬라이드 + gradcam
 @app.get("/result/{disease}/{method}")
 async def resultFile(disease:str, method:str):
@@ -163,3 +135,30 @@ async def resultFile(disease:str, method:str):
         output_bytes.append(Response(base64_string, headers=headers, media_type='image/png'))
 
     return output_bytes
+
+# 원본이미지 + 질병에 따른 사진 별 score 그래프
+@app.get("/output/{disease}/{plane}") # ex) ouput/abnormal/axial
+async def outputFile(disease: str, plane:str):
+    INPUT_ROOT = os.path.join(config.orign_path, plane)
+    #이미지 정보
+    output_bytes = []
+    numpy_paths = os.path.join(INPUT_ROOT,'input.npy')
+
+    npy_images = np.load(numpy_paths)
+    for npy_img in npy_images:
+        base64_string = base64.b64encode(npy_img)
+
+        headers = {'Content-Disposition': 'inline; filename="test.png"'}
+        output_bytes.append(Response(base64_string, headers=headers, media_type='image/png'))
+    
+    #disease-plane importance 정보
+    with open('./result.json', 'r') as file:
+        result_dict = json.load(file)
+    info = result_dict[disease][plane]
+
+    result_info = {}
+    #info + 이미지
+    result_info['info'] = info
+    result_info['img'] = output_bytes
+
+    return result_info
