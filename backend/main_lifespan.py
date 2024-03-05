@@ -19,6 +19,7 @@ from utils import *
 from schemas import DICOMRequest, resultResponse, DiseaseResult
 from dcm_convert import convert_dcm_to_numpy
 from config import config
+from auto_docs import summary_report
 
 
 @asynccontextmanager
@@ -113,7 +114,20 @@ async def inference():
         proba['y'] = disease
         fusion_res = predict_percent(res, "./models", disease)
         proba['x'] = round((fusion_res[0] * 100),1)
-        result_dict['percent']['datasets'].append(proba)
+        result_dict['percent']['datasets'].append(proba)    
+        
+    # # need for summary report
+    # cls_result = result_dict['percent']['datasets']
+    # prob_result = [proba['x'] for proba in cls_result]
+    # max_prob_idx = prob_result.index(max(prob_result))
+    # max_cls = result_dict["percent"]["labels"][max_prob_idx]
+    
+    # _dcm_path = os.path.join(config.orign_path, planes[0], 'axial.dcm')
+    # _gradcam_path = os.path.join("result", 'gradcam', max_cls)
+    # summary_report.set_personal_info(_dcm_path)
+    # summary_report.set_image_paths(_gradcam_path)
+    # summary_report.set_result_info(prob_result)
+    # summary_report.export_to_docx()
 
     with open('./result.json','w') as f:
         json.dump(result_dict, f, indent=4)
