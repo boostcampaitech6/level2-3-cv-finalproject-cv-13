@@ -83,7 +83,7 @@ def grad_cam_inference(input, path, model_class, task, plane):
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
     res_grad_dir = os.path.join('result','gradcam', task)
-    res_original_dir = os.path.join('result','orignial', task)
+    res_original_dir = os.path.join('result','original', task)
 
     #모델 불러오기
     model = load_model(path, model_class, task, plane, device).to(device)
