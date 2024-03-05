@@ -30,7 +30,7 @@ def get_df(task, fold_num, train=True):
     y = np.array([v[-1] for v in all])
     groups = np.array([v[0] for v in all])
 
-    cv = StratifiedGroupKFold(n_splits=10, shuffle=True, random_state=2024)
+    cv = StratifiedGroupKFold(n_splits=9, shuffle=True, random_state=2024)
 
     train_fold = []
     valid_fold = []
