@@ -82,7 +82,8 @@ def predict_percent(input, path, task):
 def grad_cam_inference(input, path, model_class, task, plane):
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
-    grad_dir = os.path.join('gradcam', task)
+    res_grad_dir = os.path.join('result','gradcam', task)
+    res_original_dir = os.path.join('result','orignial', task)
 
     #모델 불러오기
     model = load_model(path, model_class, task, plane, device).to(device)
@@ -106,19 +107,27 @@ def grad_cam_inference(input, path, model_class, task, plane):
         max_idx = score_li.index(max(score_li))
         scores = [((x-min(score_li))/(max(score_li)-min(score_li)))*100 for x in score_li]
 
-        print(f'Generating Grad-CAM Images about {task}-{plane}')
         original_image = torch.squeeze(input, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
         cam_result = cam_result_list[max_idx]
-        visualization = show_cam_on_image(original_image, cam_result) 
+        visualization = show_cam_on_image(original_image, cam_result, use_rgb=True) 
         visualization_image = Image.fromarray(visualization)
-
-        if not os.path.exists(grad_dir):
-            os.makedirs(grad_dir)
+        result_original_image = Image.fromarray((original_image*255).astype(np.uint8))
         
-        grad_path = os.path.join(grad_dir, plane +'.png')
+        if not os.path.exists(res_grad_dir):
+            os.makedirs(res_grad_dir)
+        if not os.path.exists(res_original_dir):
+            os.makedirs(res_original_dir)
+        
+        grad_path = os.path.join(res_grad_dir, plane +'.png')
+        original_path = os.path.join(res_original_dir, plane +'.png')
+
         if os.path.exists(grad_path):
             os.remove(grad_path)
         
         visualization_image.save(grad_path)
+        
+        if os.path.exists(original_path):
+            os.remove(original_path)
+        result_original_image.save(original_path)
 
     return max_idx, scores

@@ -3,11 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from PIL import Image
+import io
 import os
 import numpy as np
 import base64
 import json
 import shutil
+import warnings
+warnings.filterwarnings("ignore")
 
 from utils import *
 from schemas import DICOMRequest, resultResponse, DiseaseResult
@@ -74,16 +77,14 @@ async def inference():
 
         for plane in planes:
             input_path = os.path.join(config.orign_path, plane, 'input.npy')
-            # 2. 전처리
+            
+            print(f'Inference about {disease}-{plane}')
             input_tensor = data_processing(input_path)
-        
-            # 3. 개별 모델 추론
             res.append(predict_disease(input_tensor, "./models", config.model_class, disease, plane))
             
-            # 4. gradcam 이미지 추출 & camscore저장
+            print(f'Generating Importnat Images and Grad-CAM Images about {disease}-{plane}')
             max_idx, camscores = grad_cam_inference(input_tensor, "./models", config.model_class, disease, plane)
 
-            # 4-1. result_dict에 score 결과값 입력
             datasets = [] 
             labels = []
             for i, score in enumerate(camscores):
@@ -94,14 +95,13 @@ async def inference():
             result_dict[disease][plane]['datasets'] = datasets
             result_dict[disease][plane]['highest'] = max_idx
 
-        # 5. fusion 모델 추론
+        print(f'inference fusion about {disease}')
         proba = {}
         proba['y'] = disease
         fusion_res = predict_percent(res,"./models", disease)
         proba['x'] = round((fusion_res[0] * 100),1)
         result_dict['percent']['datasets'].append(proba)
 
-    #6. 추론 결과 json으로 저장
     with open('./result.json','w') as f:
         json.dump(result_dict, f, indent=4)
 
@@ -120,14 +120,13 @@ async def outputJSON() -> resultResponse:
 @app.get("/result/{disease}/{method}")
 async def resultFile(disease:str, method:str):
     if method == "original": #original or gradcam
-        IMAGE_ROOT = os.path.join(disease, method) 
+        IMAGE_ROOT = os.path.join('result', method, disease) 
     elif method == "gradcam":
-        IMAGE_ROOT = os.path.join(disease, method)
+        IMAGE_ROOT = os.path.join('result', method, disease)
     
     output_bytes = []
     image_paths = os.listdir(IMAGE_ROOT)
     for path in image_paths:
-
         with open(os.path.join(IMAGE_ROOT, path), 'rb') as img:
             base64_string = base64.b64encode(img.read())
 
@@ -146,8 +145,12 @@ async def outputFile(disease: str, plane:str):
 
     npy_images = np.load(numpy_paths)
     for npy_img in npy_images:
-        base64_string = base64.b64encode(npy_img)
+        npy_img = Image.fromarray(npy_img)
+        # PIL 이미지를 바이트 스트림으로 변환하여 메모리 버퍼에 저장
+        byte_buffer = io.BytesIO()
+        npy_img.save(byte_buffer, format="PNG")
 
+        base64_string = base64.b64encode(byte_buffer.getvalue())
         headers = {'Content-Disposition': 'inline; filename="test.png"'}
         output_bytes.append(Response(base64_string, headers=headers, media_type='image/png'))
     
