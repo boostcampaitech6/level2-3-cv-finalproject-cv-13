@@ -96,8 +96,8 @@ export default function ResultsCodeAbnormal () {
 			borderWidth: 0.5,
 		  },
 		},
-		aspectRatio: 12,
-    // maintainAspectRatio: false,
+		aspectRatio: 10,
+    maintainAspectRatio: false,
 		responsive: true,
 		plugins: {
 		  legend: {
@@ -110,7 +110,6 @@ export default function ResultsCodeAbnormal () {
 		  },
 		},
     scales: {
-      // to remove the labels
       x: {
         min:0,
         max:100,
@@ -160,7 +159,6 @@ export default function ResultsCodeAbnormal () {
         },
       },
       scales: {
-        // to remove the labels
         x: {
           min: 0,
           max: 100,
@@ -227,7 +225,9 @@ export default function ResultsCodeAbnormal () {
               label: "%",
               data: [abnormaldata],
               borderColor: "rgb(255, 99, 132)",
+              // borderColor:'rgb(255, 255, 255)',
               backgroundColor: "rgba(255, 99, 132, 0.5)",
+              // backgroundColor:'rgba(255, 255, 255, 0.5)',
               barThickness: 40
           },
       ],
@@ -286,7 +286,9 @@ export default function ResultsCodeAbnormal () {
           <div className="category">
             <div className="text-wrapper-7">Category</div>
             <div className='switch'>
-              <Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black' }}>
+              <Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              } }}>
                 Inspect
               </Button>
             </div>
@@ -393,12 +395,12 @@ export default function ResultsCodeAbnormal () {
               </div>
             </div>
             </Link>
-            <div className="plus-ax">
+            {/* <div className="plus-ax">
               <div className="overlap-14">
                 <div className="rectangle-5" />
                 <div className="rectangle-6" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="coronal-group">
@@ -440,12 +442,12 @@ export default function ResultsCodeAbnormal () {
               </div>
             </div>
             </Link>
-            <div className="plus-co">
+            {/* <div className="plus-co">
               <div className="overlap-14">
                 <div className="rectangle-5" />
                 <div className="rectangle-6" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="sagittal-group">
@@ -487,12 +489,12 @@ export default function ResultsCodeAbnormal () {
               </div>
             </div>
             </Link>
-            <div className="plus-sag">
+            {/* <div className="plus-sag">
               <div className="overlap-14">
                 <div className="rectangle-5" />
                 <div className="rectangle-6" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

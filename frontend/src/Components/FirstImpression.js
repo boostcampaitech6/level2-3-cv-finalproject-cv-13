@@ -82,7 +82,9 @@ export default function FirstImpression () {
 					ref={refParam => inputRefs.current.axial = refParam}
 					style={{ display: "none" }}
 				/>
-				<Button variant="contained" onClick={() => inputRefs.current.axial.click()} sx={{ color: 'white', backgroundColor: 'black' }}>
+				<Button variant="contained" onClick={() => inputRefs.current.axial.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              }}}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button> 
 		  </div>
@@ -95,7 +97,9 @@ export default function FirstImpression () {
 					ref={refParam => inputRefs.current.coronal = refParam}
 					style={{ display: "none" }}
 				/>
-				<Button variant="contained" onClick={() => inputRefs.current.coronal.click()} sx={{ color: 'white', backgroundColor: 'black' }}>
+				<Button variant="contained" onClick={() => inputRefs.current.coronal.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              }}}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button>
 		  </div>
@@ -108,17 +112,23 @@ export default function FirstImpression () {
 					ref={refParam => inputRefs.current.sagittal = refParam}
 					style={{ display: "none" }}
 				/>
-				<Button variant="contained" onClick={() => inputRefs.current.sagittal.click()} sx={{ color: 'white', backgroundColor: 'black' }}>
+				<Button variant="contained" onClick={() => inputRefs.current.sagittal.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              } }}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button>
 		  </div>
 		    <div className='InferenceButton'>
 				{ready.every((x) => x === true) ? 
-				<Button variant="contained"  onClick={changeScreen}  sx={{ color: 'white', backgroundColor: 'black' }}>
+				<Button variant="contained"  onClick={changeScreen}  sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+					backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+					} }}>
 					Inference
 				</Button>
 				 :
-				 <Button variant="contained"  onClick={alertUpload}  sx={{ color: 'white', backgroundColor: 'black' }}>
+				 <Button variant="contained"  onClick={alertUpload}  sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+					backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+					} }}>
 					Inference
 				</Button>}
 			</div>

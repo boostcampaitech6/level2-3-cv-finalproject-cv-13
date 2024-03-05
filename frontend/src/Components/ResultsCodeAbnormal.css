@@ -130,7 +130,7 @@
 	left: 6px;
 	position: absolute;
 	top: 47px;
-	width: 1000px;
+	width: 600px;
   }
   
   .results-abnormal .text-wrapper-5 {
@@ -138,7 +138,7 @@
 	font-family: "Alata", Helvetica;
 	font-size: 35px;
 	font-weight: 400;
-	left: 548px;
+	left: 500px;
 	letter-spacing: 0;
 	line-height: normal;
 	position: absolute;
@@ -230,7 +230,7 @@
 	top: 0;
 	width: 90px;
   }
-  
+
   .results-abnormal .text-wrapper-9 {
 	color: #000000;
 	font-family: "Alata", Helvetica;
@@ -262,6 +262,9 @@
 	top: 0;
 	width: 90px;
   }
+  .results-abnormal .meniscus-button:hover {
+	transform: scale(1.1);
+  }
   
   .results-abnormal .text-wrapper-10 {
 	color: #ffffff;
@@ -291,6 +294,9 @@
 	height: 90px;
 	position: relative;
 	width: 90px;
+  }
+  .results-abnormal .div-wrapper:hover {
+	transform: scale(1.1);
   }
   
   .results-abnormal .text-wrapper-11 {
@@ -639,6 +645,9 @@
 	top: 337px;
 	width: 61px;
   }
+  .results-abnormal .inspect-ax:hover {
+	transform: scale(1.1);
+  }
   
   .results-abnormal .overlap-13 {
 	height: 32px;
@@ -652,11 +661,11 @@
 	border: 3px solid;
 	border-color: #ffffff;
 	border-radius: 12.5px/12px;
-	height: 24px;
+	height: 18px;
 	left: 0;
 	position: absolute;
 	top: 0;
-	width: 25px;
+	width: 18px;
   }
   
   .results-abnormal .rectangle-4 {
@@ -665,7 +674,7 @@
 	height: 6px;
 	left: 17px;
 	position: absolute;
-	top: 21px;
+	top: 23px;
 	transform: rotate(47.15deg);
 	width: 17px;
   }
@@ -736,6 +745,9 @@
 	top: 337px;
 	width: 61px;
   }
+  .results-abnormal .inspect-co:hover {
+	transform: scale(1.1);
+  }
   
   .results-abnormal .plus-co {
 	border: 3px solid;
@@ -773,6 +785,9 @@
 	position: absolute;
 	top: 335px;
 	width: 61px;
+  }
+  .results-abnormal .inspect-sag:hover {
+	transform: scale(1.1);
   }
   
   .results-abnormal .plus-sag {
