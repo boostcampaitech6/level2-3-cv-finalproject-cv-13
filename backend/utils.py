@@ -104,6 +104,7 @@ def grad_cam_inference(input, path, model_class, task, plane):
         for array in cam_result_list:
             score_li.append(array.sum())
         max_idx = score_li.index(max(score_li))
+        scores = [((x-min(score_li))/(max(score_li)-min(score_li)))*100 for x in score_li]
 
         print(f'Generating Grad-CAM Images about {task}-{plane}')
         original_image = torch.squeeze(input, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
@@ -120,4 +121,4 @@ def grad_cam_inference(input, path, model_class, task, plane):
         
         visualization_image.save(grad_path)
 
-    return max_idx, score_li
+    return max_idx, scores
