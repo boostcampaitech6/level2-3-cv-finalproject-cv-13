@@ -47,7 +47,6 @@ export default function ResultsCodeAbnormal (props) {
   const blackCircleStyle = { backgroundColor: '#3c3c3c' };
   const whiteTextStyle = { color: '#ffffff' };
   
-	// Component가 처음 마운트 될 때 1번만 데이터를 가져옵니다
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -56,7 +55,7 @@ export default function ResultsCodeAbnormal (props) {
 				setData(data);
 				setonLoad(false);
 				} catch (error) {
-					console.log(error);
+					alert(`질병 확률 데이터 로딩 시 에러가 발생했습니다. \n ${error}`);
 					setonLoad(true);
 				}
 		};
@@ -75,7 +74,7 @@ export default function ResultsCodeAbnormal (props) {
         setImageExists(true);
         setonLoad(false);
       } catch (error) {
-        console.log(error);
+        alert(`이미지 로딩 시 에러가 발생했습니다. \n ${error}`);
         setonLoad(true);
         setImageExists(false);
       }
@@ -93,12 +92,11 @@ export default function ResultsCodeAbnormal (props) {
 		}
 
   useEffect(() => {
-    // Set the initial page based on gradstate
     setPage(gradstate ? gradimages : images);
     }, [gradstate, images, gradimages]);
 
   const handleImageError = () => {
-		setImageExists(false); // Set imageExists to false if the image fails to load
+		setImageExists(false);
 	  };
 
   const aboptions = {
@@ -132,19 +130,16 @@ export default function ResultsCodeAbnormal (props) {
           // display: false,
         },
   
-        // to remove the x-axis grid
         grid: {
           drawBorder: false,
           display: false,
         },
       },
-      // to remove the y-axis labels
       y: {
         ticks: {
           display: false,
           beginAtZero: true,
         },
-        // to remove the y-axis grid
         grid: {
           drawBorder: false,
           display: false,
@@ -184,19 +179,16 @@ export default function ResultsCodeAbnormal (props) {
             // display: false,
           },
     
-          // to remove the x-axis grid
           grid: {
             drawBorder: false,
             display: false,
           },
         },
-        // to remove the y-axis labels
         y: {
           ticks: {
             display: false,
             beginAtZero: true,
           },
-          // to remove the y-axis grid
           grid: {
             drawBorder: false,
             display: false,
@@ -243,9 +235,7 @@ export default function ResultsCodeAbnormal (props) {
               label: "%",
               data: [abnormaldata],
               borderColor: "rgb(255, 99, 132)",
-              // borderColor:'rgb(255, 255, 255)',
               backgroundColor: "rgba(255, 99, 132, 0.5)",
-              // backgroundColor:'rgba(255, 255, 255, 0.5)',
               barThickness: 40
           },
       ],
@@ -305,13 +295,11 @@ export default function ResultsCodeAbnormal (props) {
             <div className="text-wrapper-7">Category</div>
             <div className='switch'>
               <Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
-              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              backgroundColor: 'white', color: 'black'
               } }}>
                 Inspect
               </Button>
             </div>
-            {/* <img className="switch" alt="Switch" src="switch.png" /> */}
-            {/* <div className="text-wrapper-8">Show</div> */}
             <Link to="/results/abnormal">
             <div className="abnormal-button">
               <div className="overlap-group-2">
@@ -379,7 +367,6 @@ export default function ResultsCodeAbnormal (props) {
         <div className="axial-group">
           <div className="overlap-12">
             <div className="overlap-group-wrapper">
-              {/* <div className="overlap-group-3"> */}
               <div className='overlap-group-3'>
                 {onLoad ? (
                     <span>Loading...</span>
@@ -399,13 +386,11 @@ export default function ResultsCodeAbnormal (props) {
                     <span>Error loading images</span>
                   )}
                 </div>
-                {/* <div className="graph-text">Axial</div> */}
                 <div className="heatmap-bar">
                   <div className="rectangle-3" />
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
                 </div>
-              {/* </div> */}
             </div>
             <Link to={`/results/${disease}/axial`}>
             <div className="inspect-ax">
@@ -426,8 +411,6 @@ export default function ResultsCodeAbnormal (props) {
         <div className="coronal-group">
           <div className="overlap-12">
             <div className="overlap-group-wrapper">
-              {/* <div className="overlap-group-3"> */}
-                {/* <div className="graph-text">Coronal</div> */}
                 <div className='overlap-group-3'>
                 {onLoad ? (
                     <span>Loading...</span>
@@ -452,7 +435,6 @@ export default function ResultsCodeAbnormal (props) {
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
                 </div>
-              {/* </div> */}
             </div>
             <Link to={`/results/${disease}/coronal`}>
             <div className="inspect-co">
@@ -473,8 +455,6 @@ export default function ResultsCodeAbnormal (props) {
         <div className="sagittal-group">
           <div className="overlap-12">
             <div className="overlap-group-wrapper">
-              {/* <div className="overlap-group-3"> */}
-                {/* <div className="graph-text">Sagittal</div> */}
                 <div className='overlap-group-3'>
                 {onLoad ? (
                     <span>Loading...</span>
@@ -499,7 +479,6 @@ export default function ResultsCodeAbnormal (props) {
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
                 </div>
-              {/* </div> */}
             </div>
             <Link to={`/results/${disease}/sagittal`}>
             <div className="inspect-sag">

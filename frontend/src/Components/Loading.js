@@ -15,7 +15,7 @@ export default function Loading () {
 				history.push("/results/abnormal");
 				} catch (error) {
 					console.log(error);
-					alert("Error occured during inference");
+					alert(`예측 도중에 에러가 발생하였습니다. \n ${error}`);
 					history.push("/")
 				}
 		};
@@ -23,7 +23,7 @@ export default function Loading () {
 	}, []);
 
 	return (
-		<div className="loading">
+	<div className="loading">
       <div className="div">
         <div className="loading-group">
           <div className="text">Loading...</div>
