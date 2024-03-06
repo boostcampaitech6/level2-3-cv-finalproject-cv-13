@@ -1,9 +1,6 @@
 # Data directory
 DATA_ROOT: './data/'
 
-# Model directory for grad-cam inference
-MODEL_ROOT: './models/model_Resnet50_abnormal_axial_epoch_15.pth'
-
 # Experimental Name & Camper ID
 EXP_NAME: temp
 CAMPER_ID: T6000
