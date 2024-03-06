@@ -7,20 +7,10 @@
 	width: 100%;
   }
   
-  @media screen and (min-height: 1440px) {
+  @media screen and (min-height: 1025px) {
 	.axial-results .div {
 		background-color: #292929;
 		height: 100vh;
-		overflow: hidden;
-		position: relative;
-		width: 1440px;
-	  }
-  }
-
-  @media screen and (min-height: 1023px) and (max-height: 1441px) {
-	.axial-results .div {
-		background-color: #292929;
-		height: 1440px;
 		overflow: hidden;
 		position: relative;
 		width: 1440px;
@@ -67,13 +57,6 @@
 	position: absolute;
 	top: 835px;
 	width: 1077px;
-  }
-  
-  .axial-results .overlap-group {
-	background-color: #484848;
-	height: 156px;
-	position: relative;
-	width: 1075px;
   }
   
   .axial-results .text-wrapper {
@@ -133,13 +116,6 @@
 	position: absolute;
 	top: 0;
 	width: 1446px;
-  }
-  
-  .axial-results .overlap-2 {
-	background-color: #444444;
-	height: 122px;
-	position: relative;
-	width: 1440px;
   }
   
   .axial-results .overlap-group-2 {
@@ -229,12 +205,6 @@
   .axial-results .slider .nav-btn2:hover {
 	transform: scale(1.1);
   }
-  .axial-results .div-wrapper {
-	background-color: #484848;
-	height: 37px;
-	position: relative;
-	width: 181px;
-  }
   
   .axial-results .text-wrapper-5 {
 	color: #ffffff;
@@ -259,11 +229,6 @@
   }
   .axial-results .back:hover {
 	transform: scale(1.1);
-  }
-  
-  .axial-results .overlap-3 {
-	height: 86px;
-	position: relative;
   }
   
   .axial-results .ellipse {

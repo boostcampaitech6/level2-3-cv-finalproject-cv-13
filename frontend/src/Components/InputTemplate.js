@@ -34,12 +34,17 @@ export default function FirstImpression (props) {
 
 		try {
 			setLoading(true);
-            const response = await fetch(currenturl, postOptions)
-			console.log(response);
+            const response = await fetch(currenturl, postOptions);
+			if (response.status == '400') {
+				throw new TypeError('지원되지 않는 파일 형식입니다.');
+			}
+			else if (response.status == '500') {
+				throw new Error('손상되었거나 지원되지 않는 DICOM 파일입니다.');
+			}
 			ready[idx] = true;
 			setReady(ready);
         } catch (err) {
-            alert('이미지 업로드에 실패하였습니다');
+            alert(`파일 업로드에 실패했습니다. \n ${err}`);
         } finally {
 			setLoading(false);
 		}
@@ -85,7 +90,7 @@ export default function FirstImpression (props) {
 					style={{ display: "none" }}
 				/>
 				<Button variant="contained" onClick={() => inputRefs.current.axial.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
-              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              backgroundColor: 'white', color: 'black'
               } }}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button> 
@@ -100,7 +105,7 @@ export default function FirstImpression (props) {
 					style={{ display: "none" }}
 				/>
 				<Button variant="contained" onClick={() => inputRefs.current.coronal.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
-              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              backgroundColor: 'white', color: 'black'
               } }}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button>
@@ -115,7 +120,7 @@ export default function FirstImpression (props) {
 					style={{ display: "none" }}
 				/>
 				<Button variant="contained" onClick={() => inputRefs.current.sagittal.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
-              backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+              backgroundColor: 'white', color: 'black'
               } }}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button>
@@ -123,13 +128,13 @@ export default function FirstImpression (props) {
 		    <div className='InferenceButton'>
 				{ready.every((x) => x === true) ? 
 				<Button variant="contained"  onClick={changeScreen}  sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
-					backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+					backgroundColor: 'white', color: 'black'
 					} }}>
 					Inference
 				</Button>
 				 :
 				 <Button variant="contained" onClick={alertUpload}  sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
-					backgroundColor: 'white', color: 'black' // Change to the desired color on hover
+					backgroundColor: 'white', color: 'black'
 					} }}>
 					Inference
 				</Button>}

@@ -52,7 +52,7 @@ export default function PlaneResultTemplate (props) {
 			setImageExists(true);
 			setLoading(false);
 		  } catch (error) {
-			console.error('Error fetching images:', error);
+			alert(`이미지 로딩시 에러가 발생했습니다. \n ${error}`);
 			setImageExists(false);
 			setLoading(false);
 		  }
@@ -89,9 +89,7 @@ export default function PlaneResultTemplate (props) {
 			{
 				label: "Importance of Slides",
 				data: Data.datasets,
-				// borderColor: "rgb(255, 99, 132)",
 				borderColor: "rgb(255, 255, 255",
-				// backgroundColor: "rgba(255, 99, 132, 0.5)",
 				backgroundColor: "rgba(255, 255, 255, 0.8)",
 			},
 		],
@@ -148,7 +146,6 @@ export default function PlaneResultTemplate (props) {
 				  type: 'line',
 				  xMin: currentidx,
 				  xMax: currentidx,
-				//   borderColor: 'rgb(255, 99, 132)',
 				  borderColor:'rgb(255, 255, 255)',
 				  borderWidth: 2,
 				}
@@ -161,9 +158,7 @@ export default function PlaneResultTemplate (props) {
 	<div className="axial-results">
       <div className="div">
         <div className="graph">
-          {/* <div className="overlap-group"> */}
             <Line options={options} data={dataset} ref={chartRef} onClick={handleChartClick} />
-          {/* </div> */}
         </div>
         <div className="image">
 		<div className="overlap">
@@ -187,7 +182,6 @@ export default function PlaneResultTemplate (props) {
         </div>
         </div>
         <div className="top-overlay">
-          <div className="overlap-2">
             <div className="overlap-group-2">
               <div className="text-wrapper-2">환자명: 김00</div>
               <div className="text-wrapper-3">성별: F</div>
@@ -196,7 +190,6 @@ export default function PlaneResultTemplate (props) {
 			<Link to="/">
             <img className="logo" alt="Logo" src={ImgAsset.ResultsCodeACL_logo}/>
 			</Link>
-          </div>
         </div>
 		<div className="play-button">
 			<Button  variant="text" onClick={playButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PlayButton})`, backgroundRepeat: "no-repeat", 
@@ -207,7 +200,6 @@ export default function PlaneResultTemplate (props) {
 			width: "35px", height: "49px",backgroundSize: '28px', backgroundPosition: 'center',}}></Button>
 		</div>
         <div className="slider">
-          {/* <div className="div-wrapper"> */}
               <button style={{backgroundColor: 'black', color: 'white'}}
               className="nav-btn1"
               onClick={() => {
@@ -230,14 +222,11 @@ export default function PlaneResultTemplate (props) {
             >
               <NavigateNextIcon />
             </button>
-          {/* </div> */}
         </div>
 		<Link to={`/results/${disease}`}>
         <div className="back">
-          <div className="overlap-3">
             <div className="ellipse" />
             <img className="arrow" alt="Arrow" src={ImgAsset.AxialResults_Arrow1} />
-          </div>
         </div>
 		</Link>
       </div>

@@ -6,20 +6,10 @@
 	width: 100%;
   }
   
-  @media screen and (min-height: 1440px) {
+  @media screen and (min-height: 1025px) {
 	.results-abnormal .div {
 		background-color: #292929;
 		height: 100vh;
-		overflow: hidden;
-		position: relative;
-		width: 1440px;
-	  }
-  }
-
-  @media screen and (min-height: 1023px) and (max-height: 1441px) {
-	.results-abnormal .div {
-		background-color: #292929;
-		height: 1440px;
 		overflow: hidden;
 		position: relative;
 		width: 1440px;
@@ -34,14 +24,6 @@
 		position: relative;
 		width: 1440px;
 	  }
-  }
-  
-  .results-abnormal .top-overlay {
-	height: 119px;
-	left: 0;
-	position: absolute;
-	top: 0;
-	width: 1446px;
   }
   
   .results-abnormal .overlap-group {
@@ -170,21 +152,6 @@
 	width: 52px;
   }
   
-  .results-abnormal .text-wrapper-6 {
-	color: #ffffff;
-	font-family: "Alata", Helvetica;
-	font-size: 20px;
-	font-weight: 400;
-	left: 597px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 3px;
-	white-space: nowrap;
-	width: 16px;
-  }
-  
   .results-abnormal .category {
 	height: 134px;
 	left: 0;
@@ -214,20 +181,6 @@
 	position: absolute;
 	top: 75px;
 	width: 76px;
-  }
-  
-  .results-abnormal .text-wrapper-8 {
-	color: #ffffff;
-	font-family: "Alata", Helvetica;
-	font-size: 15px;
-	font-weight: 400;
-	left: 576px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 47px;
-	width: 52px;
   }
   
   .results-abnormal .abnormal-button {
@@ -404,21 +357,6 @@
 	text-align: center;
 	top: 0;
 	width: 66px;
-  }
-  
-  .results-abnormal .text-wrapper-14 {
-	color: #ffffff;
-	font-family: "Alata", Helvetica;
-	font-size: 20px;
-	font-weight: 400;
-	left: 262px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 2px;
-	white-space: nowrap;
-	width: 7px;
   }
   
   .results-abnormal .meniscus-score {
@@ -598,20 +536,6 @@
 	position: relative;
 	/* width: 653px; */
 	width: 665px;
-  }
-  
-  .results-abnormal .graph-text {
-	color: #ffffff;
-	font-family: "Alata", Helvetica;
-	font-size: 50px;
-	font-weight: 400;
-	left: 81px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 163px;
-	width: 476px;
   }
   
   .results-abnormal .heatmap-bar {
