@@ -1,6 +1,7 @@
 modeling/data
 modeling/models
 modeling/wandb
+modeling/new_data
 gradcamimages
 backend/input_img
 backend/gradcam
@@ -9,3 +10,5 @@ backend/original
 .python-version
 __pycache__
 *.pdf
+*.dcm
+old_frontend

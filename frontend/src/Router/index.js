@@ -1,35 +1,30 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import HomePage from '../Components/index';
-import InputScreen from '../Components/InputScreen';
-import LoadingScreen from '../Components/LoadingScreen';
-import AbnormalResultsCoronal from '../Components/AbnormalResultsCoronal';
-import AbnormalResultsAxial from '../Components/AbnormalResultsAxial';
-import AbnormalResultsSagittal from '../Components/AbnormalResultsSagittal';
-import ACLResultsCoronal from '../Components/ACLResultsCoronal';
-import MeniscusResultsCoronal from '../Components/MeniscusResultsCoronal';
-import MeniscusResultsAxial from '../Components/MeniscusResultsAxial';
-import MeniscusResultsSagittal from '../Components/MeniscusResultsSagittal';
-import ACLResultsAxial from '../Components/ACLResultsAxial';
-import ACLResultsSagittal from '../Components/ACLResultsSagittal';
-import TotalResults from '../Components/TotalResults';
+import ResultsCodeACL from '../Components/ResultsCodeACL';
+import ResultsCodeAbnormal from '../Components/ResultsCodeAbnormal';
+import ResultsCodeMeniscus from '../Components/ResultsCodeMeniscus';
+import AxialResults from '../Components/AxialResults';
+import CoronalResults from '../Components/CoronalResults';
+import SagittalResults from '../Components/SagittalResults';
+import FirstImpression from '../Components/FirstImpression';
+import Loading from '../Components/Loading';
+import FirstImpressionDCM from '../Components/FirstImpressionDCM';
+
 const RouterDOM = () => {
 	return (
 		<Router>
 			<Switch>
-				<Route exact path="/"><InputScreen /></Route>
-				{/* <Route exact path="/inputscreen"><InputScreen /></Route> */}
-				<Route exact path="/loadingscreen"><LoadingScreen /></Route>
-				<Route exact path="/abnormalresultscoronal"><AbnormalResultsCoronal /></Route>
-				<Route exact path="/abnormalresultsaxial"><AbnormalResultsAxial /></Route>
-				<Route exact path="/abnormalresultssagittal"><AbnormalResultsSagittal /></Route>
-				<Route exact path="/aclresultscoronal"><ACLResultsCoronal /></Route>
-				<Route exact path="/meniscusresultscoronal"><MeniscusResultsCoronal /></Route>
-				<Route exact path="/meniscusresultsaxial"><MeniscusResultsAxial /></Route>
-				<Route exact path="/meniscusresultssagittal"><MeniscusResultsSagittal /></Route>
-				<Route exact path="/aclresultsaxial"><ACLResultsAxial /></Route>
-				<Route exact path="/aclresultssagittal"><ACLResultsSagittal /></Route>
-				<Route exact path="/totalresults"><TotalResults /></Route>
+				<Route exact path="/"><FirstImpression /></Route>
+				<Route exact path="/DCM"><FirstImpressionDCM /></Route>
+				<Route exact path="/resultscodeacl"><ResultsCodeACL /></Route>
+				<Route exact path="/resultscodeabnormal"><ResultsCodeAbnormal /></Route>
+				<Route exact path="/resultscodemeniscus"><ResultsCodeMeniscus /></Route>
+				<Route exact path="/axialresults"><AxialResults /></Route>
+				<Route exact path="/coronalresults"><CoronalResults /></Route>
+				<Route exact path="/sagittalresults"><SagittalResults /></Route>
+				{/* <Route exact path="/firstimpression"><FirstImpression /></Route> */}
+				<Route exact path="/loading"><Loading /></Route>
 			</Switch>
 		</Router>
 	);

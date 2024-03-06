@@ -4,28 +4,27 @@ import numpy as np
 import torch
 import torch.utils.data as data
 
+from StratifiedGroupKFold_split import get_df
+
 
 class MRDataset(data.Dataset):
-    def __init__(self, root_dir, task, plane, train=True, transform=None, weights=None):
+    def __init__(self, root_dir, task, plane, fold_num, train=True, transform=None, weights=None):
         super().__init__()
         self.task = task
         self.plane = plane
         self.root_dir = root_dir
         self.train = train
-        if self.train:
-            self.folder_path = self.root_dir + 'train/{0}/'.format(plane)
-            self.records = pd.read_csv(
-                self.root_dir + 'train-{0}.csv'.format(task), header=None, names=['id', 'label'])
-        else:
+        self.fold_num = fold_num
+        self.folder_path = self.root_dir + 'train/{0}/'.format(plane)
+        self.records = get_df(self.task, self.fold_num, self.train)
+        if not self.train:
             transform = None
-            self.folder_path = self.root_dir + 'valid/{0}/'.format(plane)
-            self.records = pd.read_csv(
-                self.root_dir + 'valid-{0}.csv'.format(task), header=None, names=['id', 'label'])
 
         self.records['id'] = self.records['id'].map(
             lambda i: '0' * (4 - len(str(i))) + str(i))
         self.paths = [self.folder_path + filename +
                       '.npy' for filename in self.records['id'].tolist()]
+        self.ids = self.records['id'].tolist()
         self.labels = self.records['label'].tolist()
 
         self.transform = transform
