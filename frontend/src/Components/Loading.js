@@ -12,7 +12,7 @@ export default function Loading () {
 		const awaitInference = async () => {
 			try {
 				const response = await axios.get("http://127.0.0.1:8000/inference");
-				history.push("/resultscodeabnormal")
+				history.push("/results/abnormal");
 				} catch (error) {
 					console.log(error);
 					alert("Error occured during inference");

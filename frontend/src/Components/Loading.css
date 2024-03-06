@@ -6,11 +6,34 @@
 	width: 100%;
   }
   
-  .loading .div {
-	background-color: #292929;
-	height: 1024px;
-	position: relative;
-	width: 1440px;
+  @media screen and (min-height: 1440px) {
+	.loading .div {
+		background-color: #292929;
+		height: 100vh;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (min-height: 1023px) and (max-height: 1441px) {
+	.loading .div {
+		background-color: #292929;
+		height: 1440px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (max-height: 1025px) {
+	.loading .div {
+		background-color: #292929;
+		height: 1024px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
   }
   
   .loading .loading-group {

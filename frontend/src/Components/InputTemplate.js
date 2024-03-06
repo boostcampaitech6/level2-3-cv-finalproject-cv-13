@@ -1,16 +1,19 @@
 import React from 'react'
-import './FirstImpression.css'
+import './InputTemplate.css'
 import ImgAsset from '../public'
 import { useHistory } from 'react-router-dom'
 import {useState, useRef} from 'react';
 import {Button} from "@mui/material";
 
-export default function FirstImpression () {
+export default function FirstImpression (props) {
 
 	const inputRefs = useRef({ axial: null, coronal: null, sagittal: null })
 	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	let [ready, setReady] = useState([false, false, false]);
+	
+	const inputType = props.inputType;
+	const isDCM = (inputType == 'DICOM')
 
 	const saveImage = async (e, plane, idx) => {
 	e.preventDefault();
@@ -22,7 +25,7 @@ export default function FirstImpression () {
 		formData.append('file', files[i]);
 		}
 
-		const currenturl = `http://127.0.0.1:8000/input/${plane}`
+		const currenturl = `http://127.0.0.1:8000/input/dicom/${plane}`
 		const postOptions = {
 			method: "POST",
 			url: currenturl,
@@ -30,10 +33,8 @@ export default function FirstImpression () {
 		}
 
 		try {
-            // fetch를 이용한 post 요청.
 			setLoading(true);
             const response = await fetch(currenturl, postOptions)
-            alert('이미지 업로드 완료');
 			console.log(response);
 			ready[idx] = true;
 			setReady(ready);
@@ -50,64 +51,65 @@ export default function FirstImpression () {
 		history.push("/loading")
 	}
 
-	function toDCM(e) {
+	function changeInput(e) {
 		e.preventDefault();
-		history.push("/DCM")
+		if (isDCM) history.push("/PNG");
+		else history.push("/");
 	}
 
 	function alertUpload(e) {
 		e.preventDefault();
-		alert('이미지를 먼저 업로드해 주세요')
+		alert(`${inputType} 파일을 먼저 업로드해 주세요`)
 	}
 
 	return (
-		<div className="first-impression">
+	<div className="first-impression">
       <div className="div">
         <div className="image-holder-group">
           <div className="axial-complete">{ready[0] ? 'Complete!' : ''}</div>
           <div className="coronal-complete">{ready[1] ? 'Complete!' : ''}</div>
           <div className="sagittal-complete">{ready[2] ? 'Complete!' : ''}</div>
-          <div className="axial-text">Upload Axial images here...</div>
-          <div className="coronal-text">Upload Coronal images here...</div>
-          <div className="sagittal-text">Upload Sagittal images here...</div>
+          <div className="axial-text">Upload Axial DICOM here...</div>
+          <div className="coronal-text">Upload Coronal DICOM here...</div>
+          <div className="sagittal-text">Upload Sagittal DICOM here...</div>
           <img className="axial-image" alt="Axial image" src= {ImgAsset.FirstImpression_AxialImage} />
           <img className="coronal-image" alt="Coronal image" src={ImgAsset.FirstImpression_AxialImage} />
           <img className="sagittal-image" alt="Sagittal image" src={ImgAsset.FirstImpression_AxialImage} />
           <div className="axialbutton">
 				<input
 					type="file"
-					multiple={true}
-					accept="image/*"
+					multiple={false}
+					accept=".dcm"
 					onChange={(e) => saveImage(e, 'axial', 0)}
 					ref={refParam => inputRefs.current.axial = refParam}
 					style={{ display: "none" }}
 				/>
 				<Button variant="contained" onClick={() => inputRefs.current.axial.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
               backgroundColor: 'white', color: 'black' // Change to the desired color on hover
-              }}}>
+              } }}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button> 
 		  </div>
           <div className="coronalbutton">
 		  		<input
 					type="file"
-					multiple={true}
-					accept="image/*"
+					multiple={false}
+					accept=".dcm"
 					onChange={(e) => saveImage(e, 'coronal', 1)}
 					ref={refParam => inputRefs.current.coronal = refParam}
 					style={{ display: "none" }}
 				/>
 				<Button variant="contained" onClick={() => inputRefs.current.coronal.click()} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
               backgroundColor: 'white', color: 'black' // Change to the desired color on hover
-              }}}>
+              } }}>
 					{loading ? 'Loading...' : 'Upload'}
 				</Button>
 		  </div>
           <div className="sagittalbutton">
 		  		<input
 					type="file"
-					multiple={true}
-					accept="image/*"
+					multiple={false}
+					accept=".dcm"
 					onChange={(e) => saveImage(e, 'sagittal', 2)}
 					ref={refParam => inputRefs.current.sagittal = refParam}
 					style={{ display: "none" }}
@@ -126,20 +128,15 @@ export default function FirstImpression () {
 					Inference
 				</Button>
 				 :
-				 <Button variant="contained"  onClick={alertUpload}  sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+				 <Button variant="contained" onClick={alertUpload}  sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
 					backgroundColor: 'white', color: 'black' // Change to the desired color on hover
 					} }}>
 					Inference
 				</Button>}
 			</div>
-			<div className='ToDCM'>
-				<Button variant="text"  onClick={toDCM}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>
-					Upload DICOM file instead
-				</Button>
-			</div>
-			<div className='ToDCM'>
-				<Button variant="text"  onClick={toDCM}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>
-					Upload DICOM file instead
+			<div className='ToPNG'>
+				<Button variant="text"  onClick={changeInput}  sx={{ color: 'white', fontFamily: "Alata, Helvetica", fontSize: '15px'}}>
+					Upload {isDCM ? 'Image' : 'DICOM'} file instead
 				</Button>
 			</div>
         </div>
