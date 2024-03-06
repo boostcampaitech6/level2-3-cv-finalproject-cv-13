@@ -4,6 +4,8 @@ modeling/wandb
 modeling/new_data
 gradcamimages
 backend/input_img
+backend/models
+backend/pytorch_grad_cam
 backend/gradcam
 backend/original
 .venv
@@ -12,3 +14,4 @@ __pycache__
 *.pdf
 *.dcm
 old_frontend
+*.png
