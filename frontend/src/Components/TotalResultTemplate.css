@@ -6,12 +6,34 @@
 	width: 100%;
   }
   
-  .results-abnormal .div {
-	background-color: #292929;
-	height: 1024px;
-	overflow: hidden;
-	position: relative;
-	width: 1440px;
+  @media screen and (min-height: 1440px) {
+	.results-abnormal .div {
+		background-color: #292929;
+		height: 100vh;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (min-height: 1023px) and (max-height: 1441px) {
+	.results-abnormal .div {
+		background-color: #292929;
+		height: 1440px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (max-height: 1025px) {
+	.results-abnormal .div {
+		background-color: #292929;
+		height: 1024px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
   }
   
   .results-abnormal .top-overlay {
@@ -27,6 +49,7 @@
 	height: 119px;
 	position: relative;
 	width: 1440px;
+	flex: 1;
   }
   
   .results-abnormal .overlap {
@@ -213,6 +236,9 @@
 	position: absolute;
 	top: 44px;
 	width: 96px;
+  }
+  .results-abnormal .abnormal-button:hover {
+	transform: scale(1.1);
   }
   
   .results-abnormal .overlap-group-2 {

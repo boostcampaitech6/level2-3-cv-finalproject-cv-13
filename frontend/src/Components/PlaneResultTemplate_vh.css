@@ -1,4 +1,5 @@
-.sagittal-results {
+
+.axial-results {
 	background-color: #292929;
 	display: flex;
 	flex-direction: row;
@@ -6,46 +7,54 @@
 	width: 100%;
   }
   
-  .sagittal-results .div {
+  .axial-results .div {
 	background-color: #292929;
-	height: 1024px;
+	height: 100vh;
 	overflow: hidden;
 	position: relative;
 	width: 1440px;
   }
   
-  .sagittal-results .play-button {
-	height: 45px;
-	left: 1292px;
+  .axial-results .play-button {
+	height: 4.5vh;
+	/* left: 1292px; */
+	left: 1000px;
 	position: absolute;
-	top: 691px;
+	top: 69.1vh;
 	width: 36px;
   }
-  
-  .sagittal-results .pause-button-white {
-	height: 49px;
-	left: 1343px;
-	position: absolute;
-	top: 689px;
-	width: 35px;
+  .axial-results .play-button:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
   }
   
-  .sagittal-results .graph {
-	height: 156px;
+  .axial-results .pause-button-white {
+	height: 4.9vh;
+	/* left: 1343px; */
+	left: 1050px;
+	position: absolute;
+	top: 68.9vh;
+	width: 35px;
+  }
+  .axial-results .pause-button-white:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
+  }
+  
+  .axial-results .graph {
+	height: 15.6vh;
 	left: 147px;
 	position: absolute;
-	top: 835px;
+	top: 83.5vh;
 	width: 1077px;
   }
   
-  .sagittal-results .overlap-group {
+  .axial-results .overlap-group {
 	background-color: #484848;
-	height: 156px;
+	height: 15.6vh;
 	position: relative;
 	width: 1075px;
   }
   
-  .sagittal-results .text-wrapper {
+  .axial-results .text-wrapper {
 	color: #ffffff;
 	font-family: "Alata-Regular", Helvetica;
 	font-size: 25px;
@@ -55,26 +64,34 @@
 	line-height: normal;
 	position: absolute;
 	text-align: center;
-	top: 41px;
+	top: 4.1vh;
 	width: 302px;
   }
   
-  .sagittal-results .image {
-	height: 630px;
+  .axial-results .image {
+	height: 63.0vh;
 	left: 147px;
 	position: absolute;
-	top: 168px;
-	width: 1077px;
+	top: 16.8vh;
+	width: 630px;
   }
   
-  .sagittal-results .overlap {
-	background-color: #484848;
-	height: 630px;
+  .axial-results .overlapimage {
+	/* background-color: #484848; */
+	height: 63.0vh;
 	position: relative;
-	width: 1075px;
+	width: 630px;
+	left: 150px;
+  }
+  .axial-results .overlap {
+	background-color: #101010;
+	height: 63.0vh;
+	position: relative;
+	width: 1000px;
+	align-items: center;
   }
   
-  .sagittal-results .image-text {
+  .axial-results .image-text {
 	color: #ffffff;
 	font-family: "Alata-Regular", Helvetica;
 	font-size: 30px;
@@ -84,34 +101,34 @@
 	line-height: normal;
 	position: absolute;
 	text-align: center;
-	top: 278px;
+	top: 27.8vh;
 	width: 578px;
   }
   
-  .sagittal-results .top-overlay {
-	height: 122px;
+  .axial-results .top-overlay {
+	height: 12.2vh;
 	left: 0;
 	position: absolute;
 	top: 0;
 	width: 1446px;
   }
   
-  .sagittal-results .overlap-2 {
+  .axial-results .overlap-2 {
 	background-color: #444444;
-	height: 122px;
+	height: 12.2vh;
 	position: relative;
 	width: 1440px;
   }
   
-  .sagittal-results .overlap-group-2 {
-	height: 35px;
+  .axial-results .overlap-group-2 {
+	height: 3.5vh;
 	left: 165px;
 	position: absolute;
-	top: 39px;
+	top: 3.9vh;
 	width: 562px;
   }
   
-  .sagittal-results .text-wrapper-2 {
+  .axial-results .text-wrapper-2 {
 	color: #ffffff;
 	font-family: "Alata-Regular", Helvetica;
 	font-size: 25px;
@@ -125,7 +142,7 @@
 	width: 152px;
   }
   
-  .sagittal-results .text-wrapper-3 {
+  .axial-results .text-wrapper-3 {
 	color: #ffffff;
 	font-family: "Alata-Regular", Helvetica;
 	font-size: 25px;
@@ -139,7 +156,7 @@
 	width: 152px;
   }
   
-  .sagittal-results .text-wrapper-4 {
+  .axial-results .text-wrapper-4 {
 	color: #ffffff;
 	font-family: "Alata-Regular", Helvetica;
 	font-size: 25px;
@@ -153,31 +170,51 @@
 	width: 280px;
   }
   
-  .sagittal-results .logo {
-	height: 89px;
+  .axial-results .logo {
+	height: 8.9vh;
 	left: 23px;
 	object-fit: cover;
 	position: absolute;
-	top: 13px;
+	top: 1.3vh;
 	width: 110px;
   }
   
-  .sagittal-results .slider {
-	height: 37px;
-	left: 1244px;
+  .axial-results .slider {
+	height: 3.0vh;
+	/* left: 1300px; */
+	left: 1005px;
 	position: absolute;
-	top: 761px;
+	top: 75.5vh;
 	width: 183px;
   }
-  
-  .sagittal-results .div-wrapper {
+  .axial-results .slider .nav-btn1 {
+	height: 3.0vh;
+	left: 0px;
+	position: absolute;
+	top: 0px;
+	width: 50px;
+  }
+  .axial-results .slider .nav-btn1:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
+  }
+  .axial-results .slider .nav-btn2 {
+	height: 3.0vh;
+	left: 50px;
+	position: absolute;
+	top: 0px;
+	width: 50px;
+  }
+  .axial-results .slider .nav-btn2:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
+  }
+  .axial-results .div-wrapper {
 	background-color: #484848;
-	height: 37px;
+	height: 3.7vh;
 	position: relative;
 	width: 181px;
   }
   
-  .sagittal-results .text-wrapper-5 {
+  .axial-results .text-wrapper-5 {
 	color: #ffffff;
 	font-family: "Alata-Regular", Helvetica;
 	font-size: 15px;
@@ -187,40 +224,42 @@
 	line-height: normal;
 	position: absolute;
 	text-align: center;
-	top: 7px;
+	top: 0.7vh;
 	width: 127px;
   }
   
-  .sagittal-results .back {
-	height: 86px;
+  .axial-results .back {
+	height: 8.6vh;
 	left: 1345px;
 	position: absolute;
-	top: 158px;
+	top: 15.8vh;
 	width: 86px;
   }
+  .axial-results .back:hover {
+	transform: scale(1.1); /* Scale the ellipse on hover */
+  }
   
-  .sagittal-results .overlap-3 {
-	height: 86px;
+  .axial-results .overlap-3 {
+	height: 8.6vh;
 	position: relative;
   }
   
-  .sagittal-results .ellipse {
+  .axial-results .ellipse {
 	border: 3px solid;
 	border-color: #ffffff;
 	border-radius: 30.5px;
 	height: 61px;
 	left: 13px;
 	position: absolute;
-	top: 13px;
+	top: 1.3vh;
 	transform: rotate(-45deg);
 	width: 61px;
   }
   
-  .sagittal-results .arrow {
-	height: 37px;
-	left: 25px;
+  .axial-results .arrow {
+	height: 3.7vh;
+	left: 27px;
 	position: absolute;
-	top: 25px;
+	top: 2.8vh;
 	width: 38px;
   }
-  

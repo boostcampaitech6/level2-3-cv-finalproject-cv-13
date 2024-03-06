@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import axios from 'axios'
-import './AxialResults.css'
+import './PlaneResultTemplate.css'
 import ImgAsset from '../public'
 import {Link} from 'react-router-dom'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -30,7 +30,7 @@ ChartJS.register(
 	annotationPlugin
 );
 
-export default function AxialResults () {
+export default function PlaneResultTemplate (props) {
 
   	let [imageExists, setImageExists] = useState(false)
 	const [images, setImages] = useState([]);
@@ -39,13 +39,14 @@ export default function AxialResults () {
 	const [Data, setData] = useState([]);
 	let [pauseState, setPauseState] = useState(false);
 
+	const disease = props.disease;
+	const plane = props.plane;
+	const imageurl = `http://127.0.0.1:8000/output/${disease}/${plane}`
+
 	useEffect(() => {
 		async function fetchData() {
 		  try {
-			// const [imageResponse, gradImageResponse] = await Promise.all([
-			// 	axios.get('http://127.0.0.1:8000/output/abnormal/axial/original'),
-			//   ]);
-			const imageResponse = await axios.get('http://127.0.0.1:8000/output/abnormal/axial/original')
+			const imageResponse = await axios.get(imageurl);
 			setImages(imageResponse.data.img);
 			setData(imageResponse.data.info);
 			setImageExists(true);
@@ -231,7 +232,7 @@ export default function AxialResults () {
             </button>
           {/* </div> */}
         </div>
-		<Link to="/resultscodeabnormal">
+		<Link to={`/results/${disease}`}>
         <div className="back">
           <div className="overlap-3">
             <div className="ellipse" />

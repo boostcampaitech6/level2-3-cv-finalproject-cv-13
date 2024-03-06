@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-import './ResultsCodeAbnormal.css'
+import './TotalResultTemplate.css'
 import ImgAsset from '../public'
 import {Link} from 'react-router-dom'
 import {Button} from "@mui/material";
@@ -25,7 +25,7 @@ ChartJS.register(
 );
 
 
-export default function ResultsCodeAbnormal () {
+export default function ResultsCodeAbnormal (props) {
 
   const [Data, setData] = useState([]);
 	const [onLoad, setonLoad] = useState(true);
@@ -35,11 +35,23 @@ export default function ResultsCodeAbnormal () {
   let [gradstate, setGradState] = useState(false);
   let [page, setPage] = useState(images);
 	
+  const disease = props.disease;
+  const idx = props.idx;
+  const originalurl = `http://127.0.0.1:8000/result/${disease}/original`;
+  const gradcamurl = `http://127.0.0.1:8000/result/${disease}/gradcam`;
+
+  let styleList = [0, 0, 0];
+  styleList[idx] += 1;
+  const whiteCircleStyle = { backgroundColor: '#ffffff' };
+  const blackTextStyle = { color: '#000000' };
+  const blackCircleStyle = { backgroundColor: '#3c3c3c' };
+  const whiteTextStyle = { color: '#ffffff' };
+  
 	// Component가 처음 마운트 될 때 1번만 데이터를 가져옵니다
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get("http://127.0.0.1:8000/totalresult");
+				const response = await axios.get("http://127.0.0.1:8000/result");
 				const data = response.data;
 				setData(data);
 				setonLoad(false);
@@ -54,8 +66,8 @@ export default function ResultsCodeAbnormal () {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response_original = await axios.get("http://127.0.0.1:8000/result/abnormal/original");
-        const response_grad = await axios.get("http://127.0.0.1:8000/result/abnormal/gradcam");
+        const response_original = await axios.get(originalurl);
+        const response_grad = await axios.get(gradcamurl);
         const data_original = response_original.data;
         const data_grad = response_grad.data;
         setImages(data_original)
@@ -99,6 +111,9 @@ export default function ResultsCodeAbnormal () {
 		aspectRatio: 10,
     maintainAspectRatio: false,
 		responsive: true,
+    animation: {
+      duration: 0
+    },
 		plugins: {
 		  legend: {
       display: false,
@@ -148,6 +163,9 @@ export default function ResultsCodeAbnormal () {
       aspectRatio: 10,
       maintainAspectRatio: false,
       responsive: true,
+      animation: {
+        duration: 0
+      },
       plugins: {
         legend: {
         display: false,
@@ -294,24 +312,26 @@ export default function ResultsCodeAbnormal () {
             </div>
             {/* <img className="switch" alt="Switch" src="switch.png" /> */}
             {/* <div className="text-wrapper-8">Show</div> */}
+            <Link to="/results/abnormal">
             <div className="abnormal-button">
               <div className="overlap-group-2">
-                <div className="abnormal-cat" />
-                <div className="text-wrapper-9">Abnormal</div>
-              </div>
-            </div>
-            <Link to="/resultscodemeniscus">
-            <div className="meniscus-button">
-              <div className="overlap-group-2">
-                <div className="meniscus-cat" />
-                <div className="text-wrapper-10">Meniscus</div>
+                <div className="abnormal-cat" style={styleList[0] ? whiteCircleStyle : blackCircleStyle}/>
+                <div className="text-wrapper-9" style={styleList[0] ? blackTextStyle : whiteTextStyle}>Abnormal</div>
               </div>
             </div>
             </Link>
-            <Link to="/resultscodeacl">
+            <Link to="/results/meniscus">
+            <div className="meniscus-button">
+              <div className="overlap-group-2">
+                <div className="meniscus-cat" style={styleList[2] ? whiteCircleStyle : blackCircleStyle}/>
+                <div className="text-wrapper-10" style={styleList[2] ? blackTextStyle : whiteTextStyle}>Meniscus</div>
+              </div>
+            </div>
+            </Link>
+            <Link to="/results/acl">
             <div className="ACL-button">
-              <div className="div-wrapper">
-                <div className="text-wrapper-11">ACL</div>
+              <div className="div-wrapper" style={styleList[1] ? whiteCircleStyle : blackCircleStyle}>
+                <div className="text-wrapper-11" style={styleList[1] ? blackTextStyle : whiteTextStyle}>ACL</div>
               </div>
             </div>
             </Link>
@@ -387,7 +407,7 @@ export default function ResultsCodeAbnormal () {
                 </div>
               {/* </div> */}
             </div>
-            <Link to="/axialresults">
+            <Link to={`/results/${disease}/axial`}>
             <div className="inspect-ax">
               <div className="overlap-13">
                 <div className="ellipse" />
@@ -434,7 +454,7 @@ export default function ResultsCodeAbnormal () {
                 </div>
               {/* </div> */}
             </div>
-            <Link to="/coronalresults">
+            <Link to={`/results/${disease}/coronal`}>
             <div className="inspect-co">
               <div className="overlap-13">
                 <div className="ellipse" />
@@ -481,7 +501,7 @@ export default function ResultsCodeAbnormal () {
                 </div>
               {/* </div> */}
             </div>
-            <Link to="/sagittalresults">
+            <Link to={`/results/${disease}/sagittal`}>
             <div className="inspect-sag">
               <div className="overlap-13">
                 <div className="ellipse" />

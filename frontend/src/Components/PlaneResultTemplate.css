@@ -7,12 +7,34 @@
 	width: 100%;
   }
   
-  .axial-results .div {
-	background-color: #292929;
-	height: 1024px;
-	overflow: hidden;
-	position: relative;
-	width: 1440px;
+  @media screen and (min-height: 1440px) {
+	.axial-results .div {
+		background-color: #292929;
+		height: 100vh;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (min-height: 1023px) and (max-height: 1441px) {
+	.axial-results .div {
+		background-color: #292929;
+		height: 1440px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (max-height: 1025px) {
+	.axial-results .div {
+		background-color: #292929;
+		height: 1024px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
   }
   
   .axial-results .play-button {
@@ -24,7 +46,7 @@
 	width: 36px;
   }
   .axial-results .play-button:hover {
-	transform: scale(1.1); /* Scale the ellipse on hover */
+	transform: scale(1.1);
   }
   
   .axial-results .pause-button-white {
@@ -36,7 +58,7 @@
 	width: 35px;
   }
   .axial-results .pause-button-white:hover {
-	transform: scale(1.1); /* Scale the ellipse on hover */
+	transform: scale(1.1);
   }
   
   .axial-results .graph {
@@ -195,7 +217,7 @@
 	width: 50px;
   }
   .axial-results .slider .nav-btn1:hover {
-	transform: scale(1.1); /* Scale the ellipse on hover */
+	transform: scale(1.1);
   }
   .axial-results .slider .nav-btn2 {
 	height: 30px;
@@ -205,7 +227,7 @@
 	width: 50px;
   }
   .axial-results .slider .nav-btn2:hover {
-	transform: scale(1.1); /* Scale the ellipse on hover */
+	transform: scale(1.1);
   }
   .axial-results .div-wrapper {
 	background-color: #484848;
@@ -236,7 +258,7 @@
 	width: 86px;
   }
   .axial-results .back:hover {
-	transform: scale(1.1); /* Scale the ellipse on hover */
+	transform: scale(1.1);
   }
   
   .axial-results .overlap-3 {
@@ -258,8 +280,8 @@
   
   .axial-results .arrow {
 	height: 37px;
-	left: 25px;
+	left: 27px;
 	position: absolute;
-	top: 25px;
+	top: 28px;
 	width: 38px;
   }
