@@ -93,7 +93,7 @@ class SummaryReport:
             for j, cell in enumerate(row.cells):       
                 # set text and alignment
                 for para in cell.paragraphs:
-                    para.add_run(self.plane_info[i][j]).bold = True 
+                    para.add_run(self.plane_info[j]).bold = True 
                     para.alignment = WD_ALIGN_PARAGRAPH.CENTER
                     # set font            
                     for run in para.runs:
