@@ -31,3 +31,31 @@ poetry add <library_name> #  = pip install <library_name>
 poetry run uvicorn main:app --reload
 ```
 
+### Folder
+backend를 실행하기 위해 사전에 존재하는 파일 구조입니다.
+```
+📦level2-3-cv-finalproject-cv-13
+┣ 📂 backend
+┃ ┣ 📂 models
+┃ ┃ ┣ 📜 abnormal_axial_best.pth
+┃ ┃ ┣ 📜 abnormal_coronal_best.pth
+┃ ┃ ┣ 📜 abnormal_sagittal_best.pth
+┃ ┃ ┣ 📜 acl_axial_best.pth
+┃ ┃ ┣ 📜 acl_coronal_best.pth
+┃ ┃ ┣ 📜 acl_sagittal_best.pth
+┃ ┃ ┣ 📜 meniscus_axial_best.pth
+┃ ┃ ┣ 📜 meniscus_coronal_best.pth
+┃ ┃ ┣ 📜 meniscus_sagittal_best.pth
+┃ ┃ ┣ 📜 lr_abnormal.pkl
+┃ ┃ ┣ 📜 lr_acl.pkl
+┃ ┃ ┗ 📜 lr_meniscus.pkl
+┃ ┣ 📂 pytorch_grad_cam 
+┃ ┣ 📜 config.py
+┃ ┣ 📜 dcm_convert.py
+┃ ┣ 📜 main.py
+┃ ┣ 📜 model.py
+┃ ┣ 📜 schemas.py
+┃ ┣ 📜 utils.py
+┃ ┣ 📜 template.json
+┗ 📂 ...
+```
