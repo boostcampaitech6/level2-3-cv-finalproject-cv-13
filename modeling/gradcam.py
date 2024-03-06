@@ -1,78 +1,66 @@
-import numpy as np
-import os,sys
 import torch
-
-from model import create_model
+import numpy as np
+import os
+import matplotlib.pyplot as plt
 import yaml
 
-from pytorch_grad_cam import GradCAM, HiResCAM, ScoreCAM, GradCAMPlusPlus, AblationCAM, XGradCAM, EigenCAM, FullGrad
-from pytorch_grad_cam.utils.model_targets import BinaryClassifierOutputTarget
-from pytorch_grad_cam.utils.image import show_cam_on_image
 from PIL import Image
 
+from pytorch_grad_cam import GradCAM
+from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
+from pytorch_grad_cam.utils.image import show_cam_on_image
 
-def data_processing(plane):
+
+def run(INPUT_DATA_PATH, MODEL_PATH, EXP_NAME):
+    os.makedirs(f'./cam_results/{EXP_NAME}', exist_ok=True)
+    os.makedirs(f'./cam_results/{EXP_NAME}/score', exist_ok=True)
+    os.makedirs(f'./cam_results/{EXP_NAME}/images', exist_ok=True)
     
-    sample_path = os.path.join('data/valid', plane, '1130.npy')
-    img_array = np.load(sample_path)
-
-    img_array = np.stack((img_array,)*3, axis=1)
-    img_array = torch.FloatTensor(img_array)
-    img_array = img_array.unsqueeze(0)
-    
-    return img_array
-
-
-def load_model(model_path, model_name, model_params, device): 
-
-    model = create_model(model_name, **model_params)
-
-    if os.path.exists(model_path): 
-        model = torch.load(model_path, map_location=device)
-    else:
-        print("해당 경로에 모델 파일이 없습니다.")   
-
-    return model
-
-
-def run(config):
-    PLANE = config['PLANE']
-    MODEL_ROOT = config['MODEL_ROOT']
-    MODEL = config['MODEL']
-    model_name = MODEL['name']
-    model_params = MODEL['params'] or {}
-
-    if not os.path.exists('gradcamimages'):
-        os.makedirs('gradcamimages')
-    
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
-
-    model = load_model(MODEL_ROOT, model_name, model_params, device)
-    model.eval()
-
-    image = data_processing(PLANE)
+    model = torch.load(MODEL_PATH)
     target_layers = model.target
+    # target_layers = [model.pretrained_model.features[-1]]
+    
+    array = np.load(INPUT_DATA_PATH)
+    array = np.stack((array,)*3, axis=1)
+    input_tensor  = torch.FloatTensor(array)
 
-    with GradCAM(model=model, target_layers=target_layers) as cam:
-        targets = [BinaryClassifierOutputTarget(1)]
+    cam = GradCAM(model=model, target_layers=target_layers)
+    targets = [ClassifierOutputTarget(1)]
 
-        print('Generating Grad-CAM Images...')
-        cam_result_list = cam(
-                            input_tensor=image.float(), targets=targets, 
-                            aug_smooth=True, eigen_smooth=True
-                                )
-        original_image_list = torch.squeeze(image, dim=0).permute(0, 2, 3, 1).cpu().numpy() / 255.0
+    cam_results = cam(input_tensor=input_tensor, targets=targets, cam_score=False)
+    cam_score_results = cam(input_tensor=input_tensor, targets=targets, cam_score=True)
 
-        visualization_list = [show_cam_on_image(original_image, cam_result) for original_image, cam_result in zip(original_image_list, cam_result_list)]
-        visualization_images = [Image.fromarray(visualization) for visualization in visualization_list]
+    cam_scores = []
 
-        for i, vis_res in enumerate(visualization_images):
-            vis_res.save(f'gradcamimages/{i}.png')
+    writer = open(f'./cam_results/{EXP_NAME}/score/cam_score.csv', 'w')
+    print('idx,cam_score', file=writer)
+    for i, (image, cam_result, cam_score_result) in enumerate(zip(array, cam_results, cam_score_results)):
+        cam_score = cam_score_result.max()
+        cam_scores.append(cam_score)
+        print(f'{i},{cam_score}', file=writer)
+
+        image = image / 255.0
+        image = image.transpose(1, 2, 0)
+        
+        visualization = show_cam_on_image(image, cam_result, use_rgb=True)
+        image = Image.fromarray(visualization)
+        image.save(f'./cam_results/{EXP_NAME}/images/{i}.png')
+
+    plt.figure(figsize=(12, 8))
+    plt.title('CAM-score')
+    plt.plot(cam_scores)
+    plt.xticks([i for i in range(len(cam_scores))])
+    plt.savefig(f'./cam_results/{EXP_NAME}/score/cam_score.png')
+    plt.close()
 
 
-if __name__ == '__main__':
-    for config_file in os.listdir('./configs'):
-        with open(f'./configs/{config_file}', 'r') as file:
-            config = yaml.safe_load(file)
-        run(config)
+if __name__ == "__main__":
+    with open('cam_config.yaml', 'r') as file:
+        config = yaml.safe_load(file)
+    
+    INPUT_DATA_PATH = config['INPUT_DATA_PATH']
+    MODEL_PATH = config['MODEL_PATH']
+
+    EXP_NAME = config['EXP_NAME']
+
+    run(INPUT_DATA_PATH, MODEL_PATH, EXP_NAME)

@@ -10,6 +10,9 @@ class MRNet(nn.Module):
         self.pooling_layer = nn.AdaptiveAvgPool2d(1)
         self.classifer = nn.Linear(256, 2)
 
+        # For GradCAM
+        self.target = [self.pretrained.layer4[-1]]
+
     def forward(self, x):
         x = torch.squeeze(x, dim=0) 
         features = self.pretrained_model.features(x)
@@ -23,8 +26,10 @@ class Resnet50(nn.Module):
     def __init__(self):
         super().__init__()
         self.pretrained = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2)
-        self.target = [self.pretrained.layer4[-1]]
         self.classifier = nn.Linear(1000, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained.layer4[-1]]
     
     def forward(self, x):
         x = torch.squeeze(x, dim=0)
