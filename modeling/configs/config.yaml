@@ -1,6 +1,9 @@
 # Data directory
 DATA_ROOT: './data/'
 
+# Model directory
+MODEL_ROOT: './models/'
+
 # Experimental Name & Camper ID
 EXP_NAME: temp
 CAMPER_ID: T6000
