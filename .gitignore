@@ -11,6 +11,7 @@ backend/original
 .venv
 .python-version
 __pycache__
+*.pdf
 *.dcm
 old_frontend
 *.png

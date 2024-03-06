@@ -20,6 +20,7 @@ Pillow = "10.2.0"
 opencv-python = "4.8.0.76"
 tqdm = "4.62.3"
 ttach = "0.0.3"
+python-docx = "1.1.0"
 pydicom = "^2.4.4"
 ipykernel = "^6.29.3"
 
