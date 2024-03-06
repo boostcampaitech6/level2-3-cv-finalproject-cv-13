@@ -51,7 +51,7 @@ export default function ResultsCodeAbnormal (props) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get("http://127.0.0.1:8000/totalresult");
+				const response = await axios.get("http://127.0.0.1:8000/result");
 				const data = response.data;
 				setData(data);
 				setonLoad(false);

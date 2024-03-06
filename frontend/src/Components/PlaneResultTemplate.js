@@ -41,14 +41,11 @@ export default function PlaneResultTemplate (props) {
 
 	const disease = props.disease;
 	const plane = props.plane;
-	const imageurl = `http://127.0.0.1:8000/output/${disease}/${plane}/original`
+	const imageurl = `http://127.0.0.1:8000/output/${disease}/${plane}`
 
 	useEffect(() => {
 		async function fetchData() {
 		  try {
-			// const [imageResponse, gradImageResponse] = await Promise.all([
-			// 	axios.get('http://127.0.0.1:8000/output/abnormal/axial/original'),
-			//   ]);
 			const imageResponse = await axios.get(imageurl);
 			setImages(imageResponse.data.img);
 			setData(imageResponse.data.info);
