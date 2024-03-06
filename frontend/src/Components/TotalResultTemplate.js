@@ -81,7 +81,7 @@ export default function ResultsCodeAbnormal (props) {
       }
     };
     fetchImage();
-  }, []);
+  }, [disease]);
 
   function showGrad (e) {
 		e.preventDefault();

@@ -113,7 +113,7 @@ export default function PlaneResultTemplate (props) {
 			} else {
 			  clearInterval(intervalId);
 			}
-		  }, 300);
+		  }, 100);
 		}
 	
 		return () => clearInterval(intervalId);
