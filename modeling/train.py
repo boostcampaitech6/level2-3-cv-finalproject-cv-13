@@ -149,6 +149,7 @@ def run(config):
     NUM_EPOCHS = config['epochs']
     LR = config['LR']
     BATCH_SIZE = config['BATCH_SIZE']
+    FOLD_NUM = config['FOLD_NUM']
 
     OPTIMIZER = config['OPTIMIZER']
     LOSS = config['LOSS']
@@ -157,13 +158,15 @@ def run(config):
     
     wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}", config=config)
 
-    train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, train=True)
+    train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=True)
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=8, drop_last=False)
 
-    validation_dataset = MRDataset(DATA_ROOT, TASK, PLANE, train=False)
+    validation_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=False)
     validation_loader = torch.utils.data.DataLoader(
         validation_dataset, batch_size=BATCH_SIZE, shuffle=-True, num_workers=8, drop_last=False)
+
+    print(len(train_dataset), len(validation_dataset))
 
     model_name = MODEL['name']
     model_params = MODEL['params'] or {}
