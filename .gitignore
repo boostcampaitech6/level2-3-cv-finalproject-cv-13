@@ -9,4 +9,3 @@ backend/original
 .python-version
 __pycache__
 *.pdf
-*.docx
