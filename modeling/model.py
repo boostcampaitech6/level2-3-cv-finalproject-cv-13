@@ -11,7 +11,7 @@ class MRNet(nn.Module):
         self.classifer = nn.Linear(256, 2)
 
         # For GradCAM
-        self.target = [self.pretrained.layer4[-1]]
+        self.target = [self.pretrained_model.features[-1]]
 
     def forward(self, x):
         x = torch.squeeze(x, dim=0) 
