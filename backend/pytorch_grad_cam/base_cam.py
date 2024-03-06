@@ -72,7 +72,8 @@ class BaseCAM:
     def forward(self,
                 input_tensor: torch.Tensor,
                 targets: List[torch.nn.Module],
-                eigen_smooth: bool = False) -> np.ndarray:
+                eigen_smooth: bool = False,
+                cam_score: bool = False) -> np.ndarray:
 
         input_tensor = input_tensor.to(self.device)
 
@@ -105,7 +106,10 @@ class BaseCAM:
         # or something else.
         cam_per_layer = self.compute_cam_per_layer(input_tensor,
                                                    targets,
-                                                   eigen_smooth)
+                                                   eigen_smooth,
+                                                   cam_score)
+        if cam_score:
+            return cam_per_layer[0]
         return self.aggregate_multi_layers(cam_per_layer)
 
     def get_target_width_height(self,
@@ -117,7 +121,8 @@ class BaseCAM:
             self,
             input_tensor: torch.Tensor,
             targets: List[torch.nn.Module],
-            eigen_smooth: bool) -> np.ndarray:
+            eigen_smooth: bool,
+            cam_score: bool = False) -> np.ndarray:
         activations_list = [a.cpu().data.numpy()
                             for a in self.activations_and_grads.activations]
         grads_list = [g.cpu().data.numpy()
@@ -142,8 +147,11 @@ class BaseCAM:
                                      layer_grads,
                                      eigen_smooth)
             cam = np.maximum(cam, 0)
-            scaled = scale_cam_image(cam, target_size)
-            cam_per_target_layer.append(scaled[:, None, :])
+            if cam_score:
+                cam_per_target_layer.append(cam)
+            else:
+                scaled = scale_cam_image(cam, target_size)
+                cam_per_target_layer.append(scaled[:, None, :])
 
         return cam_per_target_layer
 
@@ -183,7 +191,8 @@ class BaseCAM:
                  input_tensor: torch.Tensor,
                  targets: List[torch.nn.Module] = None,
                  aug_smooth: bool = False,
-                 eigen_smooth: bool = False) -> np.ndarray:
+                 eigen_smooth: bool = False,
+                 cam_score: bool = False) -> np.ndarray:
 
         # Smooth the CAM result with test time augmentation
         if aug_smooth is True:
@@ -191,7 +200,7 @@ class BaseCAM:
                 input_tensor, targets, eigen_smooth)
 
         return self.forward(input_tensor,
-                            targets, eigen_smooth)
+                            targets, eigen_smooth, cam_score)
 
     def __del__(self):
         self.activations_and_grads.release()

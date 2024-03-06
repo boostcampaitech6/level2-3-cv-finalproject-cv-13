@@ -7,7 +7,7 @@ from importlib import import_module
 import pickle
 from sklearn.linear_model import LogisticRegression
 
-from model import MRNet
+# from model import create_model
 from config import config
 
 
@@ -19,7 +19,6 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 def data_processing(path):
     
     img_array = np.load(path)
-
     img_array = np.stack((img_array,)*3, axis=1)
     img_array = torch.FloatTensor(img_array)
     img_array = img_array.unsqueeze(0)
@@ -29,11 +28,11 @@ def data_processing(path):
 #모델 불러오기
 def load_model(saved_path, model_class, task, plane, device): 
 
-    #동적으로 model.py를 import하고 원하는 class를 가져옴
-    model_cls = getattr(import_module("model"), model_class) 
-    model = model_cls()
+    # #동적으로 model.py를 import하고 원하는 class를 가져옴
+    # model_cls = getattr(import_module("model"), model_class) 
+    # model = create_model(model_class, **model_params)
 
-    # 모델 가중치를 로드한다.
+    # 모델을 로드한다.
     model_path = os.path.join(saved_path, f"{task}_{plane}_best.pth")
     if os.path.exists(model_path): 
         model = torch.load(model_path, map_location=device)
@@ -53,91 +52,10 @@ def fusion_model(saved_path, task):
 
     return model
 
-# 개별 모델
-def predict_disease(input, path, model_class, task, plane):
-    #gpu 확인
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
-
-    #모델 불러오기
-    model = load_model(path, model_class, task, plane, device).to(device)
-    model.eval()
-
-    with torch.no_grad():
-        input = input.to(device)
-        predictions = model(input)
-    
-    probas = torch.sigmoid(predictions)
-    proba = probas[0][1].item()
-    return proba
-
-def predict_percent(input, path, task):
-    # feature_names = ['axial','coronal','sagittal']
-    input = np.array(input).reshape(1,-1)
-    lr_model = fusion_model(path, task)
-    proba = lr_model.predict_proba(input)[:, 1]
-
-    return proba
-
-def grad_cam_inference(input, path, model_class, task, plane):
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
-    res_grad_dir = os.path.join('result','gradcam', task)
-    res_original_dir = os.path.join('result','original', task)
-
-    #모델 불러오기
-    model = load_model(path, model_class, task, plane, device).to(device)
-    model.eval()
-
-    # target_layers = model.target
-    target_layers = [model.pretrained_model.features[-1]]
-    score_li = []
-
-    with GradCAM(model=model, target_layers=target_layers) as cam:
-        targets = [BinaryClassifierOutputTarget(1)]
-        
-        cam_result_list = cam(
-                            input_tensor=input.float(), targets=targets, 
-                            aug_smooth=True, eigen_smooth=True
-                                )
-        
-        #camscore처리
-        for array in cam_result_list:
-            score_li.append(array.sum())
-        max_idx = score_li.index(max(score_li))
-        scores = [((x-min(score_li))/(max(score_li)-min(score_li)))*100 for x in score_li]
-
-        original_image = torch.squeeze(input, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
-        cam_result = cam_result_list[max_idx]
-        visualization = show_cam_on_image(original_image, cam_result, use_rgb=True) 
-        visualization_image = Image.fromarray(visualization)
-        result_original_image = Image.fromarray((original_image*255).astype(np.uint8))
-        
-        if not os.path.exists(res_grad_dir):
-            os.makedirs(res_grad_dir)
-        if not os.path.exists(res_original_dir):
-            os.makedirs(res_original_dir)
-        
-        grad_path = os.path.join(res_grad_dir, plane +'.png')
-        original_path = os.path.join(res_original_dir, plane +'.png')
-
-        if os.path.exists(grad_path):
-            os.remove(grad_path)
-        
-        visualization_image.save(grad_path)
-        
-        if os.path.exists(original_path):
-            os.remove(original_path)
-        result_original_image.save(original_path)
-
-    return max_idx, scores
-
-
-######################################################################
 class InferenceModels:
     diseases = config.diseases
     planes = config.planes
-    saved_path = "./models"
+    saved_path = config.model_path
     
     def __init__(self):
         self.models = {}
@@ -166,7 +84,7 @@ def get_fusion_model(disease):
     return inference_models.get_fusion_model(disease)
 
 
-def predict_disease_without_load(input, disease, plane, device):
+def predict_disease(input, disease, plane, device):
     #gpu 확인
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
@@ -179,12 +97,13 @@ def predict_disease_without_load(input, disease, plane, device):
         input = input.to(device)
         predictions = model(input)
     
-    probas = torch.sigmoid(predictions)
-    proba = probas[0][1].item()
-    return proba
+    preds = torch.sigmoid(predictions)
+    pred = preds[0][1].item()
+    
+    return pred
     
     
-def predict_percent_without_load(input, disease):
+def predict_percent(input, disease):
     # feature_names = ['axial','coronal','sagittal']
     input = np.array(input).reshape(1,-1)
     lr_model = get_fusion_model(disease)
@@ -193,9 +112,10 @@ def predict_percent_without_load(input, disease):
     return proba
     
     
-def grad_cam_inference_without_load(input, disease, plane):
+def grad_cam_inference(input, disease, plane):
     res_grad_dir = os.path.join('result','gradcam', disease)
     res_original_dir = os.path.join('result','original', disease)
+    input_tensor = torch.squeeze(input, dim=0)
 
     #모델 불러오기
     model = get_model(disease, plane)
@@ -203,44 +123,42 @@ def grad_cam_inference_without_load(input, disease, plane):
 
     # target_layers = model.target
     target_layers = [model.pretrained_model.features[-1]]
-    score_li = []
 
-    with GradCAM(model=model, target_layers=target_layers) as cam:
-        targets = [BinaryClassifierOutputTarget(1)]
+    cam = GradCAM(model=model, target_layers=target_layers)
+    targets = [BinaryClassifierOutputTarget(1)]
         
-        cam_result_list = cam(
-                            input_tensor=input.float(), targets=targets, 
-                            aug_smooth=True, eigen_smooth=True
-                                )
-        
-        #camscore처리
-        for array in cam_result_list:
-            score_li.append(array.sum())
-            
-        max_idx = score_li.index(max(score_li))
-        scores = [((x-min(score_li))/(max(score_li)-min(score_li)))*100 for x in score_li]
+    cam_results = cam(input_tensor=input_tensor, targets=targets, cam_score=False)
+    cam_score_results = cam(input_tensor=input_tensor, targets=targets, cam_score=True)
+    
+    cam_scores = []
+    
+    for cam_score_result in cam_score_results:
+        cam_score = cam_score_result.max()
+        cam_scores.append(cam_score)
+    
+    max_idx = cam_scores.index(max(cam_scores))
+    print(cam_scores) #값 범위 조절 필요
+    top_image =  torch.squeeze(input_tensor, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
+    top_cam_result = cam_results[max_idx]
 
-        original_image = torch.squeeze(input, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
-        cam_result = cam_result_list[max_idx]
-        visualization = show_cam_on_image(original_image, cam_result, use_rgb=True) 
-        visualization_image = Image.fromarray(visualization)
-        result_original_image = Image.fromarray((original_image*255).astype(np.uint8))
+    visualization = show_cam_on_image(top_image, top_cam_result, use_rgb=True)
+    top_cam_result = Image.fromarray(visualization)
+    top_image = Image.fromarray((top_image*255).astype(np.uint8))
+ 
         
-        if not os.path.exists(res_grad_dir):
-            os.makedirs(res_grad_dir)
-        if not os.path.exists(res_original_dir):
-            os.makedirs(res_original_dir)
-        
-        grad_path = os.path.join(res_grad_dir, plane +'.png')
-        original_path = os.path.join(res_original_dir, plane +'.png')
+    if not os.path.exists(res_grad_dir):
+        os.makedirs(res_grad_dir)
+    if not os.path.exists(res_original_dir):
+        os.makedirs(res_original_dir)
+    grad_path = os.path.join(res_grad_dir, plane +'.png')
+    original_path = os.path.join(res_original_dir, plane +'.png')
 
-        if os.path.exists(grad_path):
-            os.remove(grad_path)
+    if os.path.exists(grad_path):
+        os.remove(grad_path)
+    top_cam_result.save(grad_path)
         
-        visualization_image.save(grad_path)
-        
-        if os.path.exists(original_path):
-            os.remove(original_path)
-        result_original_image.save(original_path)
+    if os.path.exists(original_path):
+        os.remove(original_path)
+    top_image.save(original_path)
 
-    return max_idx, scores
+    return max_idx, cam_scores

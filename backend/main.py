@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from PIL import Image
+
+import time
 import io
 import os
 import numpy as np
@@ -10,18 +12,29 @@ import base64
 import json
 import shutil
 import warnings
+from contextlib import asynccontextmanager
 warnings.filterwarnings("ignore")
 
 from utils import *
 from schemas import DICOMRequest, resultResponse, DiseaseResult
 from dcm_convert import convert_dcm_to_numpy
 from config import config
+# from auto_docs import summary_report
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    s_time = time.time()
+    inference_models.set_model()
+    print("Model Loading Time: ", time.time() - s_time)
+    yield
+    
+    
 origins = [
     "http://localhost:3000",
 ]
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,10 +47,6 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"message": "Hello"}
-
-@app.post("/input/dicom/{plane}")
-async def receiveDICOM(plane: str, file: UploadFile):
-    pass
 
 @app.post("/input/{plane}") # ex) /input/axial
 async def receiveFile(plane:str, file: list[UploadFile]):
@@ -68,6 +77,7 @@ async def receiveFile(plane:str, file: list[UploadFile]):
 
 @app.get("/inference")
 async def inference():
+    s_time = time.time()
     planes = config.planes
     diseases = config.diseases
 
@@ -84,16 +94,16 @@ async def inference():
             
             print(f'Inference about {disease}-{plane}')
             input_tensor = data_processing(input_path)
-            res.append(predict_disease(input_tensor, "./models", config.model_class, disease, plane))
+            res.append(predict_disease(input_tensor, disease, plane, "cuda"))
             
             print(f'Generating Importnat Images and Grad-CAM Images about {disease}-{plane}')
-            max_idx, camscores = grad_cam_inference(input_tensor, "./models", config.model_class, disease, plane)
+            max_idx, camscores = grad_cam_inference(input_tensor, disease, plane)
 
             datasets = [] 
             labels = []
             for i, score in enumerate(camscores):
                 labels.append(i)
-                datasets.append({"x": i, "y": int(score)})
+                datasets.append({"x": i, "y": round(score * 1000)})
 
             result_dict[disease][plane]['labels'] = labels
             result_dict[disease][plane]['datasets'] = datasets
@@ -102,13 +112,27 @@ async def inference():
         print(f'inference fusion about {disease}')
         proba = {}
         proba['y'] = disease
-        fusion_res = predict_percent(res,"./models", disease)
+        fusion_res = predict_percent(res, disease)
         proba['x'] = round((fusion_res[0] * 100),1)
-        result_dict['percent']['datasets'].append(proba)
+        result_dict['percent']['datasets'].append(proba)    
+        
+    # # need for summary report
+    # cls_result = result_dict['percent']['datasets']
+    # prob_result = [proba['x'] for proba in cls_result]
+    # max_prob_idx = prob_result.index(max(prob_result))
+    # max_cls = result_dict["percent"]["labels"][max_prob_idx]
+    
+    # _dcm_path = os.path.join(config.orign_path, planes[0], 'axial.dcm')
+    # _gradcam_path = os.path.join("result", 'gradcam', max_cls)
+    # summary_report.set_personal_info(_dcm_path)
+    # summary_report.set_image_paths(_gradcam_path)
+    # summary_report.set_result_info(prob_result)
+    # summary_report.export_to_docx()
 
     with open('./result.json','w') as f:
         json.dump(result_dict, f, indent=4)
 
+    print("Inference Time: ", time.time() - s_time)
     return {"inference" : "success"}
 
 # 전체 결과

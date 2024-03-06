@@ -5,7 +5,6 @@ modeling/new_data
 gradcamimages
 backend/input_img
 backend/models
-backend/pytorch_grad_cam
 backend/gradcam
 backend/original
 .venv
