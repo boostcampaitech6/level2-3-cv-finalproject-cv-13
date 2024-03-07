@@ -40,10 +40,30 @@ class Resnet50(nn.Module):
         flattened_features = torch.max(features, 0, keepdim=True)[0]
         out = self.classifier(flattened_features)
         return out
+    
+    
+class MobileNetV2(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = models.mobilenet_v2(pretrained=True)
+        self.classifier = nn.Linear(1000, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained.features[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        features = self.pretrained(x)
+        flattened_features = torch.max(features, 0, keepdim=True)[0]
+        out = self.classifier(flattened_features)
+
+        return out
+
 
 _model_entrypoints = {
     "mrnet": MRNet,
-    "resnet50": Resnet50
+    "resnet50": Resnet50,
+    "mobilenetv2": MobileNetV2
 }
 
 def create_model(model, **kargs):
