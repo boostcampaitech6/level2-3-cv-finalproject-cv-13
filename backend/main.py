@@ -91,13 +91,12 @@ async def inference():
         res = []
 
         for plane in planes:
-            input_path = os.path.join(config.orign_path, plane, 'input.npy')
-            
             print(f'Inference about {disease}-{plane}')
+            
+            input_path = os.path.join(config.orign_path, plane, 'input.npy')
             input_tensor = data_processing(input_path)
             res.append(predict_disease(input_tensor, disease, plane, "cuda"))
             
-            print(f'Generating Importnat Images and Grad-CAM Images about {disease}-{plane}')
             max_idx, camscores = grad_cam_inference(input_tensor, disease, plane, 0.5)
 
             datasets = [] 
@@ -110,7 +109,6 @@ async def inference():
             result_dict[disease][plane]['datasets'] = datasets
             result_dict[disease][plane]['highest'] = max_idx
 
-        print(f'inference fusion about {disease}')
         proba = {}
         proba['y'] = disease
         fusion_res = predict_percent(res, disease)
@@ -151,18 +149,24 @@ async def patientInfo() -> PatientInfo:
 
 # 질병 별 각 축의 가장 중요 슬라이드 + gradcam
 @app.get("/result/{disease}/{method}")
-async def resultFile(disease:str, method:str):
-    if method == "original": #original or gradcam
-        IMAGE_ROOT = os.path.join('result', method, disease) 
-    elif method == "gradcam":
-        IMAGE_ROOT = os.path.join('result', method, disease)
-    
+async def resultFile(disease:str, method:str, threshold: float):
+    ORIGIN_PATH = os.path.join('result', "original", disease)
+    GRAD_PATH = os.path.join('result', "gradcam", disease)
     output_bytes = []
-    image_paths = os.listdir(IMAGE_ROOT)
-    for path in image_paths:
-        with open(os.path.join(IMAGE_ROOT, path), 'rb') as img:
-            base64_string = base64.b64encode(img.read())
+    numpy_files = os.listdir(ORIGIN_PATH)
+    for f in numpy_files:
+        original_img = np.load(os.path.join(ORIGIN_PATH, f))
+        if method == "gradcam":
+            cam_img = np.load(os.path.join(ORIGIN_PATH, f))
+            visualization = show_cam_on_image(original_img, cam_img, use_rgb=True, threshold=threshold)
+            result_img = Image.fromarray(visualization)
+        else:
+            result_img = Image.fromarray(original_img*255).astype(np.uint8)
 
+        byte_buffer = io.BytesIO()
+        result_img.save(byte_buffer, format="PNG")
+
+        base64_string = base64.b64encode(byte_buffer.getvalue())
         headers = {'Content-Disposition': 'inline; filename="test.png"'}
         output_bytes.append(Response(base64_string, headers=headers, media_type='image/png'))
 

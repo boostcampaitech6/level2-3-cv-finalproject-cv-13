@@ -140,24 +140,21 @@ def grad_cam_inference(input, disease, plane, threshold: float):
     # print(cam_scores) #값 조절... softmax는 왜 값이 다 비슷해지지...?
     top_image =  torch.squeeze(input_tensor, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
     top_cam_result = cam_results[max_idx] 
-    visualization = show_cam_on_image(top_image, top_cam_result, use_rgb=True, threshold=threshold)
-    top_cam_result = Image.fromarray(visualization)
-    top_image = Image.fromarray((top_image*255).astype(np.uint8))
- 
         
     if not os.path.exists(res_grad_dir):
         os.makedirs(res_grad_dir)
     if not os.path.exists(res_original_dir):
         os.makedirs(res_original_dir)
-    grad_path = os.path.join(res_grad_dir, plane +'.png')
-    original_path = os.path.join(res_original_dir, plane +'.png')
+
+    grad_path = os.path.join(res_grad_dir, plane +'.npy')
+    original_path = os.path.join(res_original_dir, plane +'.npy')
 
     if os.path.exists(grad_path):
         os.remove(grad_path)
-    top_cam_result.save(grad_path)
+    np.save(grad_path, top_cam_result)
         
     if os.path.exists(original_path):
         os.remove(original_path)
-    top_image.save(original_path)
-
+    np.save(original_path, top_image)
+    
     return max_idx, cam_scores
