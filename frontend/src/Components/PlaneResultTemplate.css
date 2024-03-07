@@ -59,20 +59,6 @@
 	width: 1077px;
   }
   
-  .axial-results .text-wrapper {
-	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
-	font-size: 25px;
-	font-weight: 400;
-	left: 417px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 41px;
-	width: 302px;
-  }
-  
   .axial-results .image {
 	height: 630px;
 	left: 147px;
@@ -98,7 +84,7 @@
   
   .axial-results .image-text {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 30px;
 	font-weight: 400;
 	left: 266px;
@@ -118,6 +104,13 @@
 	width: 1446px;
   }
   
+  .axial-results .overlap-2 {
+	background-color: #444444;
+	height: 122px;
+	position: relative;
+	width: 1440px;
+  }
+  
   .axial-results .overlap-group-2 {
 	height: 35px;
 	left: 165px;
@@ -128,7 +121,7 @@
   
   .axial-results .text-wrapper-2 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 0;
@@ -142,7 +135,7 @@
   
   .axial-results .text-wrapper-3 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 150px;
@@ -156,7 +149,7 @@
   
   .axial-results .text-wrapper-4 {
 	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
+	font-family: "Alata", Helvetica;
 	font-size: 25px;
 	font-weight: 400;
 	left: 282px;
@@ -204,20 +197,6 @@
   }
   .axial-results .slider .nav-btn2:hover {
 	transform: scale(1.1);
-  }
-  
-  .axial-results .text-wrapper-5 {
-	color: #ffffff;
-	font-family: "Alata-Regular", Helvetica;
-	font-size: 15px;
-	font-weight: 400;
-	left: 19px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 7px;
-	width: 127px;
   }
   
   .axial-results .back {

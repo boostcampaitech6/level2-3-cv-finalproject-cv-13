@@ -182,6 +182,7 @@ export default function PlaneResultTemplate (props) {
         </div>
         </div>
         <div className="top-overlay">
+          <div className="overlap-2">
             <div className="overlap-group-2">
               <div className="text-wrapper-2">환자명: 김00</div>
               <div className="text-wrapper-3">성별: F</div>
@@ -190,6 +191,7 @@ export default function PlaneResultTemplate (props) {
 			<Link to="/">
             <img className="logo" alt="Logo" src={ImgAsset.ResultsCodeACL_logo}/>
 			</Link>
+          </div>
         </div>
 		<div className="play-button">
 			<Button  variant="text" onClick={playButton} sx = {{backgroundImage:`url(${ImgAsset.AxialResults_PlayButton})`, backgroundRepeat: "no-repeat", 
