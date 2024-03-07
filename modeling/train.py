@@ -104,7 +104,7 @@ def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current
     
     image_path = "confusion_matrix.png"
     plt.savefig(image_path)
-    wandb.log({f"train_confusion_matrix": wandb.Image(image_path)})
+    wandb.log({f"train_confusion_matrix": wandb.Image(image_path)}, step=epoch)
     ##########################################
     
     return metric_result
@@ -190,7 +190,7 @@ def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
     
     image_path = "confusion_matrix.png"
     plt.savefig(image_path)
-    wandb.log({f"eval_confusion_matrix": wandb.Image(image_path)})
+    wandb.log({f"eval_confusion_matrix": wandb.Image(image_path)}, step=epoch)
     ##########################################
     
     return metric_result
