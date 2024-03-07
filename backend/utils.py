@@ -112,7 +112,7 @@ def predict_percent(input, disease):
     return proba
     
     
-def grad_cam_inference(input, disease, plane):
+def grad_cam_inference(input, disease, plane, threshold: float):
     res_grad_dir = os.path.join('result','gradcam', disease)
     res_original_dir = os.path.join('result','original', disease)
     input_tensor = torch.squeeze(input, dim=0)
@@ -137,11 +137,10 @@ def grad_cam_inference(input, disease, plane):
         cam_scores.append(cam_score)
     
     max_idx = cam_scores.index(max(cam_scores))
-    print(cam_scores) #값 범위 조절 필요
+    # print(cam_scores) #값 조절... softmax는 왜 값이 다 비슷해지지...?
     top_image =  torch.squeeze(input_tensor, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
-    top_cam_result = cam_results[max_idx]
-
-    visualization = show_cam_on_image(top_image, top_cam_result, use_rgb=True)
+    top_cam_result = cam_results[max_idx] 
+    visualization = show_cam_on_image(top_image, top_cam_result, use_rgb=True, threshold=threshold)
     top_cam_result = Image.fromarray(visualization)
     top_image = Image.fromarray((top_image*255).astype(np.uint8))
  

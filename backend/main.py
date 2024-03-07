@@ -16,10 +16,10 @@ from contextlib import asynccontextmanager
 warnings.filterwarnings("ignore")
 
 from utils import *
-from schemas import DICOMRequest, resultResponse, DiseaseResult
+from schemas import DICOMRequest, resultResponse, DiseaseResult, PatientInfo
 from dcm_convert import convert_dcm_to_numpy
 from config import config
-# from auto_docs import summary_report
+from auto_docs import summary_report
 
 
 @asynccontextmanager
@@ -67,8 +67,9 @@ async def receiveFile(plane:str, file: list[UploadFile]):
             with open(file_path, "wb") as file_object:
                 file_object.write(f.file.read())
 
-                _, npy_array = convert_dcm_to_numpy(file_path)
+                info, npy_array = convert_dcm_to_numpy(file_path)
                 np.save(os.path.join(UPLOAD_FOLDER, "input.npy"), npy_array)
+                summary_report.set_personal_info(info)
 
             return JSONResponse(status_code=200, content={ plane: "success"})
         except Exception as e:
@@ -97,7 +98,7 @@ async def inference():
             res.append(predict_disease(input_tensor, disease, plane, "cuda"))
             
             print(f'Generating Importnat Images and Grad-CAM Images about {disease}-{plane}')
-            max_idx, camscores = grad_cam_inference(input_tensor, disease, plane)
+            max_idx, camscores = grad_cam_inference(input_tensor, disease, plane, 0.5)
 
             datasets = [] 
             labels = []
@@ -115,20 +116,17 @@ async def inference():
         fusion_res = predict_percent(res, disease)
         proba['x'] = round((fusion_res[0] * 100),1)
         result_dict['percent']['datasets'].append(proba)    
-        
-    # # need for summary report
-    # cls_result = result_dict['percent']['datasets']
-    # prob_result = [proba['x'] for proba in cls_result]
-    # max_prob_idx = prob_result.index(max(prob_result))
-    # max_cls = result_dict["percent"]["labels"][max_prob_idx]
     
-    # _dcm_path = os.path.join(config.orign_path, planes[0], 'axial.dcm')
-    # _gradcam_path = os.path.join("result", 'gradcam', max_cls)
-    # summary_report.set_personal_info(_dcm_path)
-    # summary_report.set_image_paths(_gradcam_path)
-    # summary_report.set_result_info(prob_result)
-    # summary_report.export_to_docx()
-
+    # summary
+    cls_result = result_dict['percent']['datasets']
+    prob_result = [proba['x'] for proba in cls_result]
+    max_prob_idx = prob_result.index(max(prob_result))
+    max_cls = result_dict["percent"]["labels"][max_prob_idx]
+    
+    _gradcam_path = os.path.join("result", 'gradcam', max_cls)
+    summary_report.set_image_paths(_gradcam_path)
+    summary_report.set_result_info(prob_result)
+    
     with open('./result.json','w') as f:
         json.dump(result_dict, f, indent=4)
 
@@ -143,6 +141,13 @@ async def outputJSON() -> resultResponse:
         result_dict = json.load(file)
     result = result_dict['percent']
     return resultResponse(labels=result["labels"], datasets=result["datasets"])
+
+
+@app.get("/result/patient")
+async def patientInfo() -> PatientInfo:
+    patient_info = summary_report.get_personal_info()
+    return PatientInfo(labels=patient_info[0], info=patient_info[1])
+    
 
 # 질병 별 각 축의 가장 중요 슬라이드 + gradcam
 @app.get("/result/{disease}/{method}")
@@ -193,3 +198,9 @@ async def outputFile(disease: str, plane:str):
     result_info['img'] = output_bytes
 
     return result_info
+
+@app.get("/result/docs")
+async def exportSummary():
+    # need for summary report
+    summary_report.export_to_docx()
+    return {"summary" : "complete"}
