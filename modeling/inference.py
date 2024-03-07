@@ -8,6 +8,7 @@ from tqdm import tqdm
 import torch
 
 from dataloader import MRInferenceDataset
+from metric import Metric
 
 from sklearn import metrics
 
@@ -32,11 +33,18 @@ def test(model_name, data_loader):
         probas = torch.sigmoid(prediction)
 
         y_trues.append(int(label[0][1]))
-        y_preds.append(probas[0][1].item())         
+        y_preds.append(probas[0][1].item())      
 
     auc = np.round(metrics.roc_auc_score(y_trues, y_preds), 4)
+    y_preds = [1 if y_pred > 0.5 else 0 for y_pred in y_preds]
 
-    return auc
+    
+    metric = Metric()
+    metric(torch.tensor(y_trues), torch.tensor(y_preds))
+    metric_result = metric.update()
+    metric_result['auc'] = auc
+
+    return metric_result
         
 def run(config):
     DATA_ROOT = config['DATA_ROOT']
@@ -57,9 +65,13 @@ def run(config):
 
     t_start_training = time.time()
 
-    auc = test(model_name, test_loader)
-
-    print(f"AUC : {auc}")
+    test_metric = test(model_name, test_loader)
+    print('-' * 150)
+    print(f"| AUC : {test_metric['auroc']} | Accuracy : {test_metric['acc']} | F1-score : {test_metric['f1']} |")
+    print(f"| Precision : {test_metric['precision']} | Recall : {test_metric['recall']} | Specificity : {test_metric['specificity']} |")
+    print('-' * 150)
+    print(f"| Base_AUC : {test_metric['auc']} |")
+    print('-' * 150)
     t_end_training = time.time()
     print(f'Test took {t_end_training - t_start_training} s')
 
