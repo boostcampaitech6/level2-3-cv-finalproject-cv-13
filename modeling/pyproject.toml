@@ -23,6 +23,7 @@ ttach = "0.0.3"
 python-docx = "1.1.0"
 pydicom = "^2.4.4"
 ipykernel = "^6.29.3"
+matplotlib = "^3.8.3"
 
 [[tool.poetry.source]]
 name = "pytorch"

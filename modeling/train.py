@@ -6,6 +6,7 @@ import wandb
 
 import torch
 import torch.optim as optim
+import matplotlib.pyplot as plt
 
 from dataloader import MRDataset
 from metric import Metric
@@ -74,6 +75,38 @@ def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current
     print(f"[Epoch: {epoch} / {num_epochs} | "
           f"train loss {metric_result['loss']} | train auc : {metric_result['auc']} | lr : {current_lr}]")
     
+    
+    ##########################################
+    cm = metrics.confusion_matrix(y_trues, y_preds)
+    plt.figure(figsize=(8, 6))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title('Confusion Matrix')
+    plt.colorbar()
+    
+    classes = ["0", "1"]
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes)
+    plt.yticks(tick_marks, classes)
+
+    fmt = 'd'
+    thresh = cm.max() / 2.
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(j, i, format(cm[i, j], fmt),
+                    horizontalalignment="center",
+                    color="white" if cm[i, j] > thresh else "black")
+
+    title = f"{config['TASK']}_{config['PLANE']}"
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.title(title)
+    plt.tight_layout()
+    
+    image_path = "confusion_matrix.png"
+    plt.savefig(image_path)
+    wandb.log({f"train_confusion_matrix": wandb.Image(image_path)})
+    ##########################################
+    
     return metric_result
 
 
@@ -128,7 +161,38 @@ def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
 
     print(f"[Epoch: {epoch} / {num_epochs} | "
         f"valid loss {metric_result['loss']} | valid auc : {metric_result['auc']} | lr : {current_lr}]")
-        
+    
+    ##########################################
+    cm = metrics.confusion_matrix(y_trues, y_preds)
+    plt.figure(figsize=(8, 6))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title('Confusion Matrix')
+    plt.colorbar()
+    
+    classes = ["0", "1"]
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes)
+    plt.yticks(tick_marks, classes)
+
+    fmt = 'd'
+    thresh = cm.max() / 2.
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(j, i, format(cm[i, j], fmt),
+                    horizontalalignment="center",
+                    color="white" if cm[i, j] > thresh else "black")
+
+    title = f"{config['TASK']}_{config['PLANE']}"
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.title(title)
+    plt.tight_layout()
+    
+    image_path = "confusion_matrix.png"
+    plt.savefig(image_path)
+    wandb.log({f"eval_confusion_matrix": wandb.Image(image_path)})
+    ##########################################
+    
     return metric_result
 
 
