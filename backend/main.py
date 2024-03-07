@@ -92,7 +92,7 @@ async def inference():
 
         for plane in planes:
             print(f'Inference about {disease}-{plane}')
-            
+
             input_path = os.path.join(config.orign_path, plane, 'input.npy')
             input_tensor = data_processing(input_path)
             res.append(predict_disease(input_tensor, disease, plane, "cuda"))
@@ -157,7 +157,7 @@ async def resultFile(disease:str, method:str, threshold: float):
     for f in numpy_files:
         original_img = np.load(os.path.join(ORIGIN_PATH, f))
         if method == "gradcam":
-            cam_img = np.load(os.path.join(ORIGIN_PATH, f))
+            cam_img = np.load(os.path.join(GRAD_PATH, f))
             visualization = show_cam_on_image(original_img, cam_img, use_rgb=True, threshold=threshold)
             result_img = Image.fromarray(visualization)
         else:
