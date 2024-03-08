@@ -14,18 +14,20 @@ class SummaryReport:
         self.img_paths = None
         self.result_info = None
         
-    def set_personal_info(self, dcm_path: str):
-        _dcm_file = pydicom.dcmread(dcm_path, force=True)
+    def set_personal_info(self, info: dict):
         self.p_info = {
             0: ["환자 ID", "이름", "성별", "나이", "생년월일"],
-            1: [
-                _dcm_file.PatientID, 
-                _dcm_file.PatientName, 
-                _dcm_file.PatientSex, 
-                _dcm_file.PatientAge, 
-                _dcm_file.PatientBirthDate
+            1: [ 
+                str(info["PatientID"]), 
+                str(info["PatientName"]), 
+                str(info["PatientSex"]), 
+                str(info["PatientAge"]), 
+                str(info["PatientBirthDate"])
             ]
         }
+
+    def get_personal_info(self):
+        return self.p_info
         
     # gradcam path
     def set_image_paths(self, result_path: str):
@@ -164,20 +166,20 @@ class SummaryReport:
             os.remove(save_docs_path)    
         document.save(save_docs_path)
         
+summary_report = SummaryReport()
     
-    
-if __name__ == '__main__':
-    summary_report = SummaryReport()
-    summary_report.set_personal_info("output_dicom.dcm")
-    summary_report.set_image_paths([
-        "../backend/sampleimages/axial_0000.png", 
-        "../backend/sampleimages/axial_0001.png", 
-        "../backend/sampleimages/axial_0002.png"
-    ])
-    summary_report.set_result_info({
-        0: ["Abnormal (비정상)", "50%", ""],
-        1: ["ACL tear (전방십자인대)", "20%", ""],
-        2: ["Meniscus tear (반달연골)", "60%", ""]
-    })
-    summary_report.export_to_docx()
+# if __name__ == '__main__':
+#     summary_report = SummaryReport()
+#     summary_report.set_personal_info("output_dicom.dcm")
+#     summary_report.set_image_paths([
+#         "../backend/sampleimages/axial_0000.png", 
+#         "../backend/sampleimages/axial_0001.png", 
+#         "../backend/sampleimages/axial_0002.png"
+#     ])
+#     summary_report.set_result_info({
+#         0: ["Abnormal (비정상)", "50%", ""],
+#         1: ["ACL tear (전방십자인대)", "20%", ""],
+#         2: ["Meniscus tear (반달연골)", "60%", ""]
+#     })
+#     summary_report.export_to_docx()
     
