@@ -35,13 +35,17 @@ export default function PlaneResultTemplate (props) {
   	let [imageExists, setImageExists] = useState(false)
 	const [images, setImages] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [onPatientLoad, setonPatientLoad] = useState(true);
 	const chartRef = useRef();
 	const [Data, setData] = useState([]);
 	let [pauseState, setPauseState] = useState(false);
+	const [patientInfo, setPatientInfo] = useState([]);
+	const [patientLabel, setPatientLabel] = useState([]);
 
 	const disease = props.disease;
 	const plane = props.plane;
 	const imageurl = `http://127.0.0.1:8000/output/${disease}/${plane}`
+	const patienturl = "http://127.0.0.1:8000/result/patient";
 
 	useEffect(() => {
 		async function fetchData() {
@@ -60,6 +64,22 @@ export default function PlaneResultTemplate (props) {
 	
 		fetchData();
 	  }, []);
+
+	useEffect(() => {
+	const fetchPatient = async () => {
+			try {
+			const response = await axios.get(patienturl)
+			setPatientInfo(response.data.info);
+			setPatientLabel(response.data.labels);
+			setonPatientLoad(false);
+			} catch (error) {
+			alert(`환자정보 로딩 시 에러가 발생했습니다. \n ${error}`);
+			setonPatientLoad(true);
+			}
+		};
+		fetchPatient();
+		}, []);
+	
 
 	let [page, setPage] = useState(images);
 	let [currentidx, setCurrentIdx] = useState(loading ? 0 : Data.highest);
@@ -184,9 +204,8 @@ export default function PlaneResultTemplate (props) {
         <div className="top-overlay">
           <div className="overlap-2">
             <div className="overlap-group-2">
-              <div className="text-wrapper-2">환자명: 김00</div>
-              <div className="text-wrapper-3">성별: F</div>
-              <div className="text-wrapper-4">검사일: 2024-02-27</div>
+              <div className="text-wrapper-2">{!onPatientLoad ? `${patientLabel[0]}: ${patientInfo[0]} \u00A0 ${patientLabel[1]}: ${patientInfo[1]} \u00A0 
+              ${patientLabel[2]}: ${patientInfo[2]} \u00A0 ${patientLabel[3]}: ${patientInfo[3]} \u00A0 ${patientLabel[4]}: ${patientInfo[4]}` : 'Loading...'}</div>
             </div>
 			<Link to="/">
             <img className="logo" alt="Logo" src={ImgAsset.ResultsCodeACL_logo}/>
