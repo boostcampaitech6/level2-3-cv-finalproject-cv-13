@@ -41,9 +41,26 @@ class Resnet50(nn.Module):
         out = self.classifier(flattened_features)
         return out
 
+class Resnet18(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
+        self.classifier = nn.Linear(1000, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained.layer4[-1]]
+    
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        features = self.pretrained(x)
+        flattened_features = torch.max(features, 0, keepdim=True)[0]
+        out = self.classifier(flattened_features)
+        return out
+
 _model_entrypoints = {
     "mrnet": MRNet,
-    "resnet50": Resnet50
+    "resnet50": Resnet50,
+    "resnet18": Resnet18,
 }
 
 def create_model(model, **kargs):
