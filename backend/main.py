@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from PIL import Image
+from typing import Optional
 
 import time
 import io
@@ -97,7 +98,7 @@ async def inference():
             input_tensor = data_processing(input_path)
             res.append(predict_disease(input_tensor, disease, plane, "cuda"))
             
-            max_idx, camscores = grad_cam_inference(input_tensor, disease, plane, 0.5)
+            max_idx, camscores = grad_cam_inference(input_tensor, disease, plane)
 
             datasets = [] 
             labels = []
@@ -121,7 +122,7 @@ async def inference():
     max_prob_idx = prob_result.index(max(prob_result))
     max_cls = result_dict["percent"]["labels"][max_prob_idx]
     
-    _gradcam_path = os.path.join("result", 'gradcam', max_cls)
+    _gradcam_path = os.path.join("docs_img", max_cls)
     summary_report.set_image_paths(_gradcam_path)
     summary_report.set_result_info(prob_result)
     
@@ -148,8 +149,8 @@ async def patientInfo() -> PatientInfo:
     
 
 # 질병 별 각 축의 가장 중요 슬라이드 + gradcam
-@app.get("/result/{disease}/{method}")
-async def resultFile(disease:str, method:str, threshold: float):
+@app.get("/result/{disease}/{method}") #?threshold=0.5
+async def resultFile(disease:str, method:str, threshold: Optional[float] = None):
     ORIGIN_PATH = os.path.join('result', "original", disease)
     GRAD_PATH = os.path.join('result', "gradcam", disease)
     output_bytes = []
@@ -157,11 +158,13 @@ async def resultFile(disease:str, method:str, threshold: float):
     for f in numpy_files:
         original_img = np.load(os.path.join(ORIGIN_PATH, f))
         if method == "gradcam":
+            if threshold == None:
+                threshold = 0.5
             cam_img = np.load(os.path.join(GRAD_PATH, f))
             visualization = show_cam_on_image(original_img, cam_img, use_rgb=True, threshold=threshold)
             result_img = Image.fromarray(visualization)
         else:
-            result_img = Image.fromarray(original_img*255).astype(np.uint8)
+            result_img = Image.fromarray((original_img*255).astype(np.uint8))
 
         byte_buffer = io.BytesIO()
         result_img.save(byte_buffer, format="PNG")
@@ -206,5 +209,6 @@ async def outputFile(disease: str, plane:str):
 @app.get("/result/docs")
 async def exportSummary():
     # need for summary report
+
     summary_report.export_to_docx()
     return {"summary" : "complete"}

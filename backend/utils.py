@@ -112,9 +112,10 @@ def predict_percent(input, disease):
     return proba
     
     
-def grad_cam_inference(input, disease, plane, threshold: float):
+def grad_cam_inference(input, disease, plane):
     res_grad_dir = os.path.join('result','gradcam', disease)
     res_original_dir = os.path.join('result','original', disease)
+    docs_img_dir = os.path.join('docs_img', disease)
     input_tensor = torch.squeeze(input, dim=0)
 
     #모델 불러오기
@@ -137,17 +138,22 @@ def grad_cam_inference(input, disease, plane, threshold: float):
         cam_scores.append(cam_score)
     
     max_idx = cam_scores.index(max(cam_scores))
-    # print(cam_scores) #값 조절... softmax는 왜 값이 다 비슷해지지...?
     top_image =  torch.squeeze(input_tensor, dim=0).permute(0, 2, 3, 1).cpu().numpy()[max_idx] / 255.0
     top_cam_result = cam_results[max_idx] 
-        
+
+    visualization = show_cam_on_image(top_image, top_cam_result, use_rgb=True, threshold=0.5)
+    docs_img = Image.fromarray(visualization)
+
     if not os.path.exists(res_grad_dir):
         os.makedirs(res_grad_dir)
     if not os.path.exists(res_original_dir):
         os.makedirs(res_original_dir)
+    if not os.path.exists(docs_img_dir):
+        os.makedirs(docs_img_dir)
 
     grad_path = os.path.join(res_grad_dir, plane +'.npy')
     original_path = os.path.join(res_original_dir, plane +'.npy')
+    docs_img_path = os.path.join(docs_img_dir, plane + '.png')
 
     if os.path.exists(grad_path):
         os.remove(grad_path)
@@ -156,5 +162,9 @@ def grad_cam_inference(input, disease, plane, threshold: float):
     if os.path.exists(original_path):
         os.remove(original_path)
     np.save(original_path, top_image)
+
+    if os.path.exists(docs_img_path):
+        os.remove(docs_img_path)
+    docs_img.save(docs_img_path)
     
     return max_idx, cam_scores
