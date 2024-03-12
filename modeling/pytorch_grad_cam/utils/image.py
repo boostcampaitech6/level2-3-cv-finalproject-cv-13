@@ -7,6 +7,8 @@ import torch
 from torchvision.transforms import Compose, Normalize, ToTensor
 from typing import List, Dict
 import math
+from PIL import Image, ImageDraw
+from skimage import measure as measures
 
 
 def preprocess_image(
@@ -34,7 +36,9 @@ def show_cam_on_image(img: np.ndarray,
                       mask: np.ndarray,
                       use_rgb: bool = False,
                       colormap: int = cv2.COLORMAP_JET,
-                      image_weight: float = 0.5) -> np.ndarray:
+                      image_weight: float = 0.5,
+                      threshold: float = 0.7,
+                      use_contour: bool = True) -> np.ndarray:
     """ This function overlays the cam mask on the image as an heatmap.
     By default the heatmap is in BGR format.
 
@@ -58,6 +62,20 @@ def show_cam_on_image(img: np.ndarray,
         raise Exception(
             f"image_weight should be in the range [0, 1].\
                 Got: {image_weight}")
+
+    heatmap[mask < threshold] = 0
+    if use_contour:
+        heatmap[mask >= threshold] = 255
+        heatmap = cv2.cvtColor(heatmap, cv2.COLOR_RGB2GRAY)
+        contours = measures.find_contours(heatmap, image_weight)
+        contours = [np.flip(contour, axis=1) for contour in contours]
+        line = Image.new('RGB', (img.shape[1], img.shape[0]), color=(0,0,0))
+        draw = ImageDraw.Draw(line)        
+        if len(contours) > 0:
+            for contour in contours:
+                contour = np.round(contour).astype(np.uint8)
+                draw.polygon(tuple(map(tuple, contour)), outline=(1, 0, 0), width=2)
+        heatmap = np.array(line)
 
     cam = (1 - image_weight) * heatmap + image_weight * img
     cam = cam / np.max(cam)

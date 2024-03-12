@@ -41,8 +41,11 @@ def run(INPUT_DATA_PATH, MODEL_PATH, EXP_NAME):
 
         image = image / 255.0
         image = image.transpose(1, 2, 0)
-        
-        visualization = show_cam_on_image(image, cam_result, use_rgb=True)
+        use_contour = False
+        if use_contour:
+            visualization = show_cam_on_image(image, cam_result, use_rgb=True, threshold=0.7, use_contour=True)
+        else:
+            visualization = show_cam_on_image(image, cam_result, use_rgb=True, threshold=0.5, use_contour=False)
         image = Image.fromarray(visualization)
         image.save(f'./cam_results/{EXP_NAME}/images/{i}.png')
 
