@@ -45,7 +45,46 @@ class Resnet18(nn.Module):
     def __init__(self):
         super().__init__()
         self.pretrained = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
-        self.classifier = nn.Linear(1000, 2)
+
+        # for LayerNorm (LN)
+        # self.pretrained.layer1[0].bn1 = nn.LayerNorm(64)
+        # self.pretrained.layer1[0].bn2 = nn.LayerNorm(64)
+        # self.pretrained.layer1[1].bn1 = nn.LayerNorm(64)
+        # self.pretrained.layer1[1].bn2 = nn.LayerNorm(64)
+        # self.pretrained.layer2[0].bn1 = nn.LayerNorm(32)
+        # self.pretrained.layer2[0].bn2 = nn.LayerNorm(32)
+        # self.pretrained.layer2[1].bn1 = nn.LayerNorm(32)
+        # self.pretrained.layer2[1].bn2 = nn.LayerNorm(32)
+        # self.pretrained.layer3[0].bn1 = nn.LayerNorm(16)
+        # self.pretrained.layer3[0].bn2 = nn.LayerNorm(16)
+        # self.pretrained.layer3[1].bn1 = nn.LayerNorm(16)
+        # self.pretrained.layer3[1].bn2 = nn.LayerNorm(16)
+        # self.pretrained.layer4[0].bn1 = nn.LayerNorm(8)
+        # self.pretrained.layer4[0].bn2 = nn.LayerNorm(8)
+        # self.pretrained.layer4[1].bn1 = nn.LayerNorm(8)
+        # self.pretrained.layer4[1].bn2 = nn.LayerNorm(8)
+
+        # for InstanceNorm (IN)
+        # self.pretrained.layer1[0].bn1 = nn.InstanceNorm2d(64)
+        # self.pretrained.layer1[0].bn2 = nn.InstanceNorm2d(64)
+        # self.pretrained.layer1[1].bn1 = nn.InstanceNorm2d(64)
+        # self.pretrained.layer1[1].bn2 = nn.InstanceNorm2d(64)
+        # self.pretrained.layer2[0].bn1 = nn.InstanceNorm2d(32)
+        # self.pretrained.layer2[0].bn2 = nn.InstanceNorm2d(32)
+        # self.pretrained.layer2[1].bn1 = nn.InstanceNorm2d(32)
+        # self.pretrained.layer2[1].bn2 = nn.InstanceNorm2d(32)
+        # self.pretrained.layer3[0].bn1 = nn.InstanceNorm2d(16)
+        # self.pretrained.layer3[0].bn2 = nn.InstanceNorm2d(16)
+        # self.pretrained.layer3[1].bn1 = nn.InstanceNorm2d(16)
+        # self.pretrained.layer3[1].bn2 = nn.InstanceNorm2d(16)
+        # self.pretrained.layer4[0].bn1 = nn.InstanceNorm2d(8)
+        # self.pretrained.layer4[0].bn2 = nn.InstanceNorm2d(8)
+        # self.pretrained.layer4[1].bn1 = nn.InstanceNorm2d(8)
+        # self.pretrained.layer4[1].bn2 = nn.InstanceNorm2d(8)
+
+        self.pretrained.fc = nn.Linear(512, 256)
+        self.classifier1 = nn.Linear(256, 128)
+        self.classifier2 = nn.Linear(128, 2)
 
         # For GradCAM
         self.target = [self.pretrained.layer4[-1]]
@@ -54,13 +93,32 @@ class Resnet18(nn.Module):
         x = torch.squeeze(x, dim=0)
         features = self.pretrained(x)
         flattened_features = torch.max(features, 0, keepdim=True)[0]
-        out = self.classifier(flattened_features)
+        out = self.classifier1(flattened_features)
+        out = self.classifier2(out)
         return out
+
+class ShufflenetV2(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = torch.hub.load('pytorch/vision:v0.10.0', 'shufflenet_v2_x1_0', weights=models.ShuffleNet_V2_X1_0_Weights.IMAGENET1K_V1)
+        self.classifier1 = nn.Linear(in_features = 1000, out_features = 256, bias = True)
+        self.classifier2 = nn.Linear(in_features=256, out_features=2)
+
+        self.target = [self.pretrained.conv5[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        x = self.pretrained(x)
+        x = torch.max(x, 0, keepdim=True)[0]
+        x = self.classifier1(x)
+        x = self.classifier2(x)
+        return x
 
 _model_entrypoints = {
     "mrnet": MRNet,
     "resnet50": Resnet50,
     "resnet18": Resnet18,
+    "shufflenetv2": ShufflenetV2,
 }
 
 def create_model(model, **kargs):
