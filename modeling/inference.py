@@ -4,6 +4,7 @@ import numpy as np
 import yaml
 from glob import glob
 from tqdm import tqdm
+import pandas as pd
 
 import torch
 
@@ -11,6 +12,12 @@ from dataloader import MRInferenceDataset
 from metric import Metric
 
 from sklearn import metrics
+
+column_list=['AUC', 'Accuracy', 'F1-score', 'Precision', 'Recall', 'Specificity']
+df = pd.DataFrame(columns=column_list)
+# df.loc['abnormal-axial'] = [1,2,3,4,5,6]
+# print(df)
+
 
 def test(model_name, data_loader):
     model = torch.load(model_name)
@@ -54,6 +61,7 @@ def run(config):
 
     TASK = config['TASK']
     PLANE = config['PLANE']
+
     
     model_name = glob(os.path.join(MODEL_ROOT, f'*_{EXP_NAME}_{TASK}_{PLANE}_*.pth'))[0]
     print(model_name)
@@ -67,16 +75,17 @@ def run(config):
 
     test_metric = test(model_name, test_loader)
     print('-' * 150)
-    print(f"| AUC : {test_metric['auroc']} | Accuracy : {test_metric['acc']} | F1-score : {test_metric['f1']} |")
+    print(f"| AUC : {test_metric['auc']} | Accuracy : {test_metric['acc']} | F1-score : {test_metric['f1']} |")
     print(f"| Precision : {test_metric['precision']} | Recall : {test_metric['recall']} | Specificity : {test_metric['specificity']} |")
     print('-' * 150)
-    print(f"| Base_AUC : {test_metric['auc']} |")
-    print('-' * 150)
+    df.loc[f'{TASK}-{PLANE}'] = [test_metric['auc'], test_metric['acc'], test_metric['f1'],
+                                  test_metric['precision'], test_metric['recall'], test_metric['specificity']]
     t_end_training = time.time()
     print(f'Test took {t_end_training - t_start_training} s')
 
 if __name__ == "__main__":
-    for config_file in os.listdir('./configs'):
+    for config_file in sorted(os.listdir('./configs')):
         with open(f'./configs/{config_file}', 'r') as file:
             config = yaml.safe_load(file)
         run(config)
+    df.to_csv('result.csv')
