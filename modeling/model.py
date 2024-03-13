@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 from torchvision import models
 from torchvision.models import AlexNet_Weights
+import timm
+import sys
 
 class MRNet(nn.Module):
     def __init__(self):
@@ -41,9 +43,27 @@ class Resnet50(nn.Module):
         out = self.classifier(flattened_features)
         return out
 
+class SwinTiny(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = timm.create_model('swinv2_tiny_window16_256.ms_in1k', pretrained=True)
+        self.pretrained.head.fc = nn.Linear(768, 256)
+        self.classifier = nn.Sequential(nn.Linear(256, 128), nn.Linear(128, 2))
+
+        # For GradCAM
+        self.target = [self.pretrained.layers[-1].blocks[-1].norm2]
+    
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        x = self.pretrained(x)
+        x = torch.max(x, 0, keepdim=True)[0]
+        x = self.classifier(x)
+        return x
+
 _model_entrypoints = {
     "mrnet": MRNet,
-    "resnet50": Resnet50
+    "resnet50": Resnet50,
+    "swintiny": SwinTiny,
 }
 
 def create_model(model, **kargs):
