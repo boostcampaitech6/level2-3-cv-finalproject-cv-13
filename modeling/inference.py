@@ -13,11 +13,7 @@ from metric import Metric
 
 from sklearn import metrics
 
-column_list=['AUC', 'Accuracy', 'F1-score', 'Precision', 'Recall', 'Specificity']
-df = pd.DataFrame(columns=column_list)
-# df.loc['abnormal-axial'] = [1,2,3,4,5,6]
-# print(df)
-
+column_list=['Task', 'Plane', 'AUC', 'Accuracy', 'F1-score', 'Precision', 'Recall', 'Specificity', 'Exp_name']
 
 def test(model_name, data_loader):
     model = torch.load(model_name)
@@ -53,7 +49,7 @@ def test(model_name, data_loader):
 
     return metric_result
         
-def run(config):
+def run(config, df):
     DATA_ROOT = config['DATA_ROOT']
     MODEL_ROOT = config['MODEL_ROOT']
     EXP_NAME = config['EXP_NAME']
@@ -74,18 +70,28 @@ def run(config):
     t_start_training = time.time()
 
     test_metric = test(model_name, test_loader)
+    
     print('-' * 150)
-    print(f"| AUC : {test_metric['auc']} | Accuracy : {test_metric['acc']} | F1-score : {test_metric['f1']} |")
-    print(f"| Precision : {test_metric['precision']} | Recall : {test_metric['recall']} | Specificity : {test_metric['specificity']} |")
+    print(f"| AUC : {np.round(test_metric['auc'], 4)} | Accuracy : {np.round(test_metric['acc'], 4)} | F1-score : {np.round(test_metric['f1'], 4)} |")
+    print(f"| Precision : {np.round(test_metric['precision'], 4)} | Recall : {np.round(test_metric['recall'], 4)} | Specificity : {np.round(test_metric['specificity'], 4)} |")
     print('-' * 150)
-    df.loc[f'{TASK}-{PLANE}'] = [test_metric['auc'], test_metric['acc'], test_metric['f1'],
-                                  test_metric['precision'], test_metric['recall'], test_metric['specificity']]
+
+    data = [TASK, PLANE, np.round(test_metric['auc'], 4), np.round(test_metric['acc'], 4), np.round(test_metric['f1'], 4),
+            np.round(test_metric['precision'], 4), np.round(test_metric['recall'], 4), np.round(test_metric['specificity'], 4), EXP_NAME]
+    tmp = pd.DataFrame([data], columns=column_list)
+    df = pd.concat([df, tmp], axis=0)
+
     t_end_training = time.time()
     print(f'Test took {t_end_training - t_start_training} s')
+    return df
 
 if __name__ == "__main__":
+    df = pd.DataFrame(columns=column_list)
+
     for config_file in sorted(os.listdir('./configs')):
         with open(f'./configs/{config_file}', 'r') as file:
             config = yaml.safe_load(file)
-        run(config)
+        df = run(config, df)
+        
+    df = pd.pivot_table(df, index=['Exp_name', 'Task', 'Plane'], columns=[])
     df.to_csv('result.csv')
