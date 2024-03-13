@@ -44,8 +44,8 @@ export default function PlaneResultTemplate (props) {
 
 	const disease = props.disease;
 	const plane = props.plane;
-	const imageurl = `http://127.0.0.1:8000/output/${disease}/${plane}`
-	const patienturl = "http://127.0.0.1:8000/result/patient";
+	const imageurl = `/output/${disease}/${plane}`
+	const patienturl = "/result/patient";
 
 	useEffect(() => {
 		async function fetchData() {

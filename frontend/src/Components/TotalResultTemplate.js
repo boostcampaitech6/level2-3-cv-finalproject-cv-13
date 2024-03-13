@@ -42,11 +42,11 @@ export default function ResultsCodeAbnormal (props) {
 	
   const disease = props.disease;
   const idx = props.idx;
-  const graphurl = "http://127.0.0.1:8000/result";
-  const originalurl = `http://127.0.0.1:8000/result/${disease}/original`;
-  const gradcamurl = `http://127.0.0.1:8000/result/${disease}/gradcam`;
-  const patienturl = "http://127.0.0.1:8000/result/patient";
-  const exporturl = "http://127.0.0.1:8000/result/docs"
+  const graphurl = "/result";
+  const originalurl = `/result/${disease}/original`;
+  const gradcamurl = `/result/${disease}/gradcam`;
+  const patienturl = "/result/patient";
+  const exporturl = "/result/docs"
 
   let styleList = [0, 0, 0];
   styleList[idx] += 1;

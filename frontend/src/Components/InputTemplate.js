@@ -25,7 +25,7 @@ export default function FirstImpression (props) {
 		formData.append('file', files[i]);
 		}
 
-		const currenturl = `http://127.0.0.1:8000/input/${plane}`
+		const currenturl = `/input/${plane}`
 		const postOptions = {
 			method: "POST",
 			url: currenturl,
