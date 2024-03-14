@@ -209,6 +209,7 @@ async def outputFile(disease: str, plane:str):
 @app.get("/result/docs")
 async def exportSummary():
     # need for summary report
-
+    FILE_NAME = '123456_auto_report.docx'
     summary_report.export_to_docx()
-    return {"summary" : "complete"}
+
+    return FileResponse(FILE_NAME, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
