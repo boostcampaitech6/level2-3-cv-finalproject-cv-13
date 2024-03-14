@@ -155,7 +155,7 @@ async def resultFile(disease:str, method:str, threshold: Optional[float] = None)
     ORIGIN_PATH = os.path.join('result', "original", disease)
     GRAD_PATH = os.path.join('result', "gradcam", disease)
     output_bytes = []
-    numpy_files = os.listdir(ORIGIN_PATH)
+    numpy_files = sorted(os.listdir(ORIGIN_PATH))
     for f in numpy_files:
         original_img = np.load(os.path.join(ORIGIN_PATH, f))
         if method == "gradcam":
