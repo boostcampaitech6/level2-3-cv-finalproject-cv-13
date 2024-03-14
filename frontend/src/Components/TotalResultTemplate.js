@@ -4,6 +4,7 @@ import './TotalResultTemplate.css'
 import ImgAsset from '../public'
 import {Link} from 'react-router-dom'
 import {Button} from "@mui/material";
+import Slider from '@mui/material/Slider';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -29,16 +30,23 @@ export default function ResultsCodeAbnormal (props) {
 
   const [Data, setData] = useState([]);
 	const [onLoad, setonLoad] = useState(true);
+  const [onPatientLoad, setonPatientLoad] = useState(true);
   let [imageExists, setImageExists] = useState(false)
 	const [images, setImages] = useState([]);
 	const [gradimages, setGradImages] = useState([]);
   let [gradstate, setGradState] = useState(false);
   let [page, setPage] = useState(images);
+  const [patientInfo, setPatientInfo] = useState([]);
+  const [patientLabel, setPatientLabel] = useState([]);
+  let [gradthres, setGradThres] = useState(50);
 	
   const disease = props.disease;
   const idx = props.idx;
+  const graphurl = "http://127.0.0.1:8000/result";
   const originalurl = `http://127.0.0.1:8000/result/${disease}/original`;
   const gradcamurl = `http://127.0.0.1:8000/result/${disease}/gradcam`;
+  const patienturl = "http://127.0.0.1:8000/result/patient";
+  const exporturl = "http://127.0.0.1:8000/result/docs"
 
   let styleList = [0, 0, 0];
   styleList[idx] += 1;
@@ -46,11 +54,54 @@ export default function ResultsCodeAbnormal (props) {
   const blackTextStyle = { color: '#000000' };
   const blackCircleStyle = { backgroundColor: '#3c3c3c' };
   const whiteTextStyle = { color: '#ffffff' };
+
+  const marks = [
+    {
+      value: 0,
+    },
+    {
+      value: 20,
+    },
+    {
+      value: 50,
+    },
+    {
+      value: 80,
+    },
+  ];
+
+  function sliderChange(e) {
+    e.preventDefault();
+    setGradThres(e.target.value);
+  }
+
+  const exportDocs = async () => {
+    try {
+      const response = await axios.get(exporturl, { responseType: 'blob' });
+      // create download link
+      const tempURL = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = tempURL;
+      link.setAttribute('download', 'Report.docx');
+      // click link and download
+      document.body.appendChild(link);
+      link.click();
+      // delete link after download
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      alert(`리포트 작성 과정에서 에러가 발생했습니다. \n ${error}`);
+    }
+  }
+
+  function exportChange(e) {
+    e.preventDefault();
+    exportDocs();
+  }
   
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get("http://127.0.0.1:8000/result");
+				const response = await axios.get(graphurl);
 				const data = response.data;
 				setData(data);
 				setonLoad(false);
@@ -66,7 +117,7 @@ export default function ResultsCodeAbnormal (props) {
     const fetchImage = async () => {
       try {
         const response_original = await axios.get(originalurl);
-        const response_grad = await axios.get(gradcamurl);
+        const response_grad = await axios.get(gradcamurl + '?threshold=' + gradthres / 100);
         const data_original = response_original.data;
         const data_grad = response_grad.data;
         setImages(data_original)
@@ -80,7 +131,22 @@ export default function ResultsCodeAbnormal (props) {
       }
     };
     fetchImage();
-  }, [disease]);
+  }, [disease, gradthres]);
+
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const response = await axios.get(patienturl)
+        setPatientInfo(response.data.info);
+        setPatientLabel(response.data.labels);
+        setonPatientLoad(false);
+      } catch (error) {
+        alert(`환자정보 로딩 시 에러가 발생했습니다. \n ${error}`);
+        setonPatientLoad(true);
+      }
+    };
+    fetchPatient();
+  }, []);
 
   function showGrad (e) {
 		e.preventDefault();
@@ -271,10 +337,16 @@ export default function ResultsCodeAbnormal (props) {
         <div className="top-overlay">
           <div className="overlap-group">
             <div className="overlap">
-              <div className="text-wrapper">환자명: 김00</div>
-              <div className="text-wrapper-2">성별: F</div>
-              <div className="text-wrapper-3">검사일: 2024-02-27</div>
+              <div className="text-wrapper">{!onPatientLoad ? `${patientLabel[0]}: ${patientInfo[0]} \u00A0 ${patientLabel[1]}: ${patientInfo[1]} \u00A0 
+              ${patientLabel[2]}: ${patientInfo[2]} \u00A0 ${patientLabel[3]}: ${patientInfo[3]} \u00A0 ${patientLabel[4]}: ${patientInfo[4]}` : 'Loading...'}</div>
             </div>
+              <div className="export">
+                <Button variant="contained" onClick={exportChange} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
+                backgroundColor: 'white', color: 'black'
+                } }}>
+                  Export
+                </Button>
+              </div>
             <Link to="/">
             <img className="logo" alt="Logo" src={ImgAsset.ResultsCodeACL_logo} />
             </Link>
@@ -293,6 +365,16 @@ export default function ResultsCodeAbnormal (props) {
           </div>
           <div className="category">
             <div className="text-wrapper-7">Category</div>
+            <div className='slider'>
+              <Slider
+                defaultValue={50}
+                step={null}
+                valueLabelDisplay="auto"
+                marks={marks}
+                onChange={sliderChange}
+                sx = {{ color: 'white' }}
+              />
+            </div>
             <div className='switch'>
               <Button variant="contained" onClick={showGrad} sx={{ color: 'white', backgroundColor: 'black', '&:hover': {
               backgroundColor: 'white', color: 'black'

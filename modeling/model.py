@@ -40,6 +40,51 @@ class Resnet50(nn.Module):
         flattened_features = torch.max(features, 0, keepdim=True)[0]
         out = self.classifier(flattened_features)
         return out
+    
+    
+class MobileNetV2(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = models.mobilenet_v2(pretrained=True)
+        self.classifier = nn.Linear(1000, 256)
+        self.aux_cf1 = nn.Linear(256, 128)
+        self.aux_cf2 = nn.Linear(128, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained.features[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        features = self.pretrained(x)
+        flattened_features = torch.max(features, 0, keepdim=True)[0]
+        out = self.classifier(flattened_features)
+        out = self.aux_cf1(out)
+        out = self.aux_cf2(out)
+
+        return out
+    
+    
+class MobileNetV3(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = models.mobilenet_v3_large(pretrained=True)
+        self.classifier = nn.Linear(1000, 256)
+        self.aux_cf1 = nn.Linear(256, 128)
+        self.aux_cf2 = nn.Linear(128, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained.features[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        features = self.pretrained(x)
+        flattened_features = torch.max(features, 0, keepdim=True)[0]
+        out = self.classifier(flattened_features)
+        out = self.aux_cf1(out)
+        out = self.aux_cf2(out)
+
+        return out
+
 
 class Resnet18(nn.Module):
     def __init__(self):
@@ -119,6 +164,8 @@ _model_entrypoints = {
     "resnet50": Resnet50,
     "resnet18": Resnet18,
     "shufflenetv2": ShufflenetV2,
+    "mobilenetv2": MobileNetV2,
+    "mobilenetv3": MobileNetV3
 }
 
 def create_model(model, **kargs):

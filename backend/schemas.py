@@ -6,30 +6,13 @@ class DICOMRequest(BaseModel):
     #plane에 [axial, coronal, sagittal]만 가능한 것도 추가 해야하나...?
     # File : list[UploadFile]
 
+class PatientInfo(BaseModel):
+    labels: list[str]
+    info: list[str]
+   
 class resultResponse(BaseModel):
     labels: list[str]
     datasets: list[dict]
-    # "percent": {
-    #     "labels": [
-    #         "abnormal",
-    #         "acl",
-    #         "meniscus"
-    #     ],
-    #     "datasets": [
-    #         {
-    #             "y": "abnormal",
-    #             "x": 99.5
-    #         },
-    #         {
-    #             "y": "acl",
-    #             "x": 0.6
-    #         },
-    #         {
-    #             "y": "meniscus",
-    #             "x": 97.2
-    #         }
-    #     ]
-    # }
 
 class PlaneResult(BaseModel):
     labels: list[str]

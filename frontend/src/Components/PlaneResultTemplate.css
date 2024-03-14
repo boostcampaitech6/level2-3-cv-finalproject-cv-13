@@ -130,35 +130,7 @@
 	position: absolute;
 	text-align: center;
 	top: 0;
-	width: 152px;
-  }
-  
-  .axial-results .text-wrapper-3 {
-	color: #ffffff;
-	font-family: "Alata", Helvetica;
-	font-size: 25px;
-	font-weight: 400;
-	left: 150px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 0;
-	width: 152px;
-  }
-  
-  .axial-results .text-wrapper-4 {
-	color: #ffffff;
-	font-family: "Alata", Helvetica;
-	font-size: 25px;
-	font-weight: 400;
-	left: 282px;
-	letter-spacing: 0;
-	line-height: normal;
-	position: absolute;
-	text-align: center;
-	top: 0;
-	width: 280px;
+	width: 1000px;
   }
   
   .axial-results .logo {
