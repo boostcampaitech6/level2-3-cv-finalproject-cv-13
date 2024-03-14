@@ -75,6 +75,35 @@ async def receiveFile(plane:str, file: list[UploadFile]):
             return JSONResponse(status_code=200, content={ plane: "success"})
         except Exception as e:
             raise HTTPException(status_code=500, content={ plane: "파일 업로드에 실패했습니다.", "error": str(e)})
+
+@app.get("/input/sample") # ex) /input/sample?disease=acl
+async def receiveSampleFile(disease:str):
+    SAMPLE_PATH = os.path.join(config.sample_path, disease)
+    print(SAMPLE_PATH)
+    UPLOAD_ROOT = config.orign_path
+
+    if os.path.exists(UPLOAD_ROOT): 
+        shutil.rmtree(UPLOAD_ROOT) # 이미 폴더 있으면 삭제
+    os.makedirs(UPLOAD_ROOT) # 새로 만들기
+
+    # 데이터 복사
+    shutil.copytree(
+        SAMPLE_PATH,
+        UPLOAD_ROOT,
+        dirs_exist_ok=True
+    )
+
+    # numpy 생성
+    for plane in config.planes:
+        UPLOAD_PATH = os.path.join(UPLOAD_ROOT, plane)
+        files = os.listdir(UPLOAD_PATH)
+        for f in files:
+            file_path = os.path.join(UPLOAD_PATH, f)
+            info, npy_array = convert_dcm_to_numpy(file_path)
+        np.save(os.path.join(UPLOAD_PATH, "input.npy"), npy_array)
+    
+    summary_report.set_personal_info(info)
+    return JSONResponse(status_code=200, content={ plane: "success"})
         
 
 @app.get("/inference")
