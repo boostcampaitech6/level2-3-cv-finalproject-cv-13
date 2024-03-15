@@ -3,10 +3,12 @@ import time
 import numpy as np
 import yaml
 import wandb
+import random
 
 import torch
 import torch.optim as optim
 import matplotlib.pyplot as plt
+from torchvision import transforms
 
 from dataloader import MRDataset
 from metric import Metric
@@ -17,6 +19,16 @@ from scheduler import create_sched
 from model import create_model
 
 from sklearn import metrics
+
+seed = 2024
+deterministic = True
+random.seed(seed)
+np.random.seed(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+if deterministic:
+	torch.backends.cudnn.deterministic = True
+	torch.backends.cudnn.benchmark = False
 
 
 def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current_lr):
@@ -220,9 +232,17 @@ def run(config):
     SCHEDULER = config['SCHEDULER']
     MODEL = config['MODEL']
     
-    wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}", config=config)
+    wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}-{TASK}-{PLANE}", config=config)
 
-    train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=True)
+    augmentor = transforms.Compose([
+        transforms.Lambda(lambda x: torch.Tensor(x)),
+        transforms.RandomRotation(25),
+        transforms.RandomAffine(degrees=0, translate=[0.11, 0.11]),
+        transforms.RandomHorizontalFlip(),
+        transforms.Lambda(lambda x: x.repeat(3, 1, 1, 1).permute(1, 0, 2, 3)),
+    ])
+
+    train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=True, transform=augmentor)
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=8, drop_last=False)
 
