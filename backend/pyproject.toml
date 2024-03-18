@@ -13,7 +13,6 @@ torch = {version = "2.0.1+cu117", source = "pytorch"}
 torchvision = {version = "0.15.2+cu117", source = "pytorch"}
 timm = "0.9.16"
 transformers = "4.38.1"
-efficientnet_pytorch = "0.7.1"
 Pillow = "10.2.0"
 numpy = "1.26.4"
 pandas = "2.0.0"
