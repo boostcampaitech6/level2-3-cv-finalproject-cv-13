@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from torchvision import models
 from torchvision.models import AlexNet_Weights
+import timm
 
 class MRNet(nn.Module):
     def __init__(self):
@@ -159,13 +160,31 @@ class ShufflenetV2(nn.Module):
         x = self.classifier2(x)
         return x
 
+class Xception41(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = timm.create_model('xception41p.ra3_in1k', pretrained=True)
+        self.classifier1 = nn.Linear(1000, 256)
+        self.classifier2 = nn.Linear(256, 2)
+
+        self.target = [self.pretrained.blocks[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        features = self.pretrained(x)
+        flatten = torch.max(features, 0, keepdim=True)[0]
+        out = self.classifier1(flatten)
+        out = self.classifier2(out)
+        return out
+    
 _model_entrypoints = {
     "mrnet": MRNet,
     "resnet50": Resnet50,
     "resnet18": Resnet18,
     "shufflenetv2": ShufflenetV2,
     "mobilenetv2": MobileNetV2,
-    "mobilenetv3": MobileNetV3
+    "mobilenetv3": MobileNetV3,
+    "xception41": Xception41,
 }
 
 def create_model(model, **kargs):
