@@ -10,7 +10,6 @@ const RouterDOM = () => {
 		<Router>
 			<Switch>
 				<Route exact path="/"><InputTemplate inputType='DICOM'/></Route>
-				<Route exact path="/PNG"><InputTemplate inputType='Image'/></Route>
 				<Route exact path="/results/abnormal"><TotalResultTemplate disease='abnormal' idx='0' /></Route>
 				<Route exact path="/results/acl"><TotalResultTemplate disease='acl' idx='1' /></Route>
 				<Route exact path="/results/meniscus"><TotalResultTemplate disease='meniscus' idx='2' /></Route>

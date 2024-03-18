@@ -42,11 +42,11 @@ export default function ResultsCodeAbnormal (props) {
 	
   const disease = props.disease;
   const idx = props.idx;
-  const graphurl = "http://127.0.0.1:8000/result";
-  const originalurl = `http://127.0.0.1:8000/result/${disease}/original`;
-  const gradcamurl = `http://127.0.0.1:8000/result/${disease}/gradcam`;
-  const patienturl = "http://127.0.0.1:8000/result/patient";
-  const exporturl = "http://127.0.0.1:8000/result/docs"
+  const graphurl = "/result";
+  const originalurl = `/result/${disease}/original`;
+  const gradcamurl = `/result/${disease}/gradcam`;
+  const patienturl = "/result/patient";
+  const exporturl = "/result/docs"
 
   let styleList = [0, 0, 0];
   styleList[idx] += 1;
@@ -77,7 +77,17 @@ export default function ResultsCodeAbnormal (props) {
 
   const exportDocs = async () => {
     try {
-      const response = await axios.get(exporturl);
+      const response = await axios.get(exporturl, { responseType: 'blob' });
+      // create download link
+      const tempURL = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = tempURL;
+      link.setAttribute('download', 'Report.docx');
+      // click link and download
+      document.body.appendChild(link);
+      link.click();
+      // delete link after download
+      link.parentNode.removeChild(link);
     } catch (error) {
       alert(`리포트 작성 과정에서 에러가 발생했습니다. \n ${error}`);
     }

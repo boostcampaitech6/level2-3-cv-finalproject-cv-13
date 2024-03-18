@@ -122,8 +122,8 @@ def grad_cam_inference(input, disease, plane):
     model = get_model(disease, plane)
     model.eval()
 
-    # target_layers = model.target
-    target_layers = [model.pretrained_model.features[-1]]
+    target_layers = model.target
+    # target_layers = [model.pretrained_model.features[-1]]
 
     cam = GradCAM(model=model, target_layers=target_layers)
     targets = [BinaryClassifierOutputTarget(1)]

@@ -22,7 +22,7 @@ PLANE: axial
 epochs: 50
 LR : 0.00001
 BATCH_SIZE : 1
-FOLD_NUM : 0 # 0 ~ 9
+FOLD_NUM : 4 # 0 ~ 9
 
 # optimizer : adam, adamw, rmsprop, lion
 OPTIMIZER:

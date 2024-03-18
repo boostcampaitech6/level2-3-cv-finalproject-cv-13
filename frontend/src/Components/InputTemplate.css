@@ -187,13 +187,23 @@
 	width: 108px;
 	height: 58px;
   }
-  .first-impression .ToPNG {
+  .first-impression .sample-acl {
 	position: absolute;
 	left: 0px;
 	top: 303px;
-	width: 250px;
+	width: 350px;
 	height: 58px;
   }
-  .first-impression .ToPNG:hover {
+  .first-impression .sample-acl:hover {
+	transform: scale(1.1);
+  }
+  .first-impression .sample-meniscus {
+	position: absolute;
+	left: 0px;
+	top: 353px;
+	width: 350px;
+	height: 58px;
+  }
+  .first-impression .sample-meniscus:hover {
 	transform: scale(1.1);
   }
