@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.10"
 fastapi = "0.110.0"
 uvicorn = "0.27.1"
+torch = {version = "2.0.1+cu117", source = "pytorch"}
+torchvision = {version = "0.15.2+cu117", source = "pytorch"}
 timm = "0.9.16"
 transformers = "4.38.1"
 Pillow = "10.2.0"
@@ -22,6 +24,11 @@ matplotlib = "^3.8.3"
 pydicom = "^2.4.4"
 pydantic-settings = "^2.2.1"
 python-docx = "^1.1.0"
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu117"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
