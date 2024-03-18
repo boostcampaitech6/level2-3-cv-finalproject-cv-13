@@ -10,6 +10,7 @@ class Config(BaseSettings):
     orign_path: str = "./original"
     result_path: str = "./result"
     model_path: str = "./models"
+    sample_path: str = "./sample"
 
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
 

@@ -5,7 +5,7 @@ RUN pip install poetry
 COPY ./pyproject.toml ./poetry.lock /tmp/
 RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-FROM python:3.10-slim as build-stage
+FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime as build-stage
 
 WORKDIR /app
 RUN apt-get update \
