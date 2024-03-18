@@ -160,6 +160,23 @@ class ShufflenetV2(nn.Module):
         x = self.classifier2(x)
         return x
 
+class SwinTiny(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = timm.create_model('swinv2_tiny_window16_256.ms_in1k', pretrained=True)
+        self.pretrained.head.fc = nn.Linear(768, 256)
+        self.classifier = nn.Sequential(nn.Linear(256, 128), nn.Linear(128, 2))
+
+        # For GradCAM
+        self.target = [self.pretrained.layers[-1].blocks[-1].norm2]
+    
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        x = self.pretrained(x)
+        x = torch.max(x, 0, keepdim=True)[0]
+        x = self.classifier(x)
+        return x
+
 class Xception41(nn.Module):
     def __init__(self):
         super().__init__()
@@ -185,6 +202,7 @@ _model_entrypoints = {
     "mobilenetv2": MobileNetV2,
     "mobilenetv3": MobileNetV3,
     "xception41": Xception41,
+    "swintiny": SwinTiny,
 }
 
 def create_model(model, **kargs):
