@@ -1,0 +1,76 @@
+.loading {
+	background-color: #292929;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+  }
+  
+  @media screen and (min-height: 1025px) {
+	.loading .div {
+		background-color: #292929;
+		height: 100vh;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (max-height: 1025px) {
+	.loading .div {
+		background-color: #292929;
+		height: 1024px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  .loading .loading-group {
+	height: 194px;
+	left: 635px;
+	position: absolute;
+	top: 482px;
+	width: 173px;
+  }
+		
+  .loading .text {
+	color: #ffffff;
+	font-family: "Alata-Regular", Helvetica;
+	font-size: 20px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 155px;
+	width: 171px;
+  }
+
+  .loading .img {
+	height: 139px;
+	left: 16px;
+	object-fit: cover;
+	position: absolute;
+	top: 0;
+	width: 128px;
+	animation: spin 2s linear infinite;
+  }
+  @keyframes spin {
+	from {
+	  transform: rotate(0deg);
+	}
+	to {
+	  transform: rotate(360deg);
+	}
+  }
+
+  .loading .logo {
+	height: 350px;
+	left: 577px;
+	object-fit: none;
+	position: absolute;
+	top: 93px;
+	width: 300px;
+  }

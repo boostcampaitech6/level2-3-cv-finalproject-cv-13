@@ -1,0 +1,8 @@
+# Input Data
+INPUT_DATA_PATH: './data/train/axial/0001.npy'
+
+# Model directory for grad-cam inference
+MODEL_PATH: './models/abnormal_axial_best.pth'
+
+# Experimental Name
+EXP_NAME: temp

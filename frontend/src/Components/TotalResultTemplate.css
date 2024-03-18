@@ -1,0 +1,742 @@
+.results-abnormal {
+	background-color: #292929;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+  }
+  
+  @media screen and (min-height: 1025px) {
+	.results-abnormal .div {
+		background-color: #292929;
+		height: 100vh;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+
+  @media screen and (max-height: 1025px) {
+	.results-abnormal .div {
+		background-color: #292929;
+		height: 1024px;
+		overflow: hidden;
+		position: relative;
+		width: 1440px;
+	  }
+  }
+  
+  .results-abnormal .overlap-group {
+	background-color: #444444;
+	height: 119px;
+	position: relative;
+	width: 1440px;
+	flex: 1;
+  }
+  
+  .results-abnormal .overlap {
+	height: 35px;
+	left: 165px;
+	position: absolute;
+	top: 39px;
+	width: 562px;
+  }
+  
+  .results-abnormal .text-wrapper {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 25px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 1000px;
+  }
+
+  .results-abnormal .export {
+	left: 1300px;
+	position: absolute;
+	top: 35px;
+	width: 120px;
+	height: 60px;
+  }
+  
+  .results-abnormal .logo {
+	height: 89px;
+	left: 23px;
+	object-fit: cover;
+	position: absolute;
+	top: 13px;
+	width: 110px;
+  }
+  
+  .results-abnormal .overlap-2 {
+	height: 212px;
+	left: 731px;
+	position: absolute;
+	top: 685px;
+	width: 644px;
+  }
+  
+  .results-abnormal .abnormal-score {
+	height: 84px;
+	left: 5px;
+	position: absolute;
+	top: 128px;
+	width: 619px;
+  }
+  
+  .results-abnormal .overlap-3 {
+	height: 84px;
+	position: relative;
+	width: 613px;
+  }
+  
+  .results-abnormal .text-wrapper-4 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 25px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 7px;
+	width: 220px;
+  }
+  
+  .results-abnormal .rectangle {
+	/* background-color: #d9d9d9; */
+	height: 50px;
+	left: 6px;
+	position: absolute;
+	top: 47px;
+	width: 600px;
+  }
+  
+  .results-abnormal .text-wrapper-5 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 35px;
+	font-weight: 400;
+	left: 500px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 52px;
+  }
+  
+  .results-abnormal .category {
+	height: 134px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 644px;
+  }
+  
+  .results-abnormal .text-wrapper-7 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 25px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 124px;
+  }
+  
+  .results-abnormal .switch {
+	height: 47px;
+	left: 564px;
+	object-fit: cover;
+	position: absolute;
+	top: 75px;
+	width: 76px;
+  }
+
+  .results-abnormal .slider {
+	height: 47px;
+	left: 564px;
+	object-fit: cover;
+	position: absolute;
+	top: 35px;
+	width: 100px;
+  }
+  
+  .results-abnormal .abnormal-button {
+	height: 90px;
+	left: 60px;
+	position: absolute;
+	top: 44px;
+	width: 96px;
+  }
+  .results-abnormal .abnormal-button:hover {
+	transform: scale(1.1);
+  }
+  
+  .results-abnormal .overlap-group-2 {
+	height: 90px;
+	position: relative;
+	width: 94px;
+  }
+  
+  .results-abnormal .abnormal-cat {
+	background-color: #ffffff;
+	border-radius: 45px;
+	height: 90px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 90px;
+  }
+
+  .results-abnormal .text-wrapper-9 {
+	color: #000000;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 31px;
+	width: 94px;
+  }
+  
+  .results-abnormal .meniscus-button {
+	height: 90px;
+	left: 396px;
+	position: absolute;
+	top: 44px;
+	width: 96px;
+  }
+  
+  .results-abnormal .meniscus-cat {
+	background-color: #3c3c3c;
+	border-radius: 45px;
+	height: 90px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 90px;
+  }
+  .results-abnormal .meniscus-button:hover {
+	transform: scale(1.1);
+  }
+  
+  .results-abnormal .text-wrapper-10 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 31px;
+	width: 94px;
+  }
+  
+  .results-abnormal .ACL-button {
+	height: 90px;
+	left: 235px;
+	position: absolute;
+	top: 44px;
+	width: 92px;
+  }
+  
+  .results-abnormal .div-wrapper {
+	background-color: #3c3c3c;
+	border-radius: 45px;
+	height: 90px;
+	position: relative;
+	width: 90px;
+  }
+  .results-abnormal .div-wrapper:hover {
+	transform: scale(1.1);
+  }
+  
+  .results-abnormal .text-wrapper-11 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 17px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 31px;
+	width: 56px;
+  }
+  
+  .results-abnormal .ACL-score {
+	height: 88px;
+	left: 736px;
+	position: absolute;
+	top: 911px;
+	width: 281px;
+  }
+  
+  .results-abnormal .overlap-4 {
+	height: 88px;
+	position: relative;
+	width: 275px;
+  }
+  
+  .results-abnormal .text-wrapper-12 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 25px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 6px;
+	width: 132px;
+  }
+  
+  .results-abnormal .overlap-5 {
+	height: 88px;
+	left: 6px;
+	position: absolute;
+	top: 0;
+	width: 269px;
+  }
+  
+  .results-abnormal .rectangle-2 {
+	/* background-color: #d9d9d9; */
+	height: 50px;
+	left: 0;
+	position: absolute;
+	top: 51px;
+	width: 269px;
+  }
+  .results-abnormal .rectangle-0 {
+	/* background-color: #d9d9d9; */
+	height: 50px;
+	left: 0;
+	position: absolute;
+	top: 51px;
+	width: 269px;
+  }
+  
+  .results-abnormal .text-wrapper-13 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 35px;
+	font-weight: 400;
+	left: 200px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 66px;
+  }
+  
+  .results-abnormal .meniscus-score {
+	height: 88px;
+	left: 1063px;
+	position: absolute;
+	top: 913px;
+	width: 292px;
+  }
+  
+  .results-abnormal .overlap-6 {
+	height: 88px;
+	position: relative;
+	width: 286px;
+  }
+  
+  .results-abnormal .text-wrapper-15 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 25px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 8px;
+	width: 200px;
+  }
+  
+  .results-abnormal .overlap-7 {
+	height: 88px;
+	left: 17px;
+	position: absolute;
+	top: 0;
+	width: 269px;
+  }
+  
+  .results-abnormal .result {
+	height: 85px;
+	left: 733px;
+	position: absolute;
+	top: 581px;
+	width: 661px;
+  }
+  
+  .results-abnormal .text-wrapper-16 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 25px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 87px;
+  }
+  
+  .results-abnormal .overlap-8 {
+	background-color: #3c3c3c;
+	border-radius: 100px;
+	height: 33px;
+	left: 12px;
+	position: absolute;
+	top: 52px;
+	width: 132px;
+  }
+  
+  .results-abnormal .text-wrapper-17 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 38px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 5px;
+	width: 56px;
+  }
+  
+  .results-abnormal .overlap-9 {
+	background-color: #3c3c3c;
+	border-radius: 100px;
+	height: 33px;
+	left: 519px;
+	position: absolute;
+	top: 52px;
+	width: 132px;
+  }
+  
+  .results-abnormal .overlap-10 {
+	background-color: #3c3c3c;
+	border-radius: 100px;
+	height: 33px;
+	left: 350px;
+	position: absolute;
+	top: 50px;
+	width: 132px;
+  }
+  
+  .results-abnormal .text-wrapper-18 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 32px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 5px;
+	width: 73px;
+  }
+  
+  .results-abnormal .overlap-11 {
+	background-color: #ff7171;
+	border-radius: 100px;
+	height: 33px;
+	left: 181px;
+	position: absolute;
+	top: 52px;
+	width: 132px;
+  }
+  
+  .results-abnormal .text-wrapper-19 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 38px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 5px;
+	width: 56px;
+  }
+  
+  .results-abnormal .axial-group {
+	height: 411px;
+	left: 52px;
+	position: absolute;
+	top: 151px;
+	width: 653px;
+  }
+  
+  .results-abnormal .overlap-12 {
+	height: 411px;
+	position: relative;
+	width: 655px;
+  }
+  
+  .results-abnormal .overlap-group-wrapper {
+	height: 411px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 655px;
+  }
+  
+  .results-abnormal .overlap-group-3-image {
+	/* background-color: #404040; */
+	height: 411px;
+	left: 120px;
+	position: relative;
+	/* width: 653px; */
+	width: 411px;
+  }
+  .results-abnormal .overlap-group-3 {
+	background-color: #121212;
+	height: 411px;
+	left: 0px;
+	position: relative;
+	/* width: 653px; */
+	width: 665px;
+  }
+  
+  .results-abnormal .heatmap-bar {
+	height: 50px;
+	left: 17px;
+	position: absolute;
+	top: 5px;
+	width: 298px;
+  }
+  
+  .results-abnormal .rectangle-3 {
+	background: linear-gradient(90deg, rgb(0, 40.8, 255) 0%, rgb(255, 0, 0) 100%);
+	height: 20px;
+	left: 0;
+	position: absolute;
+	top: 20px;
+	width: 150px;
+  }
+  
+  .results-abnormal .text-wrapper-20 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 0;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	white-space: nowrap;
+	width: 9px;
+  }
+  
+  .results-abnormal .text-wrapper-21 {
+	color: #ffffff;
+	font-family: "Alata", Helvetica;
+	font-size: 15px;
+	font-weight: 400;
+	left: 125px;
+	letter-spacing: 0;
+	line-height: normal;
+	position: absolute;
+	text-align: center;
+	top: 0px;
+	white-space: nowrap;
+	width: 39px;
+  }
+  
+  .results-abnormal .inspect-ax {
+	border: 3px solid;
+	border-color: #ffffff;
+	border-radius: 30.5px;
+	height: 61px;
+	left: 578px;
+	position: absolute;
+	top: 337px;
+	width: 61px;
+  }
+  .results-abnormal .inspect-ax:hover {
+	transform: scale(1.1);
+  }
+  
+  .results-abnormal .overlap-13 {
+	height: 32px;
+	left: 14px;
+	position: relative;
+	top: 17px;
+	width: 33px;
+  }
+  
+  .results-abnormal .ellipse {
+	border: 3px solid;
+	border-color: #ffffff;
+	border-radius: 12.5px/12px;
+	height: 18px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 18px;
+  }
+  
+  .results-abnormal .rectangle-4 {
+	background-color: #ffffff;
+	border-radius: 100px;
+	height: 6px;
+	left: 17px;
+	position: absolute;
+	top: 23px;
+	transform: rotate(47.15deg);
+	width: 17px;
+  }
+  
+  .results-abnormal .plus-ax {
+	border: 3px solid;
+	border-color: #ffffff;
+	border-radius: 30.5px;
+	height: 61px;
+	left: 17px;
+	position: absolute;
+	top: 339px;
+	width: 61px;
+  }
+  
+  .results-abnormal .overlap-14 {
+	height: 32px;
+	left: 15px;
+	position: relative;
+	top: 15px;
+	width: 32px;
+  }
+  
+  .results-abnormal .rectangle-5 {
+	background-color: #ffffff;
+	border-radius: 100px;
+	height: 6px;
+	left: 0;
+	position: absolute;
+	top: 13px;
+	transform: rotate(-90deg);
+	width: 32px;
+  }
+  
+  .results-abnormal .rectangle-6 {
+	background-color: #ffffff;
+	border-radius: 100px;
+	height: 6px;
+	left: 0;
+	position: absolute;
+	top: 13px;
+	width: 32px;
+  }
+  
+  .results-abnormal .coronal-group {
+	height: 411px;
+	left: 736px;
+	position: absolute;
+	top: 151px;
+	width: 653px;
+  }
+  
+  .results-abnormal .heatmap-bar-2 {
+	height: 50px;
+	left: 18px;
+	position: absolute;
+	top: 2px;
+	width: 298px;
+  }
+  
+  .results-abnormal .inspect-co {
+	border: 3px solid;
+	border-color: #ffffff;
+	border-radius: 30.5px;
+	height: 61px;
+	left: 579px;
+	position: absolute;
+	top: 337px;
+	width: 61px;
+  }
+  .results-abnormal .inspect-co:hover {
+	transform: scale(1.1);
+  }
+  
+  .results-abnormal .plus-co {
+	border: 3px solid;
+	border-color: #ffffff;
+	border-radius: 30.5px;
+	height: 61px;
+	left: 10px;
+	position: absolute;
+	top: 339px;
+	width: 61px;
+  }
+  
+  .results-abnormal .sagittal-group {
+	height: 411px;
+	left: 52px;
+	position: absolute;
+	top: 586px;
+	width: 653px;
+  }
+  
+  .results-abnormal .heatmap-bar-3 {
+	height: 50px;
+	left: 18px;
+	position: absolute;
+	top: 6px;
+	width: 298px;
+  }
+  
+  .results-abnormal .inspect-sag {
+	border: 3px solid;
+	border-color: #ffffff;
+	border-radius: 30.5px;
+	height: 61px;
+	left: 580px;
+	position: absolute;
+	top: 335px;
+	width: 61px;
+  }
+  .results-abnormal .inspect-sag:hover {
+	transform: scale(1.1);
+  }
+  
+  .results-abnormal .plus-sag {
+	border: 3px solid;
+	border-color: #ffffff;
+	border-radius: 30.5px;
+	height: 61px;
+	left: 17px;
+	position: absolute;
+	top: 337px;
+	width: 61px;
+  }
+  
