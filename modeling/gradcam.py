@@ -50,8 +50,12 @@ def run(INPUT_DATA_PATH, MODEL_PATH, EXP_NAME):
         image.save(f'./cam_results/{EXP_NAME}/images/{i}.png')
 
     plt.figure(figsize=(12, 8))
-    plt.title('CAM-score')
-    plt.plot(cam_scores)
+
+    plt.plot(cam_scores, linewidth=5, color='black')
+    max_score_index = cam_scores.index(max(cam_scores))
+    plt.axvline(x=max_score_index, color='red', linestyle='--')
+    plt.plot(max_score_index, cam_scores[max_score_index], 'ro')
+
     plt.xticks([i for i in range(len(cam_scores))])
     plt.savefig(f'./cam_results/{EXP_NAME}/score/cam_score.png')
     plt.close()
