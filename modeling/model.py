@@ -291,7 +291,20 @@ class VGG11(nn.Module):
         flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
         output = self.classifer(flattened_features)
         return output
-    
+
+
+class ThreeDimensionResNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.model = torch.hub.load('facebookresearch/pytorchvideo', 'slow_r50', pretrained=True)
+        self.classifier = nn.Linear(400, 2)
+
+    def forward(self, x):
+        output = self.model(x)
+        output = self.classifier(output)
+        return output
+
+
 _model_entrypoints = {
     "mrnet": MRNet,
     "resnet50": Resnet50,
@@ -304,7 +317,8 @@ _model_entrypoints = {
     "efficientnet_b0": EfficientNet_b0,
     "efficientnet_v2_s" : Efficientnet_v2_s,
     "vgg19" : VGG19,
-    "vgg11" : VGG11
+    "vgg11" : VGG11,
+    "3d_resnet": ThreeDimensionResNet
 }
 
 def create_model(model, **kargs):
