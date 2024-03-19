@@ -17,8 +17,6 @@ class MRDataset(data.Dataset):
         self.fold_num = fold_num
         self.folder_path = self.root_dir + 'train/{0}/'.format(plane)
         self.records = get_df(self.task, self.fold_num, self.train)
-        if not self.train:
-            transform = None
 
         self.records['id'] = self.records['id'].map(
             lambda i: '0' * (4 - len(str(i))) + str(i))
