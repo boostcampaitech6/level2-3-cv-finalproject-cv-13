@@ -146,16 +146,16 @@ async def inference():
         proba['x'] = round((fusion_res[0] * 100),1)
         result_dict['percent']['datasets'].append(proba)    
     
-    # summary
+    # summary   
     cls_result = result_dict['percent']['datasets']
-    prob_result = [proba['x'] for proba in cls_result]
-    max_prob_idx = prob_result.index(max(prob_result))
-    max_cls = result_dict["percent"]["labels"][max_prob_idx]
-    
-    _gradcam_path = os.path.join("docs_img", max_cls)
-    summary_report.set_image_paths(_gradcam_path)
-    summary_report.set_result_info(prob_result)
-    
+    _keys = [proba['y'] for proba in cls_result]
+    _values = [proba['x'] for proba in cls_result]
+
+    for k in _keys:
+        _gradcam_path = os.path.join("docs_img", k)
+        summary_report.set_image_paths(_gradcam_path)
+    summary_report.set_result_info(_values)
+
     with open('./result.json','w') as f:
         json.dump(result_dict, f, indent=4)
 
