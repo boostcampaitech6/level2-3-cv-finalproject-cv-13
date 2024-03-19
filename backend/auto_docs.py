@@ -182,23 +182,23 @@ class SummaryReport:
             os.remove(save_docs_path)    
         document.save(save_docs_path)
         
-# summary_report = SummaryReport()
+summary_report = SummaryReport()
     
-if __name__ == '__main__':
-    summary_report = SummaryReport()
-    ds = pydicom.dcmread("axial.dcm", force=True)
-    ds = {
-        "PatientID": ds.PatientID,
-        "PatientName": ds.PatientName,
-        "PatientSex": ds.PatientSex,
-        "PatientAge": ds.PatientAge,
-        "PatientBirthDate": ds.PatientBirthDate
-    }
-    summary_report.set_personal_info(ds)
-    for task in ["abnormal", "acl", "meniscus"]:
-        summary_report.set_image_paths(task)
-    v = [50, 20, 60]
+# if __name__ == '__main__':
+#     summary_report = SummaryReport()
+#     ds = pydicom.dcmread("axial.dcm", force=True)
+#     ds = {
+#         "PatientID": ds.PatientID,
+#         "PatientName": ds.PatientName,
+#         "PatientSex": ds.PatientSex,
+#         "PatientAge": ds.PatientAge,
+#         "PatientBirthDate": ds.PatientBirthDate
+#     }
+#     summary_report.set_personal_info(ds)
+#     for task in ["abnormal", "acl", "meniscus"]:
+#         summary_report.set_image_paths(task)
+#     v = [50, 20, 60]
     
-    summary_report.set_result_info(v)
-    summary_report.export_to_docx()
+#     summary_report.set_result_info(v)
+#     summary_report.export_to_docx()
     
