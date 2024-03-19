@@ -32,8 +32,9 @@ class SummaryReport:
     # gradcam path
     def set_image_paths(self, result_path: str):
         from glob import glob 
+        path_key = result_path.split("/")[-1]
         self.img_paths.append({
-            result_path: sorted(glob(f"{result_path}/*.png"))
+            path_key: sorted(glob(f"{result_path}/*.png"))
         })
         
     # percentage
