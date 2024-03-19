@@ -11,7 +11,7 @@ export default function Loading () {
 	useEffect(() => {
 		const awaitInference = async () => {
 			try {
-				const response = await axios.get("/inference");
+				const response = await axios.get("http://127.0.0.1:8001/inference");
 				history.push("/results/abnormal");
 				} catch (error) {
 					console.log(error);
