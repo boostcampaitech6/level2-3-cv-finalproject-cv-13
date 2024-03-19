@@ -77,7 +77,6 @@ def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current
             auc = metrics.roc_auc_score(y_trues, y_preds)
         except:
             auc = 0.5
-        break
             
     y_preds = [1 if y_pred > 0.5 else 0 for y_pred in y_preds]
     metric = Metric()
@@ -163,7 +162,6 @@ def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
             auc = metrics.roc_auc_score(y_trues, y_preds)
         except:
             auc = 0.5
-        break
             
     y_preds = [1 if y_pred > 0.5 else 0 for y_pred in y_preds]
     metric = Metric()
