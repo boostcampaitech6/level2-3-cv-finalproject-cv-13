@@ -145,7 +145,7 @@ async def inference():
         fusion_res = predict_percent(res, disease)
         proba['x'] = round((fusion_res[0] * 100),1)
         result_dict['percent']['datasets'].append(proba)    
-    
+        
     # summary   
     cls_result = result_dict['percent']['datasets']
     _keys = [proba['y'] for proba in cls_result]
@@ -153,7 +153,11 @@ async def inference():
 
     for k in _keys:
         _gradcam_path = os.path.join("docs_img", k)
+        if os.path.exists(_gradcam_path):
+            shutil.rmtree(_gradcam_path)
+        os.makedirs(_gradcam_path)
         summary_report.set_image_paths(_gradcam_path)
+        
     summary_report.set_result_info(_values)
 
     with open('./result.json','w') as f:
