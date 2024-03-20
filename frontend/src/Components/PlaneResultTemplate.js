@@ -44,13 +44,19 @@ export default function PlaneResultTemplate (props) {
 
 	const disease = props.disease;
 	const plane = props.plane;
-	const imageurl = `http://127.0.0.1:8001/output/${disease}/${plane}`
+	const ip = props.ip;
+	const imageurl = `http://127.0.0.1:8001/output/${disease}/${plane}`;
 	const patienturl = "http://127.0.0.1:8001/result/patient";
+	const config = {
+		headers: {
+		  'IP': ip,
+		}
+	  };
 
 	useEffect(() => {
 		async function fetchData() {
 		  try {
-			const imageResponse = await axios.get(imageurl);
+			const imageResponse = await axios.get(imageurl, config);
 			setImages(imageResponse.data.img);
 			setData(imageResponse.data.info);
 			setImageExists(true);
@@ -68,7 +74,7 @@ export default function PlaneResultTemplate (props) {
 	useEffect(() => {
 	const fetchPatient = async () => {
 			try {
-			const response = await axios.get(patienturl)
+			const response = await axios.get(patienturl, config)
 			setPatientInfo(response.data.info);
 			setPatientLabel(response.data.labels);
 			setonPatientLoad(false);
