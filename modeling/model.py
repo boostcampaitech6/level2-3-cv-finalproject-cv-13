@@ -309,6 +309,24 @@ class HRNet18(nn.Module):
         flattened_features = torch.max(features, 0, keepdim=True)[0]
         output = self.classifer(flattened_features)
         return output
+
+class HRNet48(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained_model = timm.create_model('hrnet_w48.ms_in1k', pretrained=True)
+        self.classifer = nn.Sequential(
+            nn.Linear(1000, 256),
+            nn.Linear(256, 2)
+        )
+
+        self.target = [self.pretrained_model.final_layer[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0) 
+        features = self.pretrained_model(x)
+        flattened_features = torch.max(features, 0, keepdim=True)[0]
+        output = self.classifer(flattened_features)
+        return output
     
 _model_entrypoints = {
     "mrnet": MRNet,
@@ -324,6 +342,7 @@ _model_entrypoints = {
     "vgg19" : VGG19,
     "vgg11" : VGG11,
     "hrnet18": HRNet18,
+    "hrnet48": HRNet48,
 }
 
 def create_model(model, **kargs):
