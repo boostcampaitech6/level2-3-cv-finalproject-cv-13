@@ -468,11 +468,13 @@ export default function ResultsCodeAbnormal (props) {
                     <span>Error loading images</span>
                   )}
                 </div>
+                {gradstate ? 
                 <div className="heatmap-bar">
                   <div className="rectangle-3" />
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
-                </div>
+                </div> :
+                <div />}
             </div>
             <Link to={`/results/${disease}/axial`}>
             <div className="inspect-ax">
@@ -512,11 +514,13 @@ export default function ResultsCodeAbnormal (props) {
                     <span>Error loading images</span>
                   )}
                 </div>
+                {gradstate ? 
                 <div className="heatmap-bar-2">
                   <div className="rectangle-3" />
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
-                </div>
+                </div> :
+                <div />}
             </div>
             <Link to={`/results/${disease}/coronal`}>
             <div className="inspect-co">
@@ -556,11 +560,13 @@ export default function ResultsCodeAbnormal (props) {
                     <span>Error loading images</span>
                   )}
                 </div>
+                {gradstate ? 
                 <div className="heatmap-bar-3">
                   <div className="rectangle-3" />
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
-                </div>
+                </div> :
+                <div />}
             </div>
             <Link to={`/results/${disease}/sagittal`}>
             <div className="inspect-sag">
