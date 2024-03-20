@@ -4,14 +4,21 @@ import './Loading.css'
 import ImgAsset from '../public'
 import { useHistory } from 'react-router-dom';
 
-export default function Loading () {
+export default function Loading (props) {
 
-  const history = useHistory();
-
+    const history = useHistory();
+	const ip = props.ip
+	
 	useEffect(() => {
 		const awaitInference = async () => {
 			try {
-				const response = await axios.get("http://127.0.0.1:8001/inference");
+				const url = "http://127.0.0.1:8001/inference";
+				const config = {
+					headers: {
+					  'IP': ip,
+					}
+				};
+				const response = await axios.get(url, config);
 				history.push("/results/abnormal");
 				} catch (error) {
 					console.log(error);
