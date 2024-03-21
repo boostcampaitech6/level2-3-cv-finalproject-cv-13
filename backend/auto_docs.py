@@ -45,7 +45,7 @@ class SummaryReport:
             2: ["Meniscus tear (반달연골)", f"{result[2]}%", ""]
         }
 
-    def export_to_docx(self):
+    def export_to_docx(self, id_root):
         document = Document("base_document.docx")
 
         # personal info title
@@ -178,7 +178,7 @@ class SummaryReport:
         caption_para.add_run(" * ✔ 표시의 경우 모델이 예측한 결과 해당 질병이 있을 확률이 높다는 것을 의미합니다.")
         caption_para.runs[0].font.color.rgb = RGBColor(0, 0, 0)
 
-        save_docs_path = f"{self.p_info[1][0]}_auto_report.docx"
+        save_docs_path = os.path.join(id_root, f"{self.p_info[1][0]}_auto_report.docx")
         if os.path.exists(save_docs_path):
             os.remove(save_docs_path)    
         document.save(save_docs_path)
