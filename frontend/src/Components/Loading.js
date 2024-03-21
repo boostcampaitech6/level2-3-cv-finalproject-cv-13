@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 export default function Loading (props) {
 
     const history = useHistory();
-	const ip = props.ip
+	const ip = localStorage.getItem('userIP') || props.ip;
 	
 	useEffect(() => {
 		const awaitInference = async () => {

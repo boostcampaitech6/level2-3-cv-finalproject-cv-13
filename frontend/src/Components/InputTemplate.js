@@ -12,7 +12,7 @@ export default function FirstImpression (props) {
 	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	let [ready, setReady] = useState([false, false, false]);
-	const ip = props.ip
+	const ip = localStorage.getItem('userIP') || props.ip;
 
 	const saveImage = async (e, plane, idx) => {
 	e.preventDefault();
