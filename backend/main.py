@@ -160,9 +160,9 @@ async def inference(request: Request):
 
     for k in _keys:
         _gradcam_path = os.path.join(id_root,"docs_img", k)
-        if os.path.exists(_gradcam_path):
-            shutil.rmtree(_gradcam_path)
-        os.makedirs(_gradcam_path)
+        # if os.path.exists(_gradcam_path):
+        #     shutil.rmtree(_gradcam_path)
+        # os.makedirs(_gradcam_path)
         summary_report.set_image_paths(_gradcam_path)
         
     summary_report.set_result_info(_values)
