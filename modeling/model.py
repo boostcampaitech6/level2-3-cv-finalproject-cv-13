@@ -160,6 +160,23 @@ class ShufflenetV2(nn.Module):
         x = self.classifier2(x)
         return x
 
+class SwinTiny(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained = timm.create_model('swinv2_tiny_window16_256.ms_in1k', pretrained=True)
+        self.pretrained.head.fc = nn.Linear(768, 256)
+        self.classifier = nn.Sequential(nn.Linear(256, 128), nn.Linear(128, 2))
+
+        # For GradCAM
+        self.target = [self.pretrained.layers[-1].blocks[-1].norm2]
+    
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        x = self.pretrained(x)
+        x = torch.max(x, 0, keepdim=True)[0]
+        x = self.classifier(x)
+        return x
+
 class Xception41(nn.Module):
     def __init__(self):
         super().__init__()
@@ -176,7 +193,118 @@ class Xception41(nn.Module):
         out = self.classifier1(flatten)
         out = self.classifier2(out)
         return out
+
+class EfficientNet_b0(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained_model = timm.create_model('efficientnet_b0', pretrained=True)
+        self.pooling_layer = nn.AdaptiveAvgPool2d(1)
+        self.classifer = nn.Linear(1280, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained_model.bn2]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        features = self.pretrained_model.conv_stem(x)
+        features = self.pretrained_model.bn1(features)
+        features = self.pretrained_model.blocks(features)
+        features = self.pretrained_model.conv_head(features)
+        features = self.pretrained_model.bn2(features)
+        pooled_features = self.pooling_layer(features)
+        pooled_features = pooled_features.view(pooled_features.size(0), -1)
+        flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
+        output = self.classifer(flattened_features)
+        return output
     
+class Efficientnet_v2_s(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained_model = models.efficientnet_v2_s(weights=models.EfficientNet_V2_S_Weights.IMAGENET1K_V1)
+        self.classifer = nn.Linear(1280, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained_model.features[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0) 
+        features = self.pretrained_model.features(x)
+        pooled_features = self.pretrained_model.avgpool(features)
+        pooled_features = pooled_features.view(pooled_features.size(0), -1)
+        flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
+        output = self.classifer(flattened_features)
+        return output
+    
+class VGG19(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained_model = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)
+        self.pooling_layer = nn.AdaptiveAvgPool2d(1)
+        self.classifer = nn.Linear(512, 2)
+
+        # layers = []
+        # for name, param in self.pretrained_model.named_parameters():
+        #     if name[-6:] == 'weight' and name[:8] == 'features':
+        #         layers.append(param)
+        # N = len(layers)
+        # for param in layers[:N//2]:
+        #         param.requires_grad = False 
+
+        # For GradCAM
+        self.target = [self.pretrained_model.features[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0) 
+        features = self.pretrained_model.features(x)
+        pooled_features = self.pooling_layer(features)
+        pooled_features = pooled_features.view(pooled_features.size(0), -1)
+        flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
+        output = self.classifer(flattened_features)
+        return output
+
+class VGG11(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained_model = models.vgg11(weights=models.VGG11_Weights.IMAGENET1K_V1)
+        self.pooling_layer = nn.AdaptiveAvgPool2d(1)
+        self.classifer = nn.Sequential(
+            nn.Linear(512, 256),
+            nn.Linear(256, 2)
+        )
+
+        # layers = []
+        # for name, param in self.pretrained_model.named_parameters():
+        #     if name[-6:] == 'weight' and name[:8] == 'features':
+        #         layers.append(param)
+        # N = len(layers)
+        # for param in layers[:N//2]:
+        #         param.requires_grad = False 
+
+        # For GradCAM
+        self.target = [self.pretrained_model.features[-1]]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0) 
+        features = self.pretrained_model.features(x)
+        pooled_features = self.pooling_layer(features)
+        pooled_features = pooled_features.view(pooled_features.size(0), -1)
+        flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
+        output = self.classifer(flattened_features)
+        return output
+
+
+class ThreeDimensionResNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.model = torch.hub.load('facebookresearch/pytorchvideo', 'slow_r50', pretrained=True)
+        self.classifier = nn.Linear(400, 2)
+
+    def forward(self, x):
+        output = self.model(x)
+        output = self.classifier(output)
+        return output
+
+
 _model_entrypoints = {
     "mrnet": MRNet,
     "resnet50": Resnet50,
@@ -185,6 +313,12 @@ _model_entrypoints = {
     "mobilenetv2": MobileNetV2,
     "mobilenetv3": MobileNetV3,
     "xception41": Xception41,
+    "swintiny": SwinTiny,
+    "efficientnet_b0": EfficientNet_b0,
+    "efficientnet_v2_s" : Efficientnet_v2_s,
+    "vgg19" : VGG19,
+    "vgg11" : VGG11,
+    "3d_resnet": ThreeDimensionResNet
 }
 
 def create_model(model, **kargs):
