@@ -47,7 +47,8 @@ export default function ResultsCodeAbnormal (props) {
   const originalurl = `http://127.0.0.1:8001/result/${disease}/original`;
   const gradcamurl = `http://127.0.0.1:8001/result/${disease}/gradcam`;
   const patienturl = "http://127.0.0.1:8001/result/patient";
-  const exporturl = "http://127.0.0.1:8001/result/docs";
+  const unique = Date.now();
+  const exporturl = `http://127.0.0.1:8001/result/docs?cache=${unique}`;
   const config = {
     headers: {
       'IP': ip,

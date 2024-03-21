@@ -257,10 +257,12 @@ async def outputFile(disease: str, plane:str, request: Request):
     return result_info
 
 @app.get("/result/docs")
-async def exportSummary(request: Request):
+async def exportSummary(request: Request, cache: str):
     id_root = request.headers['ip'][:6]
     print("docs: ", id_root)
     # need for summary report
     FILE_NAME = '123456_auto_report.docx'
     summary_report.export_to_docx(id_root)
-    return FileResponse(FILE_NAME, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response = FileResponse(os.path.join(id_root, FILE_NAME), media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response.headers["Cache-Control"] = "no-cache"
+    return response
