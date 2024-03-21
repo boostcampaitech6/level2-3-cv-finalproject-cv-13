@@ -44,7 +44,7 @@ export default function PlaneResultTemplate (props) {
 
 	const disease = props.disease;
 	const plane = props.plane;
-	const ip = props.ip;
+	const ip = localStorage.getItem('userIP') || props.ip;
 	const imageurl = `http://127.0.0.1:8001/output/${disease}/${plane}`;
 	const patienturl = "http://127.0.0.1:8001/result/patient";
 	const config = {
@@ -67,7 +67,6 @@ export default function PlaneResultTemplate (props) {
 			setLoading(false);
 		  }
 		}
-	
 		fetchData();
 	  }, []);
 
@@ -97,7 +96,8 @@ export default function PlaneResultTemplate (props) {
 	useEffect(() => {
 	// Ensure currentidx is within bounds
 	if (currentidx < 0) setCurrentIdx(0);
-	if (currentidx >= page.length) setCurrentIdx(page.length - 1);
+	if (currentidx >= page.length && page.length != 0) setCurrentIdx(page.length - 1);
+	if (page.length == 0) setCurrentIdx(0);
 	}, [currentidx, page]);
 
 	const handleImageError = () => {

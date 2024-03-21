@@ -42,7 +42,7 @@ export default function ResultsCodeAbnormal (props) {
 	
   const disease = props.disease;
   const idx = props.idx;
-  const ip = props.ip;
+  const ip = localStorage.getItem('userIP') || props.ip;
   const graphurl = "http://127.0.0.1:8001/result";
   const originalurl = `http://127.0.0.1:8001/result/${disease}/original`;
   const gradcamurl = `http://127.0.0.1:8001/result/${disease}/gradcam`;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import axios from 'axios';
 import { HmacSHA256 } from 'crypto-js';
 import Loading from '../Components/Loading';
 import PlaneResultTemplate from '../Components/PlaneResultTemplate';
@@ -43,7 +42,8 @@ const RouterDOM = () => {
   
 	useEffect(() => {
 	    getIP();
-	}, []);
+		localStorage.setItem('userIP', ip);
+	}, [ip]);
 
 	return (
 		<Router>
