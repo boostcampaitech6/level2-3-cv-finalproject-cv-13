@@ -8,17 +8,17 @@ import os
 import pickle
 from sklearn.metrics import accuracy_score
 
-from dataloader import MRDataset
+from dataloader import MRDataset, MRInferenceDataset
 from metric import Metric
 
 
 class FusionModel:
-    def __init__(self, data_root, task, model_path, exp_name='temp'):
+    def __init__(self, data_root, task, model_path, fold_num, exp_name='temp'):
         self.data_root = data_root
         self.task = task
         self.model_path = model_path
         self.exp_name = exp_name
-
+        self.fold_num = fold_num
         self.logistic_regression = LogisticRegression()
 
     def build_dataset(self):
@@ -30,11 +30,11 @@ class FusionModel:
             if torch.cuda.is_available():
                 model.cuda()
             
-            for data_type in ['train', 'valid']:
+            for data_type in ['train', 'test']:
                 if data_type == 'train':
-                    dataset = MRDataset(self.data_root, self.task, plane, train=True)
+                    dataset = MRDataset(self.data_root, self.task, plane, self.fold_num, train=True)
                 else:
-                    dataset = MRDataset(self.data_root, self.task, plane, train=False)
+                    dataset = MRInferenceDataset(self.data_root, self.task, plane)
 
                 data = []
                 for i, (array, _, _) in enumerate(dataset):
@@ -72,13 +72,13 @@ class FusionModel:
         self.logistic_regression.fit(X, y)
     
     def evaluate(self):
-        axial_df = pd.read_csv(f'./preds/{self.exp_name}/valid-axial.csv', 
+        axial_df = pd.read_csv(f'./preds/{self.exp_name}/test-axial.csv', 
                         header=None, names=['id', 'axial'])
-        coronal_df = pd.read_csv(f'./preds/{self.exp_name}/valid-coronal.csv', 
+        coronal_df = pd.read_csv(f'./preds/{self.exp_name}/test-coronal.csv', 
                                  header=None, names=['id', 'coronal'])
-        sagittal_df = pd.read_csv(f'./preds/{self.exp_name}/valid-sagittal.csv', 
+        sagittal_df = pd.read_csv(f'./preds/{self.exp_name}/test-sagittal.csv', 
                                   header=None, names=['id', 'sagittal'])
-        label_df = pd.read_csv(os.path.join(self.data_root, f'valid-{self.task}.csv'), 
+        label_df = pd.read_csv(os.path.join(self.data_root, f'test-{self.task}.csv'), 
                                header=None, names=['id', 'label'])
 
         merged_df = axial_df.merge(coronal_df, on='id').merge(sagittal_df, on='id').merge(label_df, on='id')
@@ -95,9 +95,8 @@ class FusionModel:
 
     
     def save_model(self):
-        with open('./models/model.pkl', 'wb') as file:
+        with open(f'./models/lr_{EXP_NAME}_{TASK}.pkl', 'wb') as file:
             pickle.dump(self.logistic_regression, file)
-
 
 if __name__ == '__main__':
     with open('fusion_config.yaml', 'r') as file:
@@ -107,8 +106,9 @@ if __name__ == '__main__':
     TASK = config['TASK']
     MODEL_PATH = config['MODEL_PATH']
     EXP_NAME =  config['EXP_NAME']
+    FOLD_NUM = config['FOLD_NUM']
     
-    fusion_model = FusionModel(DATA_ROOT, TASK, MODEL_PATH, EXP_NAME)
+    fusion_model = FusionModel(DATA_ROOT, TASK, MODEL_PATH, FOLD_NUM, EXP_NAME)
     fusion_model.build_dataset()
     fusion_model.fit()
     fusion_model.evaluate()
