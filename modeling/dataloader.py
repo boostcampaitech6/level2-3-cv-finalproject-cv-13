@@ -74,7 +74,7 @@ class MRInferenceDataset(data.Dataset):
         self.paths = [self.folder_path + filename +
                       '.npy' for filename in self.records['id'].tolist()]
         self.labels = self.records['label'].tolist()
-
+        self.ids = self.records['id'].tolist()
         self.transform = transform
         if weights is None:
             pos = np.sum(self.labels)
