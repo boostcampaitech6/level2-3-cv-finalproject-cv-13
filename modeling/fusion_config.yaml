@@ -8,6 +8,8 @@ EXP_NAME: temp
 TASK: abnormal
 
 MODEL_PATH:
-  axial: './models/abnormal_axial_best.pth'
-  coronal: './models/abnormal_coronal_best.pth'
-  sagittal: './models/abnormal_sagittal_best.pth'
+  axial: './models/model_abnormal_axial_best.pth'
+  coronal: './models/model_abnormal_coronal_best.pth'
+  sagittal: './models/model_abnormal_sagittal_best.pth'
+
+FOLD_NUM: 4
