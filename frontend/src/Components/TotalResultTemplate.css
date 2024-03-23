@@ -536,12 +536,21 @@
   }
   
   .results-abnormal .rectangle-3 {
-	background: linear-gradient(90deg, rgb(0, 40.8, 255) 0%, rgb(255, 0, 0) 100%);
+	/* For browsers that do not support gradients */
+	background-color: red;
+	/* For modern browsers */
+	background-image: linear-gradient(to left, 
+		red,   
+		orange, 
+		yellow,
+		green,
+		blue
+	);
 	height: 20px;
 	left: 0;
 	position: absolute;
 	top: 20px;
-	width: 150px;
+	width: 85px;
   }
   
   .results-abnormal .text-wrapper-20 {
@@ -564,7 +573,7 @@
 	font-family: "Alata", Helvetica;
 	font-size: 15px;
 	font-weight: 400;
-	left: 125px;
+	left: 55px;
 	letter-spacing: 0;
 	line-height: normal;
 	position: absolute;

@@ -3,7 +3,7 @@ import './InputTemplate.css'
 import ImgAsset from '../public'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import {useState, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import {Button} from "@mui/material";
 
 export default function FirstImpression (props) {
@@ -12,6 +12,7 @@ export default function FirstImpression (props) {
 	const history = useHistory();
 	const [loading, setLoading] = useState(false);
 	let [ready, setReady] = useState([false, false, false]);
+	const ip = localStorage.getItem('userIP') || props.ip;
 
 	const saveImage = async (e, plane, idx) => {
 	e.preventDefault();
@@ -23,11 +24,14 @@ export default function FirstImpression (props) {
 		formData.append('file', files[i]);
 		}
 
-		const currenturl = `/input/${plane}`
+		const currenturl = `http://127.0.0.1:8001/input/${plane}`
 		const postOptions = {
 			method: "POST",
 			url: currenturl,
 			body: formData,
+			headers: {
+				'IP': ip,
+			},
 		}
 
 		try {
@@ -59,9 +63,14 @@ export default function FirstImpression (props) {
 
 	const sampleData = async (e, disease) => {
 		e.preventDefault();
-		const sampleurl = `/input/sample?disease=${disease}`
+		const sampleurl = `http://127.0.0.1:8001/input/sample?disease=${disease}`
+		const config = {
+			headers: {
+			  'IP': ip,
+			}
+		};
 		try {
-			const response = await axios.get(sampleurl);
+			const response = await axios.get(sampleurl, config);
 			setReady([true, true, true]);
 			alert("샘플 파일 업로드에 성공했습니다. \nInference 버튼을 눌러 주세요");
 		} catch (err) {

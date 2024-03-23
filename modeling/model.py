@@ -345,8 +345,20 @@ class HRNet40(nn.Module):
         flattened_features = torch.max(features, 0, keepdim=True)[0]
         output = self.classifer(flattened_features)
         return output
-    
-    
+
+
+class ThreeDimensionResNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.model = torch.hub.load('facebookresearch/pytorchvideo', 'slow_r50', pretrained=True)
+        self.classifier = nn.Linear(400, 2)
+
+    def forward(self, x):
+        output = self.model(x)
+        output = self.classifier(output)
+        return output
+
+
 _model_entrypoints = {
     "mrnet": MRNet,
     "resnet50": Resnet50,
@@ -363,6 +375,7 @@ _model_entrypoints = {
     "hrnet18": HRNet18,
     "hrnet48": HRNet48,
     "hrnet40": HRNet40,
+    "3d_resnet": ThreeDimensionResNet,
 }
 
 def create_model(model, **kargs):

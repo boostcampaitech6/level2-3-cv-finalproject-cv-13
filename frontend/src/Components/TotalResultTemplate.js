@@ -42,11 +42,18 @@ export default function ResultsCodeAbnormal (props) {
 	
   const disease = props.disease;
   const idx = props.idx;
-  const graphurl = "/result";
-  const originalurl = `/result/${disease}/original`;
-  const gradcamurl = `/result/${disease}/gradcam`;
-  const patienturl = "/result/patient";
-  const exporturl = "/result/docs"
+  const ip = localStorage.getItem('userIP') || props.ip;
+  const graphurl = "http://127.0.0.1:8001/result";
+  const originalurl = `http://127.0.0.1:8001/result/${disease}/original`;
+  const gradcamurl = `http://127.0.0.1:8001/result/${disease}/gradcam`;
+  const patienturl = "http://127.0.0.1:8001/result/patient";
+  const unique = Date.now();
+  const exporturl = `http://127.0.0.1:8001/result/docs?cache=${unique}`;
+  const config = {
+    headers: {
+      'IP': ip,
+    }
+  };
 
   let styleList = [0, 0, 0];
   styleList[idx] += 1;
@@ -77,7 +84,7 @@ export default function ResultsCodeAbnormal (props) {
 
   const exportDocs = async () => {
     try {
-      const response = await axios.get(exporturl, { responseType: 'blob' });
+      const response = await axios.get(exporturl, { headers: { 'IP': ip }, responseType: 'blob' });
       // create download link
       const tempURL = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -101,7 +108,7 @@ export default function ResultsCodeAbnormal (props) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(graphurl);
+				const response = await axios.get(graphurl, config);
 				const data = response.data;
 				setData(data);
 				setonLoad(false);
@@ -116,8 +123,8 @@ export default function ResultsCodeAbnormal (props) {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response_original = await axios.get(originalurl);
-        const response_grad = await axios.get(gradcamurl + '?threshold=' + gradthres / 100);
+        const response_original = await axios.get(originalurl, config);
+        const response_grad = await axios.get(gradcamurl + '?threshold=' + gradthres / 100, config);
         const data_original = response_original.data;
         const data_grad = response_grad.data;
         setImages(data_original)
@@ -136,7 +143,7 @@ export default function ResultsCodeAbnormal (props) {
   useEffect(() => {
     const fetchPatient = async () => {
       try {
-        const response = await axios.get(patienturl)
+        const response = await axios.get(patienturl, config)
         setPatientInfo(response.data.info);
         setPatientLabel(response.data.labels);
         setonPatientLoad(false);
@@ -468,11 +475,13 @@ export default function ResultsCodeAbnormal (props) {
                     <span>Error loading images</span>
                   )}
                 </div>
+                {gradstate ? 
                 <div className="heatmap-bar">
                   <div className="rectangle-3" />
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
-                </div>
+                </div> :
+                <div />}
             </div>
             <Link to={`/results/${disease}/axial`}>
             <div className="inspect-ax">
@@ -512,11 +521,13 @@ export default function ResultsCodeAbnormal (props) {
                     <span>Error loading images</span>
                   )}
                 </div>
+                {gradstate ? 
                 <div className="heatmap-bar-2">
                   <div className="rectangle-3" />
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
-                </div>
+                </div> :
+                <div />}
             </div>
             <Link to={`/results/${disease}/coronal`}>
             <div className="inspect-co">
@@ -556,11 +567,13 @@ export default function ResultsCodeAbnormal (props) {
                     <span>Error loading images</span>
                   )}
                 </div>
+                {gradstate ? 
                 <div className="heatmap-bar-3">
                   <div className="rectangle-3" />
                   <div className="text-wrapper-20">0</div>
                   <div className="text-wrapper-21">100</div>
-                </div>
+                </div> :
+                <div />}
             </div>
             <Link to={`/results/${disease}/sagittal`}>
             <div className="inspect-sag">

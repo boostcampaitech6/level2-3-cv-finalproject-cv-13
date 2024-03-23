@@ -112,10 +112,10 @@ def predict_percent(input, disease):
     return proba
     
     
-def grad_cam_inference(input, disease, plane):
-    res_grad_dir = os.path.join('result','gradcam', disease)
-    res_original_dir = os.path.join('result','original', disease)
-    docs_img_dir = os.path.join('docs_img', disease)
+def grad_cam_inference(id_root, input, disease, plane):
+    res_grad_dir = os.path.join(id_root, 'result','gradcam', disease)
+    res_original_dir = os.path.join(id_root, 'result','original', disease)
+    docs_img_dir = os.path.join(id_root,'docs_img', disease)
     input_tensor = torch.squeeze(input, dim=0)
 
     #모델 불러오기
@@ -142,7 +142,9 @@ def grad_cam_inference(input, disease, plane):
     top_cam_result = cam_results[max_idx] 
 
     visualization = show_cam_on_image(top_image, top_cam_result, use_rgb=True, threshold=0.5)
+    # print(visualization)
     docs_img = Image.fromarray(visualization)
+    # print(docs_img)
 
     if not os.path.exists(res_grad_dir):
         os.makedirs(res_grad_dir)

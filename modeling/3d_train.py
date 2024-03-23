@@ -21,12 +21,13 @@ from model import create_model
 from sklearn import metrics
 from torchvision import transforms
 
+import code
+
 seed = 2024
 deterministic = True
 random.seed(seed)
 np.random.seed(seed)
 torch.manual_seed(seed)
-torch.cuda.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 if deterministic:
 	torch.backends.cudnn.deterministic = True
@@ -55,9 +56,6 @@ def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current
             label = label.cuda()
             weight = weight.cuda()
 
-        label = label[0]
-        weight = weight[0]
-
         prediction = model.forward(image.float())
 
         criterion = create_criterion(loss_name, weight, **loss_params)
@@ -71,8 +69,9 @@ def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current
 
         probas = torch.sigmoid(prediction)
 
-        y_trues.append(int(label[0][1]))
-        y_preds.append(probas[0][1].item())
+        for i in range(label.shape[0]):
+            y_trues.append(int(label[i][1]))
+            y_preds.append(probas[i][1].item())
 
         try:
             auc = metrics.roc_auc_score(y_trues, y_preds)
@@ -145,9 +144,6 @@ def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
             label = label.cuda()
             weight = weight.cuda()
 
-        label = label[0]
-        weight = weight[0]
-
         prediction = model.forward(image.float())
 
         criterion = create_criterion(loss_name, weight, **loss_params)
@@ -158,8 +154,9 @@ def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
 
         probas = torch.sigmoid(prediction)
 
-        y_trues.append(int(label[0][1]))
-        y_preds.append(probas[0][1].item())
+        for i in range(label.shape[0]):
+            y_trues.append(int(label[i][1]))
+            y_preds.append(probas[i][1].item())
 
         try:
             auc = metrics.roc_auc_score(y_trues, y_preds)
@@ -215,6 +212,15 @@ def get_lr(optimizer):
         return param_group['lr']
 
 
+def pad_sequences_3d_uniform(sequence, max_depth=61):
+    depth_padding = max_depth - sequence.shape[0]
+    pad_before = depth_padding // 2
+    pad_after = depth_padding - pad_before
+    pad = ((pad_before, pad_after), (0, 0), (0, 0))
+    padded_sequence = np.pad(sequence, pad, 'constant', constant_values=0)
+    return torch.tensor(padded_sequence).float()
+
+
 def run(config):
     DATA_ROOT = config['DATA_ROOT']
     
@@ -236,19 +242,26 @@ def run(config):
     
     wandb.init(project='Boost Camp Lv3', entity='frostings', name=f"{CAMPER_ID}-{EXP_NAME}-{TASK}-{PLANE}", config=config)
 
-    augmentor = transforms.Compose([
+    train_augmentor = transforms.Compose([
+        transforms.Lambda(lambda x: pad_sequences_3d_uniform(x)),
         transforms.Lambda(lambda x: torch.Tensor(x)),
         transforms.RandomRotation(25),
-        transforms.RandomAffine(degrees=0, translate=[0.11, 0.11]),
+        transforms.RandomAffine(degrees=0, translate=(0.11, 0.11)),
         transforms.RandomHorizontalFlip(),
-        transforms.Lambda(lambda x: x.repeat(3, 1, 1, 1).permute(1, 0, 2, 3)),
+        transforms.Lambda(lambda x: x.repeat(3, 1, 1, 1)),
     ])
 
-    train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=True, transform=augmentor)
+    valid_augmentor = transforms.Compose([
+        transforms.Lambda(lambda x: pad_sequences_3d_uniform(x)),
+        transforms.Lambda(lambda x: torch.Tensor(x)),
+        transforms.Lambda(lambda x: x.repeat(3, 1, 1, 1))
+    ])
+
+    train_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=True, transform=train_augmentor)
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=8, drop_last=False)
 
-    validation_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=False)
+    validation_dataset = MRDataset(DATA_ROOT, TASK, PLANE, FOLD_NUM, train=False, transform=valid_augmentor)
     validation_loader = torch.utils.data.DataLoader(
         validation_dataset, batch_size=BATCH_SIZE, shuffle=-True, num_workers=8, drop_last=False)
 
