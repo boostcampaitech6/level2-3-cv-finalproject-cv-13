@@ -20,7 +20,7 @@ from utils import *
 from schemas import DICOMRequest, resultResponse, DiseaseResult, PatientInfo
 from dcm_convert import convert_dcm_to_numpy
 from config import config
-from auto_docs import summary_report
+from auto_docs import summary_reports, SummaryReport
 
 
 @asynccontextmanager
@@ -33,7 +33,8 @@ async def lifespan(app: FastAPI):
     
 origins = [
     "http://localhost:3000",
-    "http://223.130.129.202:80",
+    # "http://223.130.129.202:80",
+    "http://223.130.130.192:80"
 ]
 
 app = FastAPI(lifespan=lifespan)
@@ -60,7 +61,8 @@ async def receiveFile(plane:str, file: list[UploadFile], request: Request):
     if os.path.exists(UPLOAD_FOLDER): 
         shutil.rmtree(UPLOAD_FOLDER) # 이미 폴더 있으면 삭제
     os.makedirs(UPLOAD_FOLDER)
-
+    
+    summary_reports[id_root] = SummaryReport()
     # DICOM 서버에 저장
     for f in file:
         ext = os.path.splitext(f.filename)[1]
@@ -74,7 +76,7 @@ async def receiveFile(plane:str, file: list[UploadFile], request: Request):
 
                 info, npy_array = convert_dcm_to_numpy(file_path)
                 np.save(os.path.join(UPLOAD_FOLDER, "input.npy"), npy_array)
-                summary_report.set_personal_info(info)
+                summary_reports[id_root].set_personal_info(info)
 
             return JSONResponse(status_code=200, content={ plane: "success"})
         except Exception as e:
@@ -92,6 +94,7 @@ async def receiveSampleFile(disease:str, request: Request):
         shutil.rmtree(UPLOAD_ROOT) # 이미 폴더 있으면 삭제
     os.makedirs(UPLOAD_ROOT) # 새로 만들기
 
+    summary_reports[id_root] = SummaryReport()
     # 데이터 복사
     shutil.copytree(
         SAMPLE_PATH,
@@ -108,7 +111,7 @@ async def receiveSampleFile(disease:str, request: Request):
             info, npy_array = convert_dcm_to_numpy(file_path)
         np.save(os.path.join(UPLOAD_PATH, "input.npy"), npy_array)
     
-    summary_report.set_personal_info(info)
+    summary_reports[id_root].set_personal_info(info)
     return JSONResponse(status_code=200, content={ "sample" : "success"})
         
 
@@ -160,12 +163,8 @@ async def inference(request: Request):
 
     for k in _keys:
         _gradcam_path = os.path.join(id_root,"docs_img", k)
-        # if os.path.exists(_gradcam_path):
-        #     shutil.rmtree(_gradcam_path)
-        # os.makedirs(_gradcam_path)
-        summary_report.set_image_paths(_gradcam_path)
-        
-    summary_report.set_result_info(_values)
+        summary_reports[id_root].set_image_paths(_gradcam_path)
+    summary_reports[id_root].set_result_info(_values)
 
     with open(os.path.join(id_root,'result.json'),'w') as f:
         json.dump(result_dict, f, indent=4)
@@ -188,7 +187,8 @@ async def outputJSON(request: Request) -> resultResponse:
 
 @app.get("/result/patient")
 async def patientInfo(request: Request) -> PatientInfo:
-    patient_info = summary_report.get_personal_info()
+    id_root = request.headers['ip'][:6]
+    patient_info = summary_reports[id_root].get_personal_info()
     return PatientInfo(labels=patient_info[0], info=patient_info[1])
     
 
@@ -262,7 +262,7 @@ async def exportSummary(request: Request, cache: str):
     print("docs: ", id_root)
     # need for summary report
     FILE_NAME = '123456_auto_report.docx'
-    summary_report.export_to_docx(id_root)
+    summary_reports[id_root].export_to_docx(id_root)
     response = FileResponse(os.path.join(id_root, FILE_NAME), media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     response.headers["Cache-Control"] = "no-cache"
     return response

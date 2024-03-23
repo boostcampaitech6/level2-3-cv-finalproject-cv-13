@@ -14,6 +14,11 @@ class SummaryReport:
         self.img_paths = []
         self.result_info = None
         
+    def clear_summary(self):
+        self.p_info = None
+        self.img_paths = []
+        self.result_info = None
+        
     def set_personal_info(self, info: dict):
         self.p_info = {
             0: ["환자 ID", "이름", "성별", "나이", "생년월일"],
@@ -36,6 +41,7 @@ class SummaryReport:
         self.img_paths.append({
             path_key: sorted(glob(f"{result_path}/*.png"))
         })
+        print(self.img_paths)
         
     # percentage
     def set_result_info(self, result: list[int]):
@@ -183,7 +189,7 @@ class SummaryReport:
             os.remove(save_docs_path)    
         document.save(save_docs_path)
         
-summary_report = SummaryReport()
+summary_reports = {}
     
 # if __name__ == '__main__':
 #     summary_report = SummaryReport()
