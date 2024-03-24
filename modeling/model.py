@@ -357,6 +357,25 @@ class ThreeDimensionResNet(nn.Module):
         output = self.classifier(output)
         return output
 
+class Densenet201(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained_model = models.densenet201(weights=models.DenseNet201_Weights.IMAGENET1K_V1)
+        self.pooling_layer = nn.AdaptiveAvgPool2d(1)
+        self.classifer = nn.Linear(1920, 2)
+        # For GradCAM
+        self.target = [self.pretrained_model.features.norm5]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0) 
+        features = self.pretrained_model.features(x)
+        pooled_features = self.pooling_layer(features)
+        pooled_features = pooled_features.view(pooled_features.size(0), -1)
+        flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
+        output = self.classifer(flattened_features)
+        return output
+        
+
 
 _model_entrypoints = {
     "mrnet": MRNet,
@@ -375,6 +394,7 @@ _model_entrypoints = {
     "hrnet48": HRNet48,
     "hrnet40": HRNet40,
     "3d_resnet": ThreeDimensionResNet,
+    'densenet201' : Densenet201,
 }
 
 def create_model(model, **kargs):
