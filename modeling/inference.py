@@ -30,7 +30,7 @@ def test(model_name, data_loader):
             image = image.cuda()
             label = label.cuda()
 
-        label = label[0]
+        label = label
 
         prediction = model.forward(image.float()) 
         probas = torch.sigmoid(prediction)
