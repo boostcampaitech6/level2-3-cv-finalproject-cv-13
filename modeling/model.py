@@ -374,6 +374,32 @@ class Densenet201(nn.Module):
         flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
         output = self.classifer(flattened_features)
         return output
+    
+class Resnext50_32x4d(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.pretrained_model = models.resnext50_32x4d(weights=models.ResNeXt50_32X4D_Weights.IMAGENET1K_V1)
+
+        self.classifer = nn.Linear(2048, 2)
+
+        # For GradCAM
+        self.target = [self.pretrained_model.layer4[-1].bn3]
+
+    def forward(self, x):
+        x = torch.squeeze(x, dim=0)
+        features = self.pretrained_model.conv1(x)
+        features = self.pretrained_model.bn1(features)
+        features = self.pretrained_model.relu(features)
+        features = self.pretrained_model.maxpool(features)
+        features = self.pretrained_model.layer1(features)
+        features = self.pretrained_model.layer2(features)
+        features = self.pretrained_model.layer3(features)
+        features = self.pretrained_model.layer4(features)
+        pooled_features = self.pretrained_model.avgpool(features)
+        pooled_features = pooled_features.view(pooled_features.size(0), -1)
+        flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
+        output = self.classifer(flattened_features)
+        return output
         
 
 
@@ -395,6 +421,7 @@ _model_entrypoints = {
     "hrnet40": HRNet40,
     "3d_resnet": ThreeDimensionResNet,
     'densenet201' : Densenet201,
+    'resnext50_32x4d' : Resnext50_32x4d,
 }
 
 def create_model(model, **kargs):
