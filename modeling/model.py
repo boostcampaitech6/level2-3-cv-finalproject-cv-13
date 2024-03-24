@@ -291,7 +291,7 @@ class VGG11(nn.Module):
         flattened_features = torch.max(pooled_features, 0, keepdim=True)[0]
         output = self.classifer(flattened_features)
         return output
-    
+
 class HRNet18(nn.Module):
     def __init__(self):
         super().__init__()
@@ -345,7 +345,6 @@ class HRNet40(nn.Module):
         flattened_features = torch.max(features, 0, keepdim=True)[0]
         output = self.classifer(flattened_features)
         return output
-
 
 class ThreeDimensionResNet(nn.Module):
     def __init__(self):
