@@ -90,9 +90,9 @@ class MRInferenceDataset(data.Dataset):
         array = np.load(self.paths[index])
         label = self.labels[index]
         if label == 1:
-            label = torch.FloatTensor([[0, 1]])
+            label = torch.FloatTensor([0, 1])
         elif label == 0:
-            label = torch.FloatTensor([[1, 0]])
+            label = torch.FloatTensor([1, 0])
 
         if self.transform:
             array = self.transform(array)

@@ -55,7 +55,7 @@ def train_model(model, train_loader, epoch, num_epochs, LOSS, optimizer, current
             label = label.cuda()
             weight = weight.cuda()
 
-        label = label[0]
+        label = label
         weight = weight[0]
 
         prediction = model.forward(image.float())
@@ -145,7 +145,7 @@ def evaluate_model(model, val_loader, epoch, num_epochs, LOSS, current_lr):
             label = label.cuda()
             weight = weight.cuda()
 
-        label = label[0]
+        label = label
         weight = weight[0]
 
         prediction = model.forward(image.float())
