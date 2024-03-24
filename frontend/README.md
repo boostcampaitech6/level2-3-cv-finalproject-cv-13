@@ -13,7 +13,9 @@ Install libraries and dependencies.
 
 ### 6. `npm install --force chartjs-plugin-annotation`
 
-### 7. `npm run start`
+### 7. `npm install crypto-js --force`
+
+### 8. `npm run start`
 Start the project.
 
 

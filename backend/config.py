@@ -7,9 +7,9 @@ class Config(BaseSettings):
     planes: list = ["axial","coronal","sagittal"]
     diseases: list = ["abnormal", "acl", "meniscus"]
     model_class: str = "mrnet"
-    orign_path: str = "./original"
-    result_path: str = "./result"
-    model_path: str = "./models"
+    orign_path: str = "original"
+    result_path: str = "result"
+    model_path: str = "models"
     sample_path: str = "./sample"
 
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
