@@ -2,6 +2,7 @@ modeling/data
 modeling/models
 modeling/wandb
 modeling/new_data
+modeling/preds
 backend/models
 backend/original
 backend/result
