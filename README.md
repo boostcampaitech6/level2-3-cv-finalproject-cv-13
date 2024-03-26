@@ -1,8 +1,7 @@
 # 🩻 MEDI-KNEE
 > 무릎 MRI 진단 보조 서비스  
 
-<p align = "center"> <img src= "https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-13/assets/49268298/3abc596a-d15d-4990-8cc5-2e3e3634dc96" width=400 height=400><p/>
-
+<p align = "center"> <img src= "https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-13/assets/49268298/3abc596a-d15d-4990-8cc5-2e3e3634dc96" width=300 height=200><p/>
 
 ## 서비스 데모영상
 
