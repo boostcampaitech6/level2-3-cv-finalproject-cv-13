@@ -24,7 +24,7 @@ export default function FirstImpression (props) {
 		formData.append('file', files[i]);
 		}
 
-		const currenturl = `http://127.0.0.1:8001/input/${plane}`
+		const currenturl = `/input/${plane}`
 		const postOptions = {
 			method: "POST",
 			url: currenturl,
@@ -63,7 +63,7 @@ export default function FirstImpression (props) {
 
 	const sampleData = async (e, disease) => {
 		e.preventDefault();
-		const sampleurl = `http://127.0.0.1:8001/input/sample?disease=${disease}`
+		const sampleurl = `/input/sample?disease=${disease}`
 		const config = {
 			headers: {
 			  'IP': ip,

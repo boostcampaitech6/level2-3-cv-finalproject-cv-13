@@ -43,12 +43,12 @@ export default function ResultsCodeAbnormal (props) {
   const disease = props.disease;
   const idx = props.idx;
   const ip = localStorage.getItem('userIP') || props.ip;
-  const graphurl = "http://127.0.0.1:8001/result";
-  const originalurl = `http://127.0.0.1:8001/result/${disease}/original`;
-  const gradcamurl = `http://127.0.0.1:8001/result/${disease}/gradcam`;
-  const patienturl = "http://127.0.0.1:8001/result/patient";
+  const graphurl = "/result";
+  const originalurl = `/result/${disease}/original`;
+  const gradcamurl = `/result/${disease}/gradcam`;
+  const patienturl = "/result/patient";
   const unique = Date.now();
-  const exporturl = `http://127.0.0.1:8001/result/docs?cache=${unique}`;
+  const exporturl = `/result/docs?cache=${unique}`;
   const config = {
     headers: {
       'IP': ip,

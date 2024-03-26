@@ -45,8 +45,8 @@ export default function PlaneResultTemplate (props) {
 	const disease = props.disease;
 	const plane = props.plane;
 	const ip = localStorage.getItem('userIP') || props.ip;
-	const imageurl = `http://127.0.0.1:8001/output/${disease}/${plane}`;
-	const patienturl = "http://127.0.0.1:8001/result/patient";
+	const imageurl = `/output/${disease}/${plane}`;
+	const patienturl = "/result/patient";
 	const config = {
 		headers: {
 		  'IP': ip,

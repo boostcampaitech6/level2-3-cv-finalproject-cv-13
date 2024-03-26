@@ -12,7 +12,7 @@ export default function Loading (props) {
 	useEffect(() => {
 		const awaitInference = async () => {
 			try {
-				const url = "http://127.0.0.1:8001/inference";
+				const url = "/inference";
 				const config = {
 					headers: {
 					  'IP': ip,
