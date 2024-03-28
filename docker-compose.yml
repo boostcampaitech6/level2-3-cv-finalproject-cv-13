@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+  docker-fastapi:
+    container_name: backend
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - chosen-network
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  nginx:
+    depends_on:
+      - docker-fastapi
+    container_name: frontend
+    build:
+      context: ./frontend/
+      args:
+        - REACT_APP_DPR_ENDPOINT=${REACT_APP_DPR_ENDPOINT}
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: always
+    networks:
+      - chosen-network
+
+networks:
+  chosen-network:
+    driver: bridge
