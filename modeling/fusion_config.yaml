@@ -1,0 +1,15 @@
+# Data directory
+DATA_ROOT: './data/'
+
+# Experimental Name
+EXP_NAME: temp
+
+# Task: 'abnormal', 'acl', 'meniscus'
+TASK: abnormal
+
+MODEL_PATH:
+  axial: './models/abnormal_axial_best.pth'
+  coronal: './models/abnormal_coronal_best.pth'
+  sagittal: './models/abnormal_sagittal_best.pth'
+
+FOLD_NUM: 4

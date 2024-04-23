@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "modeling"
+version = "0.1.0"
+description = ""
+authors = ["patrashu"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "2.0.0"
+numpy = "1.24.0"
+torch = {version = "2.0.1+cu117", source = "pytorch"}
+torchvision = {version = "0.15.2+cu117", source = "pytorch"}
+pyyaml = "6.0.1"
+lion_pytorch = "0.1.2"
+wandb = "0.16.3"
+scikit-learn = "1.2.0"
+torcheval = "0.0.7"
+Pillow = "10.2.0"
+opencv-python = "4.8.0.76"
+tqdm = "4.62.3"
+ttach = "0.0.3"
+python-docx = "1.1.0"
+pydicom = "^2.4.4"
+ipykernel = "^6.29.3"
+timm = "^0.9.16"
+matplotlib = "^3.8.3"
+fvcore = "^0.1.5.post20221221"
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu117"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

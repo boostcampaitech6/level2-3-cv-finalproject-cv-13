@@ -1,0 +1,17 @@
+modeling/data
+modeling/models
+modeling/wandb
+modeling/new_data
+modeling/preds
+backend/models
+backend/original
+backend/result
+.venv
+.python-version
+__pycache__
+*.pdf
+*.dcm
+old_frontend
+*.png
+*.docx
+sample/

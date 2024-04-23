@@ -1,0 +1,12 @@
+# Input Data
+INPUT_DATA_PATH: './data/train/sagittal/0001.npy'
+
+# Model directory for grad-cam inference
+MODEL_PATH: './models/model_3d_resnet-abnormal_sagittal_abnormal_sagittal_epoch_4.pth'
+
+# Threshold & Contour
+THRESHOLD: 0.0
+USE_CONTOUR: False
+
+# Experimental Name
+EXP_NAME: temp
